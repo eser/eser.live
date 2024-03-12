@@ -1,0 +1,73 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: check-added-large-files
+        args: ["--maxkb=1024"]
+        # exclude: |
+        #   (?x)^(
+        #     lime/src/build/esbuild_v0.19.2.wasm
+        #   )$
+      - id: check-case-conflict
+      - id: check-executables-have-shebangs
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-shebang-scripts-are-executable
+      - id: check-symlinks
+      - id: check-toml
+      - id: check-xml
+      - id: check-yaml
+        args: [--allow-multiple-documents]
+      - id: detect-private-key
+      - id: end-of-file-fixer
+      - id: fix-byte-order-marker
+      - id: forbid-new-submodules
+      - id: mixed-line-ending
+      - id: trailing-whitespace
+  - repo: https://github.com/crate-ci/typos
+    rev: v1.16.22
+    hooks:
+      - id: typos
+        verbose: true
+        args: [
+        ]
+        exclude: |
+          (?x)^(
+            node_modules/.*|
+            posts/.*
+          )$
+  - repo: local
+    hooks:
+    - id: kebab-case-files-only
+      name: kebab-case files only
+      entry: filenames must be kebab-case only
+      language: fail
+      files: '(?!\_test\.[jt]sx?$)[^a-z0-9.\/\[\]@-]'
+      exclude: |
+        (?x)^(
+          .github/ISSUE_TEMPLATE/bug_report.md|
+          .github/ISSUE_TEMPLATE/feature_request.md|
+          .github/PULL_REQUEST_TEMPLATE.md|
+          .github/FUNDING.yml|
+          routes/_404.tsx|
+          routes/_500.tsx|
+          routes/_app.tsx|
+          CODE_OF_CONDUCT.md|
+          LICENSE|
+          CODEOWNERS|
+          CONTRIBUTING.md|
+          README.md|
+          SECURITY.md|
+          Makefile|
+          Dockerfile|
+          _etc/.*|
+          lime/.*
+        )$
+    - id: local-tasks
+      name: local pre-commit tasks
+      description: Runs local pre-commit tasks.
+      entry: bash -c 'deno task ok; git add -u' --
+      types_or: [javascript, jsx, ts, tsx, json, markdown]
+      # always_run: true
+      pass_filenames: false
+      language: system
