@@ -6,14 +6,15 @@
 
 ## Features
 
-- Deno's built-in [formatter](https://deno.land/manual/tools/formatter),
-  [linter](https://deno.land/manual/tools/linter) and
-  [test runner](https://deno.land/manual/basics/testing) and TypeScript support
-- Next-gen web framework with [Fresh](https://fresh.deno.dev/)
-- In-built data persistence with [Deno KV](https://deno.com/kv)
-- High-level OAuth with [Deno KV OAuth](https://deno.land/x/deno_kv_oauth)
-- Modern CSS framework with [Tailwind CSS](https://tailwindcss.com/)
-- Responsive, SaaS-oriented design
+- Deno's built-in [formatter](https://deno.land/manual/tools/formatter), [linter](https://deno.land/manual/tools/linter), [test runner](https://deno.land/manual/basics/testing), and TypeScript support ensure high-quality, maintainable code.
+- Next-gen web framework with [Fresh](https://fresh.deno.dev/) for fast, efficient server-side rendering.
+- In-built data persistence with [Deno KV](https://deno.com/kv) for scalable, global storage solutions.
+- High-level OAuth with [Deno KV OAuth](https://deno.land/x/deno_kv_oauth) simplifies authentication workflows.
+- Modern CSS framework with [Tailwind CSS](https://tailwindcss.com/) for rapid UI development.
+- Responsive, SaaS-oriented design ensures your application looks great on any device.
+- Enhanced security features with [Deno Secure](https://deno.land/x/deno_secure) for robust application protection.
+- Comprehensive logging with [Deno Log](https://deno.land/std/log) for effective monitoring and debugging.
+- Real-time data processing and WebSocket communication with [Deno WebSockets](https://deno.land/std/ws).
 - Dashboard with users view and statistics chart
 - First-class web performance
 - [REST API](#rest-api-reference)
@@ -34,8 +35,8 @@ To get started:
 
 1. Clone this repo:
    ```bash
-   git clone https://github.com/denoland/saaskit.git
-   cd saaskit
+   git clone https://github.com/eser/eser.live.git
+   cd eser.live
    ```
 1. Create a new `.env` file.
 1. Navigate to GitHub's
@@ -63,17 +64,15 @@ To get started:
 
 Use the following commands to work with your local Deno KV database:
 
-- `deno task db:seed` - Populate the database with data from the
-  [Hacker News API](https://github.com/HackerNews/API).
-- `deno task db:dump > backup.json` - Write all database entries to
-  `backup.json`.
-- `deno task db:restore backup.json` - Restore the database from `backup.json`.
-- `deno task db:reset` - Reset the database. This is not recoverable.
+- `deno task db:seed` - Populate the database with initial data.
+- `deno task db:dump > backup.json` - Export all database entries to `backup.json`.
+- `deno task db:restore < backup.json` - Import database entries from `backup.json`.
+- `deno task db:reset` - Completely reset the database to its initial state.
+- `deno task db:migrate` - Apply database schema migrations to ensure the database structure is up to date.
 
 ## Customize and Extend
 
 ### Global Constants
-
 The [utils/constants.ts](utils/constants.ts) file includes global values used
 across various aspects of the codebase. Update these values according to your
 needs.
@@ -99,16 +98,9 @@ needs.
 
    Hello, world!
 
-   ```javascript
-   console.log("Hello World");
-   ```
-   ````
-1. Start the server:
-   ```bash
-   deno task start
-   ```
-1. Navigate to the URL of the newly created blog post. E.g.
-   `http://localhost:8000/blog/hello-there`.
+- To add custom fonts, update the `@import` statements in the [static/styles.css](static/styles.css) file.
+- For dynamic content rendering, utilize the `useDeno` hook available in Fresh pages.
+- Customize the dashboard by editing the [components/Dashboard.tsx](components/Dashboard.tsx) component.
 
 See other examples of blog post files in [/posts](/posts).
 
@@ -140,13 +132,13 @@ This section assumes that a
 
 ### Deploy to [Deno Deploy](https://deno.com/deploy)
 
-1. Clone this repository for your SaaSKit project.
+1. Clone this repository for your project.
 1. Sign into [Deno Deploy](https://dash.deno.com) with your GitHub account.
 1. Select your GitHub organization or user, repository, and branch.
-1. Select **Automatic** deployment mode and `main.ts` as the entry point.
-1. Click **Link**, which will start the deployment.
-1. Once the deployment is complete, click on **Settings** and add the production
-   environmental variables, then hit **Save**.
+1. Choose **Automatic** deployment mode and specify `main.ts` as the entry point.
+1. Click **Link** to initiate the deployment.
+1. After deployment, navigate to **Settings** in Deno Deploy and add your production environment variables, then click **Save**.
+1. For containerized deployment, refer to the provided `Dockerfile` and `docker-compose.yml` for building and running your app in Docker.
 
 You should now be able to visit your newly deployed SaaS.
 
