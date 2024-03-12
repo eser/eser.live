@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "denoland.vscode-deno",
+    "ryanluker.vscode-coverage-gutters",
+    "ronilaukkarinen.vscode-stylefmt",
+    "bradlc.vscode-tailwindcss"
+  ]
+}
