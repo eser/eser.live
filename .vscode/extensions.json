@@ -3,6 +3,7 @@
     "denoland.vscode-deno",
     "ryanluker.vscode-coverage-gutters",
     "ronilaukkarinen.vscode-stylefmt",
-    "bradlc.vscode-tailwindcss"
+    "bradlc.vscode-tailwindcss",
+    "chdsbd.github-code-owners"
   ]
 }

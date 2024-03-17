@@ -7,17 +7,17 @@
     "db:seed": "deno run --allow-read --allow-env --allow-net --unstable-kv ./tasks/db-seed.ts",
     "db:migrate": "deno run --allow-read --allow-env --allow-net --unstable-kv ./tasks/db-migrate.ts",
     "db:reset": "deno run --allow-read --allow-env --unstable-kv ./tasks/db-reset.ts",
-    "start": "deno run --unstable-kv -A --watch=./static/,./routes/ --env=./.env.local ./dev.ts",
-    "test": "DENO_KV_PATH=:memory: GITHUB_CLIENT_ID=xxx GITHUB_CLIENT_SECRET=xxx EDITOR_LOGINS=eser deno test -A --unstable-kv --parallel --coverage=./cov",
+    "start": "deno run --unstable-kv -A --watch=./pkg/main/static/,./pkg/main/routes/,./pkg/main/islands/ --env=./.env.local ./pkg/main/dev.ts",
+    "test": "DENO_KV_PATH=:memory: GITHUB_CLIENT_ID=xxx GITHUB_CLIENT_SECRET=xxx EDITOR_LOGINS=eser deno test -A --unstable-kv --parallel --coverage=./test/coverage/",
     "check:license": "deno run --allow-read --allow-write ./tasks/check-license.ts",
     "check:types": "deno check ./**/*.ts && deno check ./**/*.tsx",
-    "ok": "deno fmt --check && deno lint && deno task check:license --check && deno task check:types && deno task test",
-    "cov:clean": "rm -rf ./cov/ ./html_cov/ ./cov_profile.lcov",
-    "cov:gen": "deno coverage ./cov/ --lcov --exclude='.tsx' --output=./cov_profile.lcov",
-    "cov:view": "genhtml -o ./html_cov/ ./cov_profile.lcov && open ./html_cov/index.html",
+    "ok": "deno fmt --check && deno lint && deno task check:license --check && deno task check:types && deno task test && deno task cov:gen",
+    "cov:clean": "rm -rf ./test/coverage/ ./test/html_cov/ ./test/cov_profile.lcov && mkdir ./test/coverage/ && touch ./test/coverage/.gitkeep",
+    "cov:gen": "deno coverage ./test/coverage/ --lcov --exclude='.tsx' --output=./test/cov_profile.lcov",
+    "cov:view": "genhtml -o ./test/html_cov/ ./test/cov_profile.lcov && open ./test/html_cov/index.html",
     "update": "deno run -A -r https://fresh.deno.dev/update .",
-    "build": "deno run -A --unstable-kv ./dev.ts build",
-    "preview": "deno run -A --unstable-kv ./main.ts",
+    "build": "deno run -A --unstable-kv ./pkg/main/dev.ts build",
+    "preview": "deno run -A --unstable-kv ./pkg/main/main.ts",
     "deploy": "deno task build && deployctl deploy"
   },
   "compilerOptions": { "jsx": "react-jsx", "jsxImportSource": "preact" },
@@ -45,6 +45,6 @@
     "project": "0b6013a7-e80f-4dcb-8c70-df01d07d88e2",
     "exclude": ["node_modules"],
     "include": [],
-    "entrypoint": "main.ts"
+    "entrypoint": "pkg/main/main.ts"
   }
 }

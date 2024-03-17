@@ -8,7 +8,7 @@
  * deno task db:restore backup.json
  * ```
  */
-import { kv } from "@/utils/db.ts";
+import { kv } from "@/pkg/main/utils/db.ts";
 
 interface StoredKvU64 {
   value: string;

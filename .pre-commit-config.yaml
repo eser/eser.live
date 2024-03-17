@@ -29,45 +29,48 @@ repos:
     hooks:
       - id: typos
         verbose: true
-        args: [
-        ]
+        args: []
         exclude: |
           (?x)^(
             node_modules/.*|
+            test/coverage/.*|
+            test/html_cov/.*|
             posts/.*
           )$
   - repo: local
     hooks:
-    - id: kebab-case-files-only
-      name: kebab-case files only
-      entry: filenames must be kebab-case only
-      language: fail
-      files: '(?!\_test\.[jt]sx?$)[^a-z0-9.\/\[\]@-]'
-      exclude: |
-        (?x)^(
-          .github/ISSUE_TEMPLATE/bug_report.md|
-          .github/ISSUE_TEMPLATE/feature_request.md|
-          .github/PULL_REQUEST_TEMPLATE.md|
-          .github/FUNDING.yml|
-          routes/_404.tsx|
-          routes/_500.tsx|
-          routes/_app.tsx|
-          CODE_OF_CONDUCT.md|
-          LICENSE|
-          CODEOWNERS|
-          CONTRIBUTING.md|
-          README.md|
-          SECURITY.md|
-          Makefile|
-          Dockerfile|
-          _etc/.*|
-          lime/.*
-        )$
-    - id: local-tasks
-      name: local pre-commit tasks
-      description: Runs local pre-commit tasks.
-      entry: bash -c 'deno task ok; git add -u' --
-      types_or: [javascript, jsx, ts, tsx, json, markdown]
-      # always_run: true
-      pass_filenames: false
-      language: system
+      - id: kebab-case-files-only
+        name: kebab-case files only
+        entry: filenames must be kebab-case only
+        language: fail
+        files: '(?!\_test\.[jt]sx?$)[^a-z0-9.\/\[\]@-]'
+        exclude: |
+          (?x)^(
+            .github/ISSUE_TEMPLATE/bug_report.md|
+            .github/ISSUE_TEMPLATE/feature_request.md|
+            .github/PULL_REQUEST_TEMPLATE.md|
+            .github/FUNDING.yml|
+            pkg/main/routes/manage/\(_islands\)/chart.tsx|
+            pkg/main/routes/_404.tsx|
+            pkg/main/routes/_500.tsx|
+            pkg/main/routes/_layout.tsx|
+            pkg/main/routes/_app.tsx|
+            test/cov_profile.lcov|
+            test/html_cov/.*|
+            CODE_OF_CONDUCT.md|
+            LICENSE|
+            CODEOWNERS|
+            CONTRIBUTING.md|
+            README.md|
+            SECURITY.md|
+            Makefile|
+            Dockerfile|
+          )$
+      - id: local-tasks
+        name: local pre-commit tasks
+        description: Runs local pre-commit tasks.
+        entry: bash -c 'deno task ok; git add -u' --
+        types_or: [javascript, jsx, ts, tsx, json, markdown]
+        # always_run: true
+        pass_filenames: false
+        language: system
