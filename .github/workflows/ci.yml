@@ -54,13 +54,13 @@ jobs:
         with:
           extra_args: "--all-files"
 
-      - name: Create lcov file
-        if: matrix.os == 'ubuntu-latest'
-        run: deno task cov:gen
+      # - name: Create lcov file
+      #   if: matrix.os == 'ubuntu-latest'
+      #   run: deno task cov:gen
 
       - name: Upload coverage
         if: matrix.os == 'ubuntu-latest'
         uses: codecov/codecov-action@v4
         with:
           name: ${{ matrix.os }}
-          files: cov_profile.lcov
+          files: ./test/cov_profile.lcov

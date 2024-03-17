@@ -16,7 +16,7 @@ jobs:
 
     permissions:
       id-token: write # Needed for auth with Deno Deploy
-      contents: read  # Needed to clone the repository
+      contents: read # Needed to clone the repository
 
     env:
       GITHUB_CLIENT_ID: ${{ secrets.GITHUB_CLIENT_ID }}
@@ -31,12 +31,12 @@ jobs:
       - name: Setup Deno (latest)
         uses: denoland/setup-deno@v1
 
-      - name: Build step
+      - name: Ahead-of-time Build
         run: deno task build
 
       - name: Upload to Deno Deploy
         run: |
           deno install -Arf jsr:@deno/deployctl
-          deployctl deploy --prod --project=eserlive ./main.ts
+          deployctl deploy --prod --project=eserlive ./pkg/main/main.ts
         env:
           DENO_DEPLOY_TOKEN: ${{ secrets.DENO_DEPLOY_TOKEN }}
