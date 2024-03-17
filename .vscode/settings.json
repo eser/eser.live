@@ -9,18 +9,42 @@
   "deno.codeLens.test": true,
   "deno.enable": true,
   "deno.lint": true,
-  "deno.suggest.autoImports": true,
-  "deno.suggest.completeFunctionCalls": true,
+  "typescript.suggest.autoImports": true,
+  "typescript.suggest.completeFunctionCalls": true,
+  "typescript.suggest.completeJSDocs": true,
+  "typescript.suggest.enabled": true,
+  "typescript.suggest.includeCompletionsForImportStatements": true,
+  "typescript.suggest.jsdoc.generateReturns": true,
+  "typescript.suggest.paths": true,
+  "typescript.suggestionActions.enabled": true,
+  "javascript.suggest.enabled": true,
+  "javascript.suggest.autoImports": true,
+  "javascript.suggest.completeFunctionCalls": true,
+  "javascript.suggest.completeJSDocs": true,
+  "javascript.suggest.includeCompletionsForImportStatements": true,
+  "javascript.suggest.jsdoc.generateReturns": true,
+  "javascript.suggest.names": true,
+  "javascript.suggest.paths": true,
+  "javascript.suggestionActions.enabled": true,
+  "javascript.format.enable": true,
+  "javascript.preferences.quoteStyle": "double",
+  "javascript.validate.enable": true,
   "deno.suggest.imports.autoDiscover": true,
-  "deno.suggest.names": true,
-  "deno.suggest.paths": true,
+  "deno.cacheOnSave": true,
+  "deno.codeLens.implementations": true,
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "denoland.vscode-deno",
   "yaml.schemas": {
     "https://json.schemastore.org/github-workflow.json": "./.github/workflows/*.yml"
   },
+  "[codeowners]": {
+    "editor.defaultFormatter": "chdsbd.github-code-owners"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "denoland.vscode-deno"
+  },
   "[jsonc]": {
-    "editor.defaultFormatter": "vscode.json-language-features"
+    "editor.defaultFormatter": "denoland.vscode-deno"
   },
   "[postcss]": {
     "editor.defaultFormatter": "ronilaukkarinen.vscode-stylefmt"

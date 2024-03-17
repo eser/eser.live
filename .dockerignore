@@ -1,3 +1,15 @@
+.git/
 .github/
 .vscode/
+cov/
+node_modules/
+.editorconfig
+.gitattributes
+.gitignore
+.pre-commit-config.yaml
+CODEOWNERS
+CONTRIBUTING.md
+docker-compose.yml
+Dockerfile
+LICENSE
 README.md
