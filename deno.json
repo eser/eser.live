@@ -20,13 +20,13 @@
     "cov:clean": "rm -rf ./test/coverage/ ./test/html_cov/ ./test/cov_profile.lcov && mkdir ./test/coverage/ && touch ./test/coverage/.gitkeep",
     "cov:gen": "deno coverage ./test/coverage/ --lcov --exclude='.tsx' --output=./test/cov_profile.lcov",
     "cov:view": "genhtml -o ./test/html_cov/ ./test/cov_profile.lcov && open ./test/html_cov/index.html",
-    "build": "DENO_FUTURE=1 deno run --allow-all --env=./.env.local ./pkg/main/main.ts build",
+    "build": "DENO_FUTURE=1 deno run --allow-all --env=./.env.local ./pkg/main/dev.ts build",
     "preview": "DENO_FUTURE=1 deno run --allow-all --env=./.env.local ./pkg/main/main.ts",
     "update": "deno run --allow-all --reload https://fresh.deno.dev/update .",
     "deploy": "deno task build && deployctl deploy"
   },
   "compilerOptions": {
-    "jsx": "precompile",
+    "jsx": "react-jsx",
     "jsxImportSource": "preact",
     "jsxPrecompileSkipElements": [
       "a",
