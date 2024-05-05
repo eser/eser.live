@@ -62,19 +62,22 @@ jobs:
       - name: Upload coverage
         # if: matrix.os == 'ubuntu-latest'
         uses: codecov/codecov-action@v4
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
           name: ${{ matrix.os }}
           files: ./test/cov_profile.lcov
 
   deployment:
-    name: Deployment of ${{ github.ref_name }}
+    name: Deployment
     needs: integration
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    # && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
 
     permissions:
       id-token: write # Needed for auth with Deno Deploy
-      contents: read # Needed to clone the repository
+      contents: read  # Needed to clone the repository
 
     steps:
       - name: Checkout repository
