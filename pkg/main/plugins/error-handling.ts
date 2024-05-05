@@ -1,5 +1,5 @@
 // Copyright 2023-present the Deno authors. All rights reserved. MIT license.
-import { Status, STATUS_TEXT } from "std/http/status.ts";
+import { STATUS_CODE, STATUS_TEXT } from "std/http/status.ts";
 import { type Plugin } from "$fresh/server.ts";
 import { type State } from "@/pkg/main/plugins/session.ts";
 import {
@@ -20,10 +20,10 @@ import {
  * ```
  */
 export function toErrorStatus(error: Error) {
-  if (error instanceof Deno.errors.NotFound) return Status.NotFound;
-  if (error instanceof UnauthorizedError) return Status.Unauthorized;
-  if (error instanceof BadRequestError) return Status.BadRequest;
-  return Status.InternalServerError;
+  if (error instanceof Deno.errors.NotFound) return STATUS_CODE.NotFound;
+  if (error instanceof UnauthorizedError) return STATUS_CODE.Unauthorized;
+  if (error instanceof BadRequestError) return STATUS_CODE.BadRequest;
+  return STATUS_CODE.InternalServerError;
 }
 
 export default {

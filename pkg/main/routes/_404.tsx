@@ -1,13 +1,17 @@
 // Copyright 2023-present the Deno authors. All rights reserved. MIT license.
-import { HEADING_STYLES, LINK_STYLES } from "@/pkg/main/utils/constants.ts";
+import { type PageProps } from "$fresh/server.ts";
+import { type State } from "@/pkg/main/plugins/session.ts";
 
-export default function NotFoundPage() {
+// deno-lint-ignore no-explicit-any
+export default function Error404Page(_props: PageProps<any, State>) {
   return (
-    <main class="flex-1 p-4 flex flex-col justify-center text-center">
-      <h1 class={HEADING_STYLES}>Sayfa bulunamadı</h1>
-      <p>
-        <a href="/" class={LINK_STYLES}>Geri dön &#8250;</a>
-      </p>
+    <main>
+      <div>
+        <h1>Sayfa bulunamadı</h1>
+        <p>
+          <a href="/">Geri dön &#8250;</a>
+        </p>
+      </div>
     </main>
   );
 }

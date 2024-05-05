@@ -2,7 +2,7 @@
 import { useSignal } from "@preact/signals";
 import { useEffect } from "preact/hooks";
 import { type User } from "@/pkg/main/utils/db.ts";
-import GitHubAvatarImg from "@/pkg/main/components/github-avatar-img.tsx";
+import { GitHubAvatarImg } from "@/pkg/main/components/github-avatar-img.tsx";
 import { LINK_STYLES } from "@/pkg/main/utils/constants.ts";
 import { fetchValues } from "@/pkg/main/utils/http.ts";
 
@@ -16,7 +16,7 @@ function UserTableRow(props: User) {
         <GitHubAvatarImg login={props.login} size={32} />
         <a
           class="hover:underline ml-4 align-middle"
-          href={"/users/" + props.login}
+          href={`/dash/users/${props.login}`}
         >
           {props.login}
         </a>
@@ -30,7 +30,7 @@ export interface UsersTableProps {
   endpoint: string;
 }
 
-export default function UsersTable(props: UsersTableProps) {
+export function UsersTable(props: UsersTableProps) {
   const usersSig = useSignal<User[]>([]);
   const cursorSig = useSignal("");
   const isLoadingSig = useSignal(false);
@@ -43,12 +43,12 @@ export default function UsersTable(props: UsersTableProps) {
     isLoadingSig.value = true;
 
     try {
-      const { values, cursor } = await fetchValues<User>(
+      const { items, cursor } = await fetchValues<User>(
         props.endpoint,
         cursorSig.value,
       );
 
-      usersSig.value = [...usersSig.value, ...values];
+      usersSig.value = [...usersSig.value, ...items];
       cursorSig.value = cursor;
     } catch (error) {
       console.log(error.message);

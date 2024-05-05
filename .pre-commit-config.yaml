@@ -23,9 +23,12 @@ repos:
       - id: fix-byte-order-marker
       - id: forbid-new-submodules
       - id: mixed-line-ending
+        args: ["--fix=lf"]
+      - id: pretty-format-json
+        args: ["--autofix", "--no-ensure-ascii", "--no-sort-keys"]
       - id: trailing-whitespace
   - repo: https://github.com/crate-ci/typos
-    rev: v1.16.22
+    rev: v1.21.0
     hooks:
       - id: typos
         verbose: true
@@ -37,6 +40,12 @@ repos:
             test/html_cov/.*|
             posts/.*
           )$
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v3.2.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+        args: []
   - repo: local
     hooks:
       - id: kebab-case-files-only
@@ -50,7 +59,7 @@ repos:
             .github/ISSUE_TEMPLATE/feature_request.md|
             .github/PULL_REQUEST_TEMPLATE.md|
             .github/FUNDING.yml|
-            pkg/main/routes/manage/\(_islands\)/chart.tsx|
+            pkg/main/routes/dash/\(_islands\)/chart.tsx|
             pkg/main/routes/_404.tsx|
             pkg/main/routes/_500.tsx|
             pkg/main/routes/_layout.tsx|

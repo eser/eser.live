@@ -1,5 +1,5 @@
 // Copyright 2023-present the Deno authors. All rights reserved. MIT license.
-import { Status } from "std/http/status.ts";
+import { STATUS_CODE } from "std/http/status.ts";
 import { type Handlers } from "$fresh/server.ts";
 import { type LoggedInState } from "@/pkg/main/plugins/session.ts";
 import { hideQuestion } from "@/pkg/main/utils/db.ts";
@@ -14,6 +14,6 @@ export const handler: Handlers<undefined, LoggedInState> = {
 
     await hideQuestion(questionId);
 
-    return new Response(null, { status: Status.Created });
+    return new Response(null, { status: STATUS_CODE.Created });
   },
 };

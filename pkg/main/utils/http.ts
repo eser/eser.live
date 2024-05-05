@@ -1,5 +1,5 @@
 // Copyright 2023-present the Deno authors. All rights reserved. MIT license.
-import { RedirectStatus, Status } from "std/http/status.ts";
+import { RedirectStatus, STATUS_CODE } from "std/http/status.ts";
 
 /**
  * Returns a response that redirects the client to the given location (URL).
@@ -19,7 +19,7 @@ import { RedirectStatus, Status } from "std/http/status.ts";
  */
 export function redirect(
   location: string,
-  status: Status.Created | RedirectStatus = Status.SeeOther,
+  status: typeof STATUS_CODE.Created | RedirectStatus = STATUS_CODE.SeeOther,
 ) {
   return new Response(null, {
     headers: {
@@ -55,17 +55,24 @@ export function getCursor(url: URL) {
  * import { type Question } from "@/pkg/main/utils/db.ts";
  *
  * const body = await fetchValues<Question>("https://hunt.deno.land/api/questions", "12345");
- * body.values[0].id; // Returns "13f34b7e-5563-4001-98ed-9ee04d7af717"
- * body.values[0].question; // Returns "What?"
+ * body.items[0].id; // Returns "13f34b7e-5563-4001-98ed-9ee04d7af717"
+ * body.items[0].question; // Returns "What?"
  * body.cursor; // Returns "12346"
  * ```
  */
 export async function fetchValues<T>(endpoint: string, cursor: string) {
   let url = endpoint;
-  if (cursor !== "") url += "?cursor=" + cursor;
+
+  if (cursor !== "") {
+    url += "?cursor=" + cursor;
+  }
+
   const resp = await fetch(url);
-  if (!resp.ok) throw new Error(`Request failed: GET ${url}`);
-  return await resp.json() as { values: T[]; cursor: string };
+  if (!resp.ok) {
+    throw new Error(`Request failed: GET ${url}`);
+  }
+
+  return resp.json() as Promise<{ items: T[]; cursor: string }>;
 }
 
 export class UnauthorizedError extends Error {

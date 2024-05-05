@@ -31,7 +31,7 @@ jobs:
           # - windows-latest
           # - macOS-latest
         deno-version:
-          - 1.41.2
+          - 1.43.1
 
     steps:
       - name: Checkout repository
@@ -54,12 +54,13 @@ jobs:
         with:
           extra_args: "--all-files"
 
-      # - name: Create lcov file
-      #   if: matrix.os == 'ubuntu-latest'
-      #   run: deno task cov:gen
+      - name: Create lcov file
+        # if: matrix.os == 'ubuntu-latest'
+        run: |
+          deno task cov:gen
 
       - name: Upload coverage
-        if: matrix.os == 'ubuntu-latest'
+        # if: matrix.os == 'ubuntu-latest'
         uses: codecov/codecov-action@v4
         with:
           name: ${{ matrix.os }}

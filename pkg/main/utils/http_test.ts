@@ -36,7 +36,7 @@ Deno.test("[http] fetchValues()", async () => {
     new Response(null, { status: STATUS_CODE.NotFound }),
   );
   const resp2Body = {
-    values: [randomQuestion(), randomQuestion()],
+    items: [randomQuestion(), randomQuestion()],
     cursor: crypto.randomUUID(),
   };
   const resp2Cursor = crypto.randomUUID();

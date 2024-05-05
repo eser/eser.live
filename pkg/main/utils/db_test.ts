@@ -2,7 +2,6 @@
 import { assertEquals, assertRejects } from "std/assert/mod.ts";
 import { ulid } from "std/ulid/mod.ts";
 import {
-  collectValues,
   createQuestion,
   createUser,
   createVote,
@@ -36,8 +35,8 @@ Deno.test("[db] questions", async () => {
 
   assertEquals(await getQuestion(question1.id), null);
   assertEquals(await getQuestion(question2.id), null);
-  assertEquals(await collectValues(listQuestions()), []);
-  assertEquals(await collectValues(listQuestionsByUser(user.login)), []);
+  assertEquals(await Array.fromAsync(listQuestions()), []);
+  assertEquals(await Array.fromAsync(listQuestionsByUser(user.login)), []);
 
   await createQuestion(question1);
   await createQuestion(question2);
@@ -45,11 +44,19 @@ Deno.test("[db] questions", async () => {
 
   assertEquals(await getQuestion(question1.id), question1);
   assertEquals(await getQuestion(question2.id), question2);
-  assertEquals(await collectValues(listQuestions()), [question1, question2]);
-  assertEquals(await collectValues(listQuestionsByUser(user.login)), [
+  assertEquals((await Array.fromAsync(listQuestions())).map((x) => x.value), [
     question1,
     question2,
   ]);
+  assertEquals(
+    (await Array.fromAsync(listQuestionsByUser(user.login))).map((x) =>
+      x.value
+    ),
+    [
+      question1,
+      question2,
+    ],
+  );
 });
 
 Deno.test("[db] user", async () => {
@@ -87,7 +94,7 @@ Deno.test("[db] votes", async () => {
     createdAt: new Date(),
   };
 
-  assertEquals(await collectValues(listQuestionsVotedByUser(user.login)), []);
+  assertEquals(await Array.fromAsync(listQuestionsVotedByUser(user.login)), []);
 
   await assertRejects(
     async () => await createVote(vote),
@@ -104,9 +111,12 @@ Deno.test("[db] votes", async () => {
   await createVote(vote);
   question.score++;
 
-  assertEquals(await collectValues(listQuestionsVotedByUser(user.login)), [
-    question,
-  ]);
+  assertEquals(
+    (await Array.fromAsync(listQuestionsVotedByUser(user.login))).map(
+      (x) => x.value,
+    ),
+    [question],
+  );
   await assertRejects(async () => await createVote(vote));
 });
 

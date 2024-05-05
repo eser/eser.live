@@ -1,6 +1,6 @@
 // Copyright 2023-present the Deno authors. All rights reserved. MIT license.
 import { defineRoute, Handlers } from "$fresh/server.ts";
-import Head from "@/pkg/main/components/head.tsx";
+import { Head } from "@/pkg/main/components/head.tsx";
 import {
   assertLoggedIn,
   type LoggedInState,

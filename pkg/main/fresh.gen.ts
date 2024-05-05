@@ -6,7 +6,6 @@ import * as $_404 from "./routes/_404.tsx";
 import * as $_500 from "./routes/_500.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $_layout from "./routes/_layout.tsx";
-import * as $account_index from "./routes/account/index.tsx";
 import * as $api_me_question_votes from "./routes/api/me/question-votes.ts";
 import * as $api_questions_id_ from "./routes/api/questions/[id].ts";
 import * as $api_questions_hide from "./routes/api/questions/hide.ts";
@@ -18,17 +17,18 @@ import * as $api_users_index from "./routes/api/users/index.ts";
 import * as $blog_slug_ from "./routes/blog/[slug].tsx";
 import * as $blog_feed from "./routes/blog/feed.ts";
 import * as $blog_index from "./routes/blog/index.tsx";
+import * as $dash_index from "./routes/dash/index.tsx";
+import * as $dash_stats from "./routes/dash/stats.tsx";
+import * as $dash_users_login_ from "./routes/dash/users/[login].tsx";
+import * as $dash_users_index from "./routes/dash/users/index.tsx";
 import * as $index from "./routes/index.tsx";
-import * as $manage_index from "./routes/manage/index.tsx";
-import * as $manage_stats from "./routes/manage/stats.tsx";
-import * as $manage_users from "./routes/manage/users.tsx";
 import * as $qa_ask from "./routes/qa/ask.tsx";
 import * as $qa_index from "./routes/qa/index.tsx";
-import * as $users_login_ from "./routes/users/[login].tsx";
 import * as $questions_list from "./islands/questions-list.tsx";
 import * as $share from "./islands/share.tsx";
+import * as $shortcuts from "./islands/shortcuts.tsx";
 import * as $users_table from "./islands/users-table.tsx";
-import * as $manage_islands_chart from "./routes/manage/(_islands)/chart.tsx";
+import * as $dash_islands_chart from "./routes/dash/(_islands)/chart.tsx";
 import { type Manifest } from "$fresh/server.ts";
 
 const manifest = {
@@ -37,7 +37,6 @@ const manifest = {
     "./routes/_500.tsx": $_500,
     "./routes/_app.tsx": $_app,
     "./routes/_layout.tsx": $_layout,
-    "./routes/account/index.tsx": $account_index,
     "./routes/api/me/question-votes.ts": $api_me_question_votes,
     "./routes/api/questions/[id].ts": $api_questions_id_,
     "./routes/api/questions/hide.ts": $api_questions_hide,
@@ -49,19 +48,20 @@ const manifest = {
     "./routes/blog/[slug].tsx": $blog_slug_,
     "./routes/blog/feed.ts": $blog_feed,
     "./routes/blog/index.tsx": $blog_index,
+    "./routes/dash/index.tsx": $dash_index,
+    "./routes/dash/stats.tsx": $dash_stats,
+    "./routes/dash/users/[login].tsx": $dash_users_login_,
+    "./routes/dash/users/index.tsx": $dash_users_index,
     "./routes/index.tsx": $index,
-    "./routes/manage/index.tsx": $manage_index,
-    "./routes/manage/stats.tsx": $manage_stats,
-    "./routes/manage/users.tsx": $manage_users,
     "./routes/qa/ask.tsx": $qa_ask,
     "./routes/qa/index.tsx": $qa_index,
-    "./routes/users/[login].tsx": $users_login_,
   },
   islands: {
     "./islands/questions-list.tsx": $questions_list,
     "./islands/share.tsx": $share,
+    "./islands/shortcuts.tsx": $shortcuts,
     "./islands/users-table.tsx": $users_table,
-    "./routes/manage/(_islands)/chart.tsx": $manage_islands_chart,
+    "./routes/dash/(_islands)/chart.tsx": $dash_islands_chart,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest;

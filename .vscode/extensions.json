@@ -1,9 +1,11 @@
 {
   "recommendations": [
-    "denoland.vscode-deno",
-    "ryanluker.vscode-coverage-gutters",
-    "ronilaukkarinen.vscode-stylefmt",
     "bradlc.vscode-tailwindcss",
-    "chdsbd.github-code-owners"
+    "chdsbd.github-code-owners",
+    "denoland.vscode-deno",
+    "EditorConfig.EditorConfig",
+    "github.vscode-github-actions",
+    "ronilaukkarinen.vscode-stylefmt",
+    "ryanluker.vscode-coverage-gutters"
   ]
 }

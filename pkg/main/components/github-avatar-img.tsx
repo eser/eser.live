@@ -8,7 +8,7 @@ export interface GitHubAvatarImgProps {
   class?: string;
 }
 
-export default function GitHubAvatarImg(props: GitHubAvatarImgProps) {
+export function GitHubAvatarImg(props: GitHubAvatarImgProps) {
   return (
     <img
       height={props.size}

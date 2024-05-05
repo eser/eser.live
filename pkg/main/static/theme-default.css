@@ -1,0 +1,154 @@
+/* fonts */
+@import url("//fonts.googleapis.com/css2?family=Bree+Serif&display=swap");
+@import url("//fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&display=swap");
+@import url("//fonts.googleapis.com/css2?family=Fira+Sans+Condensed:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600;1,900&display=swap");
+
+:root {
+  --var-font-family-heading: "Bree Serif", ui-serif, serif;
+  --var-font-family-body: "Fira Sans", ui-sans-serif, system-ui, sans-serif;
+  --var-font-family-body-condensed: "Fira Sans Condensed", ui-sans-serif, system-ui, sans-serif;
+  --var-color-foreground: hsl(210, 6%, 25%);
+  --var-color-foreground-dark: hsl(216, 9%, 89%);
+  --var-color-background: hsl(0, 0%, 100%);
+  --var-color-background-dark: hsl(210, 6%, 14%);
+  --var-color-link: hsl(213, 4%, 58%);
+  --var-color-link-hover: hsl(210, 6%, 14%);
+  --var-color-link-dark: hsl(213, 4%, 58%);
+  --var-color-link-dark-hover: hsl(216, 9%, 89%);
+  --var-color-accent: hsl(12, 68%, 53%);
+}
+
+.debug-border {
+  --linter-ignore-this-rule: true;
+}
+
+html.theme-default {
+  /* @apply leading-normal; */
+
+  body {
+    @apply flex flex-col text-[--var-color-foreground] bg-[--var-color-background] dark:text-[--var-color-foreground-dark] dark:bg-[--var-color-background-dark];
+  }
+
+  a {
+    @apply text-[--var-color-link] dark:text-[--var-color-link-dark] transition-colors duration-[400ms] ease-in-out;
+
+    &:hover {
+      @apply text-[--var-color-link-hover] dark:text-[--var-color-link-dark-hover];
+    }
+  }
+
+  abbr:where([title]) {
+    @apply underline decoration-dotted;
+  }
+
+  header,
+  main,
+  footer {
+    & > :first-child {
+      @apply mx-auto flex flex-col;
+    }
+  }
+
+  header,
+  footer {
+    & > :first-child {
+      @apply max-w-screen-3xl md:flex-row justify-between;
+    }
+  }
+
+  .navigation-strip {
+    @apply flex flex-row justify-between;
+
+    & > ul {
+      @apply flex flex-row gap-3 m-0 px-6 items-center;
+
+      & > li {
+        @apply block m-0 p-0 font-medium whitespace-nowrap;
+
+        & > a,
+        & > p {
+          @apply block m-0 px-4 py-6 no-underline;
+        }
+      }
+    }
+
+    &.tight {
+      & > ul {
+        @apply gap-0 pl-0 pr-4;
+
+        & > li {
+          & > a,
+          & > p {
+            @apply px-2 py-6;
+          }
+        }
+      }
+    }
+  }
+
+  header {
+    & .top-navigation {
+      @apply flex-1;
+
+      & > ul {
+        &.nav-links {
+          @apply flex-1;
+        }
+
+        &.nav-meta {
+          @apply flex-initial;
+        }
+
+        & > li {
+          & > a,
+          & > p {
+            @apply border-0 border-t-2 border-solid border-transparent;
+
+            &[data-current],
+            &.include-ancestors[data-ancestor] {
+              @apply border-t-[--var-color-accent] text-[--var-color-link-hover] dark:text-[--var-color-link-dark-hover];
+            }
+          }
+        }
+      }
+    }
+  }
+
+  main {
+    @apply flex-1;
+
+    & > :first-child {
+      @apply max-w-5xl;
+    }
+  }
+
+  footer {
+    & .bottom-navigation {
+      @apply flex-1;
+
+      & > ul {
+        @apply flex-1;
+
+        & > li {
+          &.signature {
+            @apply flex-1 hidden md:block;
+
+            & > p {
+              @apply flex flex-row items-center whitespace-nowrap;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+html.debug.theme-default {
+  header,
+  main,
+  footer {
+    & > :first-child {
+      @apply debug-border;
+    }
+  }
+}

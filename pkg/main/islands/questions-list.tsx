@@ -4,7 +4,7 @@ import { useEffect } from "preact/hooks";
 import IconInfo from "tabler_icons_tsx/info-circle.tsx";
 import IconMessageCircleQuestion from "tabler_icons_tsx/message-circle-question.tsx";
 import { decodeTime } from "std/ulid/mod.ts";
-import GitHubAvatarImg from "@/pkg/main/components/github-avatar-img.tsx";
+import { GitHubAvatarImg } from "@/pkg/main/components/github-avatar-img.tsx";
 import { type Question } from "@/pkg/main/utils/db.ts";
 import { LINK_STYLES } from "@/pkg/main/utils/constants.ts";
 import { fetchValues } from "@/pkg/main/utils/http.ts";
@@ -13,7 +13,11 @@ import { timeAgo } from "@/pkg/main/utils/display.ts";
 async function fetchVotedQuestions() {
   const url = "/api/me/question-votes";
   const resp = await fetch(url);
-  if (!resp.ok) throw new Error(`Request failed: GET ${url}`);
+
+  if (!resp.ok) {
+    throw new Error(`Request failed: GET ${url}`);
+  }
+
   return await resp.json() as Question[];
 }
 
@@ -157,7 +161,7 @@ function QuestionSummary(props: QuestionSummaryProps) {
           />
           <a
             class="hover:underline"
-            href={`/users/${props.question.userLogin}`}
+            href={`/dash/users/${props.question.userLogin}`}
           >
             {props.question.userLogin}
           </a>
@@ -186,7 +190,7 @@ export interface QuestionsListProps {
   isEditor?: boolean;
 }
 
-export default function QuestionsList(props: QuestionsListProps) {
+export function QuestionsList(props: QuestionsListProps) {
   const questionsSig = useSignal<Question[]>([]);
   const votedQuestionsIdsSig = useSignal<string[]>([]);
   const cursorSig = useSignal("");
@@ -205,13 +209,16 @@ export default function QuestionsList(props: QuestionsListProps) {
     isLoadingSig.value = true;
 
     try {
-      const { values, cursor } = await fetchValues<Question>(
+      const result = await fetchValues<Question>(
         props.endpoint,
         cursorSig.value,
       );
 
-      questionsSig.value = [...questionsSig.value, ...values];
-      cursorSig.value = cursor;
+      questionsSig.value = [
+        ...questionsSig.value,
+        ...result.items,
+      ];
+      cursorSig.value = result.cursor;
     } catch (error) {
       console.error(error.message);
     } finally {

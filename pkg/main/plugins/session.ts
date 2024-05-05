@@ -114,12 +114,8 @@ export default {
       middleware: { handler: setSessionState },
     },
     {
-      path: "/account",
+      path: "/dash",
       middleware: { handler: ensureLoggedIn },
-    },
-    {
-      path: "/manage",
-      middleware: { handler: ensureIsEditor },
     },
     {
       path: "/api/me",

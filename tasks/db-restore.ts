@@ -5,7 +5,7 @@
  *
  * @example
  * ```bash
- * deno task db:restore backup.json
+ * deno task db:restore ./temp/backup.json
  * ```
  */
 import { kv } from "@/pkg/main/utils/db.ts";

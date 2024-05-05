@@ -2,9 +2,9 @@
 import IconBrandGithub from "tabler_icons_tsx/brand-github-filled.tsx";
 import { defineRoute } from "$fresh/server.ts";
 import { type State } from "@/pkg/main/plugins/session.ts";
-import Head from "@/pkg/main/components/head.tsx";
-import GitHubAvatarImg from "@/pkg/main/components/github-avatar-img.tsx";
-import QuestionsList from "@/pkg/main/islands/questions-list.tsx";
+import { Head } from "@/pkg/main/components/head.tsx";
+import { GitHubAvatarImg } from "@/pkg/main/components/github-avatar-img.tsx";
+import { QuestionsList } from "@/pkg/main/islands/questions-list.tsx";
 import { getUser } from "@/pkg/main/utils/db.ts";
 import { LINK_STYLES } from "@/pkg/main/utils/constants.ts";
 
@@ -37,7 +37,10 @@ export default defineRoute<State>(
   async (_req, ctx) => {
     const { login } = ctx.params;
     const user = await getUser(login);
-    if (user === null) return await ctx.renderNotFound();
+
+    if (user === null) {
+      return await ctx.renderNotFound();
+    }
 
     const isLoggedIn = ctx.state.sessionUser !== undefined;
     const endpoint = `/api/users/${login}/questions`;
@@ -60,14 +63,16 @@ export default defineRoute<State>(
             />
           )}
         </Head>
-        <main class="flex-1 p-4 flex flex-col md:flex-row gap-8">
-          <div class="flex justify-center p-4">
-            <UserProfile {...user} />
+        <main>
+          <div>
+            <div class="flex justify-center p-4">
+              <UserProfile {...user} />
+            </div>
+            <QuestionsList
+              endpoint={endpoint}
+              isLoggedIn={isLoggedIn}
+            />
           </div>
-          <QuestionsList
-            endpoint={endpoint}
-            isLoggedIn={isLoggedIn}
-          />
         </main>
       </>
     );

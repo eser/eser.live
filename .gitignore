@@ -16,13 +16,21 @@ Thumbs.db
 .env.*.local
 
 # sensitive files
+*.key
 *.pem
 *.swp
 
-# coverage files
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binaries, coverage and testing tool outputs
 /test/coverage/
 /test/html_cov/
-# /cov_profile.lcov
+# /test/cov_profile.lcov
 
 # package managers
 node_modules/*
@@ -30,4 +38,4 @@ package-lock.json
 
 # temporary files
 _fresh/
-/backup.json
+/temp/

@@ -1,6 +1,6 @@
 // Copyright 2023-present the Deno authors. All rights reserved. MIT license.
 import { type Handlers } from "$fresh/server.ts";
-import { collectValues, listQuestions } from "@/pkg/main/utils/db.ts";
+import { listQuestions } from "@/pkg/main/utils/db.ts";
 import { getCursor } from "@/pkg/main/utils/http.ts";
 
 export const handler: Handlers = {
@@ -11,7 +11,12 @@ export const handler: Handlers = {
       limit: 10,
       reverse: true,
     });
-    const values = await collectValues(iter);
-    return Response.json({ values, cursor: iter.cursor });
+
+    const items = await Array.fromAsync(iter);
+
+    return Response.json({
+      items: items.map((x) => x.value),
+      cursor: iter.cursor,
+    });
   },
 };

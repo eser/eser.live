@@ -32,14 +32,15 @@ export interface TabsBarProps {
   links: {
     path: string;
     innerText: string;
+    isVisible: boolean;
   }[];
   currentPath: string;
 }
 
-export default function TabsBar(props: TabsBarProps) {
+export function TabsBar(props: TabsBarProps) {
   return (
     <div class="flex flex-row w-full mb-8">
-      {props.links.map((link) => (
+      {props.links.filter((link) => link.isVisible).map((link) => (
         <TabItem path={link.path} active={link.path === props.currentPath}>
           {link.innerText}
         </TabItem>

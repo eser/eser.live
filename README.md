@@ -65,23 +65,23 @@ Use the following commands to work with your local Deno KV database:
 
 - `deno task db:seed` - Populate the database with data from the
   [Hacker News API](https://github.com/HackerNews/API).
-- `deno task db:dump > backup.json` - Write all database entries to
-  `backup.json`.
-- `deno task db:restore backup.json` - Restore the database from `backup.json`.
+- `deno task db:dump > ./temp/backup.json` - Write all database entries to
+  `./temp/backup.json`.
+- `deno task db:restore ./temp/backup.json` - Restore the database from `./temp/backup.json`.
 - `deno task db:reset` - Reset the database. This is not recoverable.
 
 ## Customize and Extend
 
 ### Global Constants
 
-The [utils/constants.ts](utils/constants.ts) file includes global values used
-across various aspects of the codebase. Update these values according to your
-needs.
+The [./utils/constants.ts](./utils/constants.ts) file includes global values
+used across various aspects of the codebase. Update these values according to
+your needs.
 
 ### Create a Blog Post
 
-1. Create a `.md` file in the [/posts](/posts) with the filename as the slug of
-   the blog post URL. E.g. a file with path `/posts/hello-there.md` will have
+1. Create a `.md` file in the [./posts](./posts) with the filename as the slug
+   of the blog post URL. E.g. a file with path `/posts/hello-there.md` will have
    path `/blog/hello-there`.
 1. Write the
    [Front Matter](https://daily-dev-tips.com/posts/what-exactly-is-frontmatter/)
@@ -110,7 +110,7 @@ needs.
 1. Navigate to the URL of the newly created blog post. E.g.
    `http://localhost:8000/blog/hello-there`.
 
-See other examples of blog post files in [/posts](/posts).
+See other examples of blog post files in [./posts](./posts).
 
 ### Themes
 
@@ -120,9 +120,9 @@ SaaSKit comes with `primary` and `secondary` colors predefined within
 
 ### Cover Image
 
-To replace the cover image, replace the [/static/cover.png](/static/cover.png)
+To replace the cover image, replace the [./static/cover.png](./static/cover.png)
 file. If you'd like to change the filename, also be sure to change the
-`imageUrl` property in the [`<Head />`](/components/Head.tsx) component.
+`imageUrl` property in the [`<Head />`](./components/Head.tsx) component.
 
 ## Deploy to Production
 
@@ -197,7 +197,7 @@ Example 1:
 ```jsonc
 // https://hunt.deno.land/api/questions
 {
-  "values": [
+  "items": [
     {
       "id": "01HAY7A4ZD737BHJKXW20H59NH",
       "userLogin": "Deniswarui4",
@@ -227,7 +227,7 @@ Example 2 (using `cursor` field from page 1):
 ```jsonc
 // https://hunt.deno.land/api/questions?cursor=AjAxSDdUNTBBUkY0QzhEUjRXWjkyVDJZSFhZAA==
 {
-  "values": [
+  "items": [
     {
       "id": "01H777YG17VY8HANDHE84ZXKGW",
       "userLogin": "BrunoBernardino",
@@ -278,7 +278,7 @@ Example 1:
 ```jsonc
 // https://hunt.deno.land/api/users
 {
-  "values": [
+  "items": [
     {
       "login": "51chengxu",
       "sessionId": "9a6745a1-3a46-45c8-a265-c7469ff73678"
@@ -302,7 +302,7 @@ Example 2 (using `cursor` field from page 1):
 ```jsonc
 // https://hunt.deno.land/api/users?cursor=AkVob3ItZGV2ZWxvcGVyAA==
 {
-  "values": [
+  "items": [
     {
       "login": "EthanThatOneKid",
       "sessionId": "ae7425c1-7932-412a-9956-e456787d557f"

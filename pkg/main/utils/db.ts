@@ -11,25 +11,6 @@ if (
 }
 export const kv = await Deno.openKv(path);
 
-/**
- * Returns an array of values of a given {@linkcode Deno.KvListIterator} that's
- * been iterated over.
- *
- * @example
- * ```ts
- * import { collectValues, listQuestions, type Question } from "@/pkg/main/utils/db.ts";
- *
- * const questions = await collectValues<Question>(listQuestions());
- * questions[0].id; // Returns "01H9YD2RVCYTBVJEYEJEV5D1S1";
- * questions[0].userLogin; // Returns "snoop"
- * questions[0].question; // Returns "example-question"
- * questions[0].score; // Returns 420
- * ```
- */
-export async function collectValues<T>(iter: Deno.KvListIterator<T>) {
-  return await Array.fromAsync(iter, ({ value }) => value);
-}
-
 // Question
 export interface Question {
   // Uses ULID
@@ -124,8 +105,19 @@ export async function getQuestion(id: string) {
  * }
  * ```
  */
-export function listQuestions(options?: Deno.KvListOptions) {
-  return kv.list<Question>({ prefix: ["questions"] }, options);
+
+export type ListQuestionsProps = {
+  limit?: number;
+  cursor?: string;
+  reverse?: boolean;
+};
+
+export function listQuestions(options?: ListQuestionsProps) {
+  return kv.list<Question>({ prefix: ["questions"] }, {
+    limit: options?.limit,
+    cursor: options?.cursor,
+    reverse: options?.reverse,
+  });
 }
 
 /**
@@ -473,10 +465,10 @@ export async function getAreVotedByUser(
   questions: Question[],
   userLogin: string,
 ) {
-  const votedQuestions = await collectValues(
+  const votedQuestions = await Array.fromAsync(
     listQuestionsVotedByUser(userLogin),
   );
-  const votedQuestionsIds = votedQuestions.map((question) => question.id);
+  const votedQuestionsIds = votedQuestions.map((question) => question.value.id);
 
   return questions.map((question) => votedQuestionsIds.includes(question.id));
 }
