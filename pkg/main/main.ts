@@ -6,7 +6,7 @@
 /// <reference lib="deno.ns" />
 /// <reference lib="deno.unstable" />
 
-import fromAsync from "https://unpkg.com/array-from-async";
+import fromAsync from "./polyfills/array-from-async.js";
 if (Array.fromAsync === undefined) {
   Array.fromAsync = fromAsync;
 }
