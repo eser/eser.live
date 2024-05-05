@@ -67,7 +67,8 @@ Use the following commands to work with your local Deno KV database:
   [Hacker News API](https://github.com/HackerNews/API).
 - `deno task db:dump > ./temp/backup.json` - Write all database entries to
   `./temp/backup.json`.
-- `deno task db:restore ./temp/backup.json` - Restore the database from `./temp/backup.json`.
+- `deno task db:restore ./temp/backup.json` - Restore the database from
+  `./temp/backup.json`.
 - `deno task db:reset` - Reset the database. This is not recoverable.
 
 ## Customize and Extend
