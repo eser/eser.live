@@ -1,18 +1,6 @@
-// Copyright 2023-present the Deno authors. All rights reserved. MIT license.
+// Copyright 2024-present the Deno authors. All rights reserved. MIT license.
 
 import { createHandler, STATUS_CODE } from "$fresh/server.ts";
-import manifest from "@/pkg/main/fresh.gen.ts";
-import {
-  collectValues,
-  createQuestion,
-  createUser,
-  createVote,
-  getUser,
-  listQuestionsByUser,
-  type Question,
-  randomQuestion,
-  randomUser,
-} from "@/pkg/main/utils/db.ts";
 import {
   assert,
   assertArrayIncludes,
@@ -24,6 +12,17 @@ import {
 } from "std/assert/mod.ts";
 import { isRedirectStatus } from "std/http/status.ts";
 import { returnsNext, stub } from "std/testing/mock.ts";
+import manifest from "@/pkg/main/fresh.gen.ts";
+import {
+  createQuestion,
+  createUser,
+  createVote,
+  getUser,
+  listQuestionsByUser,
+  type Question,
+  randomQuestion,
+  randomUser,
+} from "@/pkg/main/services/db.ts";
 import options from "@/pkg/main/fresh.config.ts";
 import { _internals } from "@/pkg/main/plugins/kv-oauth.ts";
 
@@ -200,8 +199,8 @@ Deno.test("[e2e] GET /auth/logout", async () => {
   assertRedirect(resp, "/");
 });
 
-Deno.test("[e2e] GET /manage", async (test) => {
-  const url = "http://localhost/manage";
+Deno.test("[e2e] GET /dash", async (test) => {
+  const url = "http://localhost/dash";
 
   const user = randomUser();
   await createUser(user);
@@ -225,19 +224,19 @@ Deno.test("[e2e] GET /manage", async (test) => {
     assertRedirect(resp, "/auth/login");
   });
 
-  await test.step("redirects to `/manage/stats` when the session user is an editor", async () => {
+  await test.step("redirects to `/dash/stats/` when the session user is an editor", async () => {
     const resp = await handler(
       new Request(url, {
         headers: { cookie: "site-session=" + userEditor.sessionId },
       }),
     );
 
-    assertRedirect(resp, "/manage/stats");
+    assertRedirect(resp, "/dash/stats/");
   });
 });
 
-Deno.test("[e2e] GET /manage/stats", async (test) => {
-  const url = "http://localhost/manage/stats";
+Deno.test("[e2e] GET /dash/stats/", async (test) => {
+  const url = "http://localhost/dash/stats/";
 
   const user = randomUser();
   await createUser(user);
@@ -274,8 +273,8 @@ Deno.test("[e2e] GET /manage/stats", async (test) => {
   });
 });
 
-Deno.test("[e2e] GET /manage/users", async (test) => {
-  const url = "http://localhost/manage/users";
+Deno.test("[e2e] GET /dash/users/", async (test) => {
+  const url = "http://localhost/dash/users/";
 
   const user = randomUser();
   await createUser(user);
@@ -346,11 +345,11 @@ Deno.test("[e2e] GET /api/questions", async () => {
   await createQuestion(question2);
   const req = new Request("http://localhost/api/questions");
   const resp = await handler(req);
-  const { values } = await resp.json();
+  const { items } = await resp.json();
 
   assertEquals(resp.status, STATUS_CODE.OK);
   assertJson(resp);
-  assertArrayIncludes(values, [question1, question2]);
+  assertArrayIncludes(items, [question1, question2]);
 });
 
 Deno.test("[e2e] POST /qa/ask", async (test) => {
@@ -398,11 +397,11 @@ Deno.test("[e2e] POST /qa/ask", async (test) => {
         body,
       }),
     );
-    const questions = await collectValues(listQuestionsByUser(user.login));
+    const questions = await Array.fromAsync(listQuestionsByUser(user.login));
 
     assertRedirect(resp, "/qa");
     // Deep partial match since the question ID is a ULID generated at runtime
-    assertObjectMatch(questions[0], question);
+    assertObjectMatch(questions[0].value, question);
   });
 });
 
@@ -436,11 +435,11 @@ Deno.test("[e2e] GET /api/users", async () => {
   const req = new Request("http://localhost/api/users");
   const resp = await handler(req);
 
-  const { values } = await resp.json();
+  const { items } = await resp.json();
 
   assertEquals(resp.status, STATUS_CODE.OK);
   assertJson(resp);
-  assertArrayIncludes(values, [user1, user2]);
+  assertArrayIncludes(items, [user1, user2]);
 });
 
 Deno.test("[e2e] GET /api/users/[login]", async (test) => {
@@ -485,11 +484,11 @@ Deno.test("[e2e] GET /api/users/[login]/questions", async (test) => {
     await createUser(user);
     await createQuestion(question);
     const resp = await handler(req);
-    const { values } = await resp.json();
+    const { items } = await resp.json();
 
     assertEquals(resp.status, STATUS_CODE.OK);
     assertJson(resp);
-    assertArrayIncludes(values, [question]);
+    assertArrayIncludes(items, [question]);
   });
 });
 
@@ -547,8 +546,8 @@ Deno.test("[e2e] POST /api/questions/vote", async (test) => {
   });
 });
 
-Deno.test("[e2e] GET /account", async (test) => {
-  const url = "http://localhost/account";
+Deno.test("[e2e] GET /dash", async (test) => {
+  const url = "http://localhost/dash";
 
   await test.step("redirects to sign-in page if the session user is not logged in", async () => {
     const resp = await handler(new Request(url));

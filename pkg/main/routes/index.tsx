@@ -1,8 +1,8 @@
-// Copyright 2023-present the Deno authors. All rights reserved. MIT license.
+// Copyright 2024-present the Deno authors. All rights reserved. MIT license.
 import { defineRoute } from "$fresh/src/server/defines.ts";
 import { type State } from "@/pkg/main/plugins/session.ts";
-import Head from "@/pkg/main/components/head.tsx";
-import { type User } from "@/pkg/main/utils/db.ts";
+import { Head } from "@/pkg/main/routes/(common)/(_components)/head.tsx";
+import { type User } from "@/pkg/main/services/db.ts";
 
 interface WelcomeStripProps {
   /** Currently logged-in user */
@@ -13,42 +13,48 @@ function WelcomeStrip(props: WelcomeStripProps) {
   const isAuthenticated = props.sessionUser !== undefined;
 
   return (
-    <div class="bg-green-50 dark:bg-gray-900 dark:border dark:border-green-800 rounded-xl p-8 my-2">
-      <h1 class="text-2xl font-medium">
-        Merhaba {isAuthenticated ? props.sessionUser!.login : "oradaki"}!
-      </h1>
+    <div class="content-area">
+      <div class="hero justify-start">
+        <div class="hero-content p-0">
+          <div>
+            <h1>
+              Merhaba {isAuthenticated ? props.sessionUser!.login : "oradaki"}
+              {" "}
+              👋🏻
+            </h1>
 
-      {!isAuthenticated
-        ? (
-          <>
-            <p class="text-slate-600 dark:text-slate-400">
-              Bu site{" "}
-              <a href="https://www.youtube.com/@eserlive/live">
-                Eser Özvataf'ın kişisel YouTube kanalı{" "}
-                <span class="bg-green-100 dark:bg-gray-800 p-1 rounded">
-                  eser.live
-                </span>
-              </a>{" "}
-              ile ilgili etkileşimli içeriklerin paylaşıldığı bir platform
-              olarak tasarlanmıştır. Dilediğinde{" "}
-              <span class="bg-green-100 dark:bg-gray-800 p-1 rounded">
-                GitHub
-              </span>{" "}
-              hesabınla giriş yapabilir, ve site üzerinden katılım
-              gerçekleştirebilirsin.
-            </p>
-          </>
-        )
-        : null}
+            {!isAuthenticated
+              ? (
+                <p>
+                  Bu site{" "}
+                  <a href="https://www.youtube.com/@eserlive/live">
+                    Eser Özvataf'ın kişisel YouTube kanalı{" "}
+                    <span class="highlight">
+                      eser.live
+                    </span>
+                  </a>{" "}
+                  ile ilgili etkileşimli içeriklerin paylaşıldığı bir platform
+                  olarak tasarlanmıştır. Dilediğinde{" "}
+                  <span class="highlight">
+                    GitHub
+                  </span>{" "}
+                  hesabınla giriş yapabilir, ve site üzerinden katılım
+                  gerçekleştirebilirsin.
+                </p>
+              )
+              : null}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
 
 export function BroadcastSchedule() {
   return (
-    <div class="p-8">
-      <h2 class="text-xl font-medium">Planlı Yayın Takvimi</h2>
-      <p class="my-4">
+    <div class="content-area">
+      <h2>Planlı Yayın Takvimi</h2>
+      <p>
         <em>Şu anda planlı bir yayın bulunmamaktadır.</em>
       </p>
     </div>
@@ -59,7 +65,7 @@ export default defineRoute<State>((_req, ctx) => {
   return (
     <>
       <Head href={ctx.url.href} />
-      <main class="flex-1 flex flex-col justify-start p-4">
+      <main>
         <WelcomeStrip sessionUser={ctx.state?.sessionUser} />
         <BroadcastSchedule />
       </main>

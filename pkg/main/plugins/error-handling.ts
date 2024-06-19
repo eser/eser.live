@@ -1,12 +1,12 @@
-// Copyright 2023-present the Deno authors. All rights reserved. MIT license.
-import { Status, STATUS_TEXT } from "std/http/status.ts";
+// Copyright 2024-present the Deno authors. All rights reserved. MIT license.
+import { STATUS_CODE, STATUS_TEXT } from "std/http/status.ts";
 import { type Plugin } from "$fresh/server.ts";
 import { type State } from "@/pkg/main/plugins/session.ts";
+import { redirect } from "@/pkg/main/library/http/redirect.ts";
+import { BadRequestError } from "@/pkg/main/library/http/bad-request-error.ts";
 import {
-  BadRequestError,
-  redirect,
   UnauthorizedError,
-} from "@/pkg/main/utils/http.ts";
+} from "@/pkg/main/library/http/unauthorized-error.ts";
 
 /**
  * Returns the HTTP status code corresponding to a given runtime error. By
@@ -20,10 +20,19 @@ import {
  * ```
  */
 export function toErrorStatus(error: Error) {
-  if (error instanceof Deno.errors.NotFound) return Status.NotFound;
-  if (error instanceof UnauthorizedError) return Status.Unauthorized;
-  if (error instanceof BadRequestError) return Status.BadRequest;
-  return Status.InternalServerError;
+  if (error instanceof Deno.errors.NotFound) {
+    return STATUS_CODE.NotFound;
+  }
+
+  if (error instanceof UnauthorizedError) {
+    return STATUS_CODE.Unauthorized;
+  }
+
+  if (error instanceof BadRequestError) {
+    return STATUS_CODE.BadRequest;
+  }
+
+  return STATUS_CODE.InternalServerError;
 }
 
 export default {

@@ -1,0 +1,201 @@
+/* fonts */
+@import url("https://fonts.googleapis.com/css2?family=Bree+Serif&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fira+Sans+Condensed:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600;1,900&display=swap");
+
+.theme-variables-light {
+  --p: 96.24% 0.043 156.74;         /* primary */
+  --pc: 0% 0.037 257.28;         /* primary content */
+
+  --s: 69.71% 0.329 342.55;         /* secondary */
+  --sc: 98.71% 0.0106 342.55;       /* secondary content */
+
+  --a: 61.93% 0.171 35.15;          /* accent */
+  /* --ac:                             accent content */
+
+  --n: 32.18% 0.025 255.7;          /* neutral */
+  --nc: 89.5% 0.012 252.1;          /* neutral content */
+
+  --b1: 100% 0 0;                   /* base 100 */
+  --b2: 96.12% 0 0;                 /* base 200 */
+  --b3: 92.42% 0.001 197.14;        /* base 300 */
+  --bc: 36.84% 0.008 248.05;        /* base content */
+  /* --bc: 44.55% 0.037 257.28;        base content */
+
+  /* --in:                             info */
+  /* --inc:                            info content */
+
+  /* --su:                             success */
+  /* --suc:                            success content */
+
+  /* --wa:                             warning */
+  /* --wac:                            warning content */
+
+  --er: 56.08% 0.229 28.06;         /* error */
+  --erc: 100% 0 0;                  /* error content */
+
+  --li: 66.31% 0.008 253.3;         /* link */
+  --lih: 25.77% 0.005 248.03;       /* link hover */
+}
+
+.theme-variables-dark {
+  --p: 0% 0 156.74;                 /* primary */
+  --pc: 100% 0.037 257.28;          /* primary content */
+
+  --s: 74.8% 0.26 342.55;           /* secondary */
+  --sc: 98.71% 0.0106 342.55;       /* secondary content */
+
+  --a: 61.93% 0.171 35.15;          /* accent */
+  /* --ac:                             accent content */
+
+  --n: 31.38% 0.021 254.14;         /* neutral */
+  --nc: 74.65% 0.022 264.44;        /* neutral content */
+
+  --b1: 25.77% 0.005 248.03;        /* base 100 */
+  --b2: 23.26% 0.014 253.1;         /* base 200 */
+  --b3: 21.15% 0.012 254.09;        /* base 300 */
+  --bc: 91.35% 0.005 258.33;        /* base content */
+
+  /* --in:                             info */
+  /* --inc:                            info content */
+
+  /* --su:                             success */
+  /* --suc:                            success content */
+
+  /* --wa:                             warning */
+  /* --wac:                            warning content */
+
+  --er: 56.08% 0.229 28.06;         /* error */
+  --erc: 100% 0 0;                  /* error content */
+
+  --li: 66.31% 0.008 253.3;         /* link */
+  --lih: 91.35% 0.005 258.33;       /* link hover */
+}
+
+:root {
+  --var-font-family-heading: "Bree Serif", ui-serif, serif;
+  --var-font-family-body: "Fira Sans", ui-sans-serif, system-ui, sans-serif;
+  --var-font-family-body-condensed: "Fira Sans Condensed", ui-sans-serif, system-ui, sans-serif;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    @apply theme-variables-light;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    @apply theme-variables-dark;
+  }
+}
+
+.debug-border {
+  --linter-ignore-this-rule: true;
+}
+
+.color-transition {
+  @apply transition-colors duration-[400ms] ease-in-out;
+}
+
+.highlight {
+  @apply bg-primary text-primary-content p-1 rounded;
+}
+
+html.theme-default {
+  /* @apply leading-normal; */
+
+  &.theme-variant-light {
+    @apply theme-variables-light;
+  }
+
+  &.theme-variant-dark {
+    @apply theme-variables-dark;
+  }
+
+  body {
+    @apply flex flex-col text-base-content bg-base-100;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading;
+  }
+
+  abbr:where([title]) {
+    @apply underline decoration-dotted;
+  }
+
+  a:not(.btn) {
+    @apply text-inherit;
+  }
+
+  .dropdown a {
+    @apply no-underline;
+  }
+
+  main {
+    @apply flex-1;
+
+    & > .content-area {
+      @apply mx-auto max-w-5xl;
+    }
+  }
+
+  header {
+    .navbar {
+      @apply p-0;
+
+      .navbar-left {
+        @apply flex-1 justify-start p-0 m-0;
+
+        .btn,
+        .menu.menu-horizontal > li > a {
+          @apply bg-transparent;
+        }
+
+        a.title {
+          @apply text-accent text-2xl px-0 lg:px-8;
+        }
+
+        .menu.menu-horizontal {
+          @apply p-0 m-0;
+
+          a {
+            @apply border-0 border-t-2 border-solid border-transparent no-underline rounded-none text-base font-medium px-4 py-6;
+            @apply text-link color-transition;
+
+            &:hover {
+              @apply text-link-hover;
+            }
+
+            &[data-current],
+            &.include-ancestors[data-ancestor] {
+              @apply border-t-accent text-link-hover;
+            }
+          }
+        }
+      }
+
+      .navbar-right {
+        @apply flex-none justify-end pr-6 gap-4;
+      }
+    }
+  }
+}
+
+html.debug.theme-default {
+  header,
+  main > .content-area,
+  article,
+  aside,
+  nav,
+  section,
+  footer {
+    @apply debug-border;
+  }
+}

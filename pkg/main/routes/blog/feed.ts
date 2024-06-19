@@ -1,13 +1,13 @@
-// Copyright 2023-present the Deno authors. All rights reserved. MIT license.
+// Copyright 2024-present the Deno authors. All rights reserved. MIT license.
 import { Feed } from "feed";
-import { getPosts } from "@/pkg/main/utils/posts.ts";
 import {
   SITE_DESCRIPTION,
   SITE_LANG,
   SITE_NAME,
-} from "@/pkg/main/utils/constants.ts";
+} from "@/pkg/main/constants.ts";
 import { type State } from "@/pkg/main/plugins/session.ts";
 import { defineRoute } from "$fresh/server.ts";
+import { getPosts } from "@/pkg/main/services/posts.ts";
 
 const copyright = `Copyright ${new Date().getFullYear()} ${SITE_NAME}`;
 

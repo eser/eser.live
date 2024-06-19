@@ -1,8 +1,9 @@
 .git/
 .github/
 .vscode/
-cov/
+test/coverage/
 node_modules/
+temp/
 .editorconfig
 .gitattributes
 .gitignore

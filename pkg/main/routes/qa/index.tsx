@@ -1,8 +1,8 @@
-// Copyright 2023-present the Deno authors. All rights reserved. MIT license.
+// Copyright 2024-present the Deno authors. All rights reserved. MIT license.
 import { defineRoute } from "$fresh/server.ts";
 import { type State } from "@/pkg/main/plugins/session.ts";
-import Head from "@/pkg/main/components/head.tsx";
-import QuestionsList from "@/pkg/main/islands/questions-list.tsx";
+import { Head } from "@/pkg/main/routes/(common)/(_components)/head.tsx";
+import { QuestionsList } from "@/pkg/main/routes/(common)/(_islands)/questions-list.tsx";
 
 export default defineRoute<State>((_req, ctx) => {
   const isLoggedIn = ctx.state.sessionUser !== undefined;
@@ -27,12 +27,15 @@ export default defineRoute<State>((_req, ctx) => {
           />
         )}
       </Head>
-      <main class="flex-1 p-4">
-        <QuestionsList
-          endpoint={endpoint}
-          isLoggedIn={isLoggedIn}
-          isEditor={isEditor}
-        />
+      <main>
+        <div class="content-area">
+          <h1>Soru / Yanıt</h1>
+          <QuestionsList
+            endpoint={endpoint}
+            isLoggedIn={isLoggedIn}
+            isEditor={isEditor}
+          />
+        </div>
       </main>
     </>
   );

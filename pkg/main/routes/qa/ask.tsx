@@ -1,22 +1,18 @@
-// Copyright 2023-present the Deno authors. All rights reserved. MIT license.
-import { defineRoute, Handlers } from "$fresh/server.ts";
-import Head from "@/pkg/main/components/head.tsx";
-import {
-  assertLoggedIn,
-  type LoggedInState,
-  type State,
-} from "@/pkg/main/plugins/session.ts";
-import { HEADING_STYLES, INPUT_STYLES } from "@/pkg/main/utils/constants.ts";
-import { createQuestion } from "@/pkg/main/utils/db.ts";
-import { redirect } from "@/pkg/main/utils/http.ts";
+// Copyright 2024-present the Deno authors. All rights reserved. MIT license.
 import { ulid } from "std/ulid/mod.ts";
 import IconCheckCircle from "tabler_icons_tsx/circle-check.tsx";
 import IconCircleX from "tabler_icons_tsx/circle-x.tsx";
 import IconMailForward from "tabler_icons_tsx/mail-forward.tsx";
 import IconInfo from "tabler_icons_tsx/info-circle.tsx";
-
-const SEND_STYLES =
-  "flex flex-row gap-2 text-center text-white rounded-lg bg-secondary px-4 py-2";
+import { defineRoute, Handlers } from "$fresh/server.ts";
+import { Head } from "@/pkg/main/routes/(common)/(_components)/head.tsx";
+import {
+  assertLoggedIn,
+  type LoggedInState,
+  type State,
+} from "@/pkg/main/plugins/session.ts";
+import { createQuestion } from "@/pkg/main/services/db.ts";
+import { redirect } from "@/pkg/main/library/http/redirect.ts";
 
 export const handler: Handlers<undefined, LoggedInState> = {
   async POST(req, ctx) {
@@ -47,8 +43,8 @@ export default defineRoute<State>((_req, ctx) => {
     <>
       <Head title="Soru / Yanıt: Sor" href={ctx.url.href} />
       <main class="flex-1 flex flex-col justify-center mx-auto w-full space-y-16 p-4 max-w-6xl">
-        <div class="text-center">
-          <h1 class={HEADING_STYLES}>
+        <section class="text-center">
+          <h1 class="text-3xl font-bold">
             Soru sor
           </h1>
           <p class="text-slate-500">
@@ -61,24 +57,24 @@ export default defineRoute<State>((_req, ctx) => {
             </a>{" "}
             üzerinde onu yanıtlayalım.
           </p>
-        </div>
-        <div class="flex flex-col md:flex-row gap-8 md:gap-16 md:items-center">
+        </section>
+        <section class="flex flex-col md:flex-row gap-8 md:gap-16">
           <div class="flex-1 space-y-6">
-            <p>
+            <div class="flex">
               <IconCircleX class="inline-block mr-2" />
-              Daha önce sorulmuş bir soruyu tekrar <strong>sorma</strong>
-            </p>
-            <p>
+              Daha önce sorulmuş bir soruyu tekrar &nbsp;
+              <strong>sorma</strong>
+            </div>
+            <div class="flex">
               <IconCircleX class="inline-block mr-2" />
-              Deneme veya boş soru gönderimi <strong>yapma</strong>
-            </p>
-            <div>
+              Deneme veya boş soru gnderimi &nbsp;
+              <strong>yapma</strong>
+            </div>
+            <div class="flex">
               <IconCheckCircle class="inline-block mr-2" />
-              Mümkün olduğunca açık, anlaşılır ve kısa sorular{" "}
+              Mümkün olduğunca açık, anlaşılır ve kısa sorular &nbsp;
               <strong>sor</strong>
             </div>
-            <p>
-            </p>
           </div>
           <form
             class="flex-1 flex flex-col justify-center"
@@ -93,7 +89,7 @@ export default defineRoute<State>((_req, ctx) => {
               </label>
               <textarea
                 id="share_question"
-                class={`${INPUT_STYLES} w-full mt-2`}
+                class={`px-4 py-2 rounded rounded-lg outline-none border-1 border-gray-300 hover:border-black transition duration-100 disabled:opacity-50 disabled:cursor-not-allowed dark:hover:border-white w-full mt-2`}
                 rows={6}
                 name="question"
                 required={true}
@@ -113,20 +109,20 @@ export default defineRoute<State>((_req, ctx) => {
             <div class="my-10 flex flex-row gap-6 justify-center md:justify-end">
               {!ctx.state.sessionUser
                 ? (
-                  <a href="/auth/login" class={SEND_STYLES}>
+                  <a href="/auth/login" class="btn btn-warning">
                     <IconMailForward class="h-6 w-6" />
                     Soru göndermek için giriş yapın &#8250;
                   </a>
                 )
                 : (
-                  <button class={SEND_STYLES}>
+                  <button class="btn btn-primary">
                     <IconMailForward class="h-6 w-6" />
                     Soruyu gönder &#8250;
                   </button>
                 )}
             </div>
           </form>
-        </div>
+        </section>
       </main>
     </>
   );

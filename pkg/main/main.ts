@@ -1,4 +1,4 @@
-// Copyright 2023-present the Deno authors. All rights reserved. MIT license.
+// Copyright 2024-present the Deno authors. All rights reserved. MIT license.
 /// <reference no-default-lib="true" />
 /// <reference lib="dom" />
 /// <reference lib="dom.iterable" />
@@ -6,7 +6,7 @@
 /// <reference lib="deno.ns" />
 /// <reference lib="deno.unstable" />
 
-import fromAsync from "https://unpkg.com/array-from-async";
+import fromAsync from "../polyfills/array-from-async.js";
 if (Array.fromAsync === undefined) {
   Array.fromAsync = fromAsync;
 }

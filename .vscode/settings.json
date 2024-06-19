@@ -1,5 +1,5 @@
 {
-  "coverage-gutters.coverageBaseDir": "**/",
+  "coverage-gutters.coverageBaseDir": "./test/",
   "coverage-gutters.coverageFileNames": [
     "cov_profile.lcov"
   ],
@@ -9,6 +9,9 @@
   "deno.codeLens.test": true,
   "deno.enable": true,
   "deno.lint": true,
+  "css.customData": [
+    ".vscode/tailwind.json"
+  ],
   "typescript.suggest.autoImports": true,
   "typescript.suggest.completeFunctionCalls": true,
   "typescript.suggest.completeJSDocs": true,
@@ -32,7 +35,6 @@
   "deno.suggest.imports.autoDiscover": true,
   "deno.cacheOnSave": true,
   "deno.codeLens.implementations": true,
-  "editor.formatOnSave": true,
   "editor.defaultFormatter": "denoland.vscode-deno",
   "yaml.schemas": {
     "https://json.schemastore.org/github-workflow.json": "./.github/workflows/*.yml"
@@ -45,9 +47,6 @@
   },
   "[jsonc]": {
     "editor.defaultFormatter": "denoland.vscode-deno"
-  },
-  "[postcss]": {
-    "editor.defaultFormatter": "ronilaukkarinen.vscode-stylefmt"
   },
   "[javascriptreact]": {
     "editor.defaultFormatter": "denoland.vscode-deno"
@@ -63,5 +62,9 @@
   },
   "[markdown]": {
     "editor.defaultFormatter": "denoland.vscode-deno"
-  }
+  },
+  "[postcss]": {
+    "editor.defaultFormatter": "ronilaukkarinen.vscode-stylefmt"
+  },
+  "biome.enabled": false
 }

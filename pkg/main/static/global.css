@@ -1,0 +1,62 @@
+/* PART 1: primitives: modern-normalize + tailwind base */
+@import url("https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/2.0.0/modern-normalize.min.css");
+
+@tailwind base;
+
+/* PART 2: primitives: reset elements */
+@layer base {
+  html,
+  :host {
+    @apply antialiased font-body leading-normal;
+  }
+
+  body {
+    @apply min-h-screen m-0 leading-[inherit];
+    font-synthesis: none;
+  }
+
+  [role="button"] {
+    @apply cursor-pointer;
+  }
+
+  :disabled {
+    @apply cursor-default;
+  }
+
+  [hidden] {
+    @apply hidden;
+  }
+}
+
+/* PART 3: components */
+@tailwind components;
+
+/* PART 4: utilities */
+@tailwind utilities;
+
+@layer utilities {
+  .debug-border {
+    @apply border border-error border-double;
+  }
+
+  .font-heading {
+    font-family: var(--var-font-family-heading);
+  }
+
+  .font-body {
+    font-family: var(--var-font-family-body);
+    /* font-optical-sizing: auto; */
+  }
+
+  .font-condensed {
+    font-family: var(--var-font-family-body-condensed);
+    /* font-variation-settings: "wdth" 87.5; */
+  }
+
+  .debug .debuggable {
+    @apply debug-border;
+  }
+}
+
+/* PART 5: variants */
+@tailwind variants;

@@ -1,0 +1,29 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Deno Launch: API",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "deno",
+      "runtimeArgs": [
+        "task",
+        "api:dev"
+      ],
+      "outputCapture": "std"
+    },
+    {
+      "name": "Deno Launch: Web",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "deno",
+      "runtimeArgs": [
+        "task",
+        "web:dev"
+      ],
+      "outputCapture": "std"
+    }
+  ]
+}
