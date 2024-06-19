@@ -1,7 +1,7 @@
-// Copyright 2023-present the Deno authors. All rights reserved. MIT license.
-import { Head } from "@/pkg/main/components/head.tsx";
-import { TabsBar } from "@/pkg/main/components/tabs-bar.tsx";
-import { UsersTable } from "@/pkg/main/islands/users-table.tsx";
+// Copyright 2024-present the Deno authors. All rights reserved. MIT license.
+import { Head } from "@/pkg/main/routes/(common)/(_components)/head.tsx";
+import { TabsBar } from "@/pkg/main/routes/(common)/(_components)/tabs-bar.tsx";
+import { UsersTable } from "@/pkg/main/routes/(common)/(_islands)/users-table.tsx";
 import { type State } from "@/pkg/main/plugins/session.ts";
 import { defineRoute } from "$fresh/server.ts";
 import { Partial } from "$fresh/runtime.ts";
@@ -20,7 +20,7 @@ export default defineRoute<State>((_req, ctx) => {
         />
       </Head>
       <main>
-        <div>
+        <div class="content-area">
           <h1>Panel</h1>
           <TabsBar
             links={[
@@ -30,7 +30,7 @@ export default defineRoute<State>((_req, ctx) => {
                 isVisible: true,
               },
               {
-                path: "/dash/stats",
+                path: "/dash/stats/",
                 innerText: "İstatistikler",
                 isVisible: (ctx.state.isEditor === true),
               },

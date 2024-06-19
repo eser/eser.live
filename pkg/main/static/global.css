@@ -1,5 +1,5 @@
 /* PART 1: primitives: modern-normalize + tailwind base */
-@import url("//cdnjs.cloudflare.com/ajax/libs/modern-normalize/2.0.0/modern-normalize.min.css");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/2.0.0/modern-normalize.min.css");
 
 @tailwind base;
 
@@ -12,6 +12,7 @@
 
   body {
     @apply min-h-screen m-0 leading-[inherit];
+    font-synthesis: none;
   }
 
   [role="button"] {
@@ -35,7 +36,7 @@
 
 @layer utilities {
   .debug-border {
-    @apply border border-red-500 border-double;
+    @apply border border-error border-double;
   }
 
   .font-heading {

@@ -1,12 +1,11 @@
-// Copyright 2023-present the Deno authors. All rights reserved. MIT license.
+// Copyright 2024-present the Deno authors. All rights reserved. MIT license.
 import IconBrandGithub from "tabler_icons_tsx/brand-github-filled.tsx";
 import { defineRoute } from "$fresh/server.ts";
 import { type State } from "@/pkg/main/plugins/session.ts";
-import { Head } from "@/pkg/main/components/head.tsx";
-import { GitHubAvatarImg } from "@/pkg/main/components/github-avatar-img.tsx";
-import { QuestionsList } from "@/pkg/main/islands/questions-list.tsx";
-import { getUser } from "@/pkg/main/utils/db.ts";
-import { LINK_STYLES } from "@/pkg/main/utils/constants.ts";
+import { Head } from "@/pkg/main/routes/(common)/(_components)/head.tsx";
+import { GitHubAvatarImg } from "@/pkg/main/routes/(common)/(_components)/github-avatar-img.tsx";
+import { QuestionsList } from "@/pkg/main/routes/(common)/(_islands)/questions-list.tsx";
+import { getUser } from "@/pkg/main/services/db.ts";
 
 interface UserProfileProps {
   login: string;
@@ -23,7 +22,7 @@ function UserProfile(props: UserProfileProps) {
         <a
           href={`https://github.com/${props.login}`}
           aria-label={`${props.login}'s GitHub profile`}
-          class={LINK_STYLES}
+          class="text-slate-500 transition duration-100 hover:text-black hover:dark:text-white"
           target="_blank"
         >
           <IconBrandGithub class="w-6" />
@@ -64,7 +63,7 @@ export default defineRoute<State>(
           )}
         </Head>
         <main>
-          <div>
+          <div class="content-area">
             <div class="flex justify-center p-4">
               <UserProfile {...user} />
             </div>

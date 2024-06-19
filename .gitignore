@@ -20,13 +20,6 @@ Thumbs.db
 *.pem
 *.swp
 
-# Binaries for programs and plugins
-*.exe
-*.exe~
-*.dll
-*.so
-*.dylib
-
 # Test binaries, coverage and testing tool outputs
 /test/coverage/
 /test/html_cov/
@@ -37,5 +30,8 @@ node_modules/*
 package-lock.json
 
 # temporary files
-_fresh/
 /temp/
+/pkg/old-*
+
+# Fresh build directory
+_fresh/

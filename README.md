@@ -75,15 +75,14 @@ Use the following commands to work with your local Deno KV database:
 
 ### Global Constants
 
-The [./utils/constants.ts](./utils/constants.ts) file includes global values
-used across various aspects of the codebase. Update these values according to
-your needs.
+The [./constants.ts](./constants.ts) file includes global values used across
+various aspects of the codebase. Update these values according to your needs.
 
 ### Create a Blog Post
 
-1. Create a `.md` file in the [./posts](./posts) with the filename as the slug
-   of the blog post URL. E.g. a file with path `/posts/hello-there.md` will have
-   path `/blog/hello-there`.
+1. Create a `.md` file in the [./content/posts](./content/posts) with the
+   filename as the slug of the blog post URL. E.g. a file with path
+   `/content/posts/hello-there.md` will have path `/blog/hello-there`.
 1. Write the
    [Front Matter](https://daily-dev-tips.com/posts/what-exactly-is-frontmatter/)
    then [Markdown](https://www.markdownguide.org/cheat-sheet/) text to define
@@ -111,7 +110,7 @@ your needs.
 1. Navigate to the URL of the newly created blog post. E.g.
    `http://localhost:8000/blog/hello-there`.
 
-See other examples of blog post files in [./posts](./posts).
+See other examples of blog post files in [./content/posts](./content/posts).
 
 ### Themes
 

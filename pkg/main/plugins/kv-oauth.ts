@@ -1,4 +1,4 @@
-// Copyright 2023-present the Deno authors. All rights reserved. MIT license.
+// Copyright 2024-present the Deno authors. All rights reserved. MIT license.
 import { type Plugin } from "$fresh/server.ts";
 import {
   createGitHubOAuthConfig,
@@ -11,8 +11,8 @@ import {
   getUser,
   updateUserSession,
   type User,
-} from "@/pkg/main/utils/db.ts";
-import { getGitHubUser } from "@/pkg/main/utils/github.ts";
+} from "@/pkg/main/services/db.ts";
+import { getGitHubUser } from "@/pkg/main/services/github.ts";
 
 // Exported for mocking and spying in e2e tests
 export const _internals = { handleCallback };

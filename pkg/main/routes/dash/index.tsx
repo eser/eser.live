@@ -1,33 +1,27 @@
-// Copyright 2023-present the Deno authors. All rights reserved. MIT license.
+// Copyright 2024-present the Deno authors. All rights reserved. MIT license.
 import { defineRoute } from "$fresh/server.ts";
-import { type LoggedInState } from "@/pkg/main/plugins/session.ts";
-import { Head } from "@/pkg/main/components/head.tsx";
-import { TabsBar } from "@/pkg/main/components/tabs-bar.tsx";
-import { GitHubAvatarImg } from "@/pkg/main/components/github-avatar-img.tsx";
 import { Partial } from "$fresh/runtime.ts";
-
-const PRIMARY_BUTTON_STYLE =
-  "flex flex-row gap-2 text-center text-white rounded-lg bg-primary px-4 py-2";
-
-const SECONDARY_BUTTON_STYLE =
-  "flex flex-row gap-2 text-center text-white rounded-lg bg-secondary px-4 py-2";
+import { type LoggedInState } from "@/pkg/main/plugins/session.ts";
+import { Head } from "@/pkg/main/routes/(common)/(_components)/head.tsx";
+import { TabsBar } from "@/pkg/main/routes/(common)/(_components)/tabs-bar.tsx";
+import { GitHubAvatarImg } from "@/pkg/main/routes/(common)/(_components)/github-avatar-img.tsx";
 
 export default defineRoute<LoggedInState>((_req, ctx) => {
   return (
     <>
       <Head title="Hesap" href={ctx.url.href} />
       <main>
-        <div>
+        <div class="content-area">
           <h1>Panel</h1>
           <TabsBar
             links={[
               {
-                path: "/dash",
+                path: "/dash/",
                 innerText: "Hesabım",
                 isVisible: true,
               },
               {
-                path: "/dash/stats",
+                path: "/dash/stats/",
                 innerText: "İstatistikler",
                 isVisible: (ctx.state.isEditor === true),
               },
@@ -59,14 +53,14 @@ export default defineRoute<LoggedInState>((_req, ctx) => {
               <div class="my-10 flex flex-row gap-6 justify-center">
                 <a
                   href="/auth/logout?success_url=/"
-                  class={PRIMARY_BUTTON_STYLE}
+                  class="btn btn-neutral"
                 >
                   Oturumu sonlandır
                 </a>
 
                 <a
                   href={`/dash/users/${ctx.state.sessionUser.login}`}
-                  class={SECONDARY_BUTTON_STYLE}
+                  class="btn btn-neutral"
                 >
                   Profilime git &#8250;
                 </a>

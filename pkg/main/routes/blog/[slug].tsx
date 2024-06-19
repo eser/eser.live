@@ -1,11 +1,11 @@
-// Copyright 2023-present the Deno authors. All rights reserved. MIT license.
+// Copyright 2024-present the Deno authors. All rights reserved. MIT license.
 import { defineRoute } from "$fresh/server.ts";
 import { CSS, render } from "$gfm";
 import { type State } from "@/pkg/main/plugins/session.ts";
-import { getPost } from "@/pkg/main/utils/posts.ts";
-import { Head } from "@/pkg/main/components/head.tsx";
-import { Share } from "@/pkg/main/islands/share.tsx";
-import { SITE_LOCALE } from "@/pkg/main/utils/constants.ts";
+import { Head } from "@/pkg/main/routes/(common)/(_components)/head.tsx";
+import { Share } from "@/pkg/main/routes/(common)/(_islands)/share.tsx";
+import { SITE_LOCALE } from "@/pkg/main/constants.ts";
+import { getPost } from "@/pkg/main/services/posts.ts";
 
 export default defineRoute<State>(async (_req, ctx) => {
   const post = await getPost(ctx.params.slug);
@@ -20,7 +20,7 @@ export default defineRoute<State>(async (_req, ctx) => {
         <style dangerouslySetInnerHTML={{ __html: CSS }} />
       </Head>
       <main>
-        <div>
+        <div class="content-area">
           <h1>{post.title}</h1>
           {post.publishedAt.toString() !== "Invalid Date" && (
             <time

@@ -1,16 +1,24 @@
-// Copyright 2023-present the Deno authors. All rights reserved. MIT license.
+// Copyright 2024-present the Deno authors. All rights reserved. MIT license.
 import { type FreshContext, Plugin } from "$fresh/server.ts";
 import { getSessionId } from "kv_oauth/mod.ts";
-import { getUserBySession, type User } from "@/pkg/main/utils/db.ts";
-import { UnauthorizedError } from "@/pkg/main/utils/http.ts";
+import { getUserBySession, type User } from "@/pkg/main/services/db.ts";
+import { UnauthorizedError } from "@/pkg/main/library/http/unauthorized-error.ts";
 
 export interface State {
   sessionUser?: User;
   isEditor?: boolean;
+  lang?: string;
   [K: string]: unknown;
 }
 
 export type LoggedInState = Required<State>;
+
+export const stateDefaults: State = {
+  sessionUser: undefined,
+  isEditor: false,
+  theme: "default",
+  lang: "tr",
+};
 
 export function getEnv(key: string, defaultValue?: string): string {
   const value = Deno.env.get(key);
@@ -51,8 +59,9 @@ async function setSessionState(
   }
 
   // Initial state
-  ctx.state.sessionUser = undefined;
-  ctx.state.isEditor = false;
+  for (const [key, value] of Object.entries(stateDefaults)) {
+    ctx.state[key] = value;
+  }
 
   const sessionId = await getSessionId(req);
   if (sessionId === undefined) {

@@ -1,17 +1,6 @@
-// Copyright 2023-present the Deno authors. All rights reserved. MIT license.
+// Copyright 2024-present the Deno authors. All rights reserved. MIT license.
 
 import { createHandler, STATUS_CODE } from "$fresh/server.ts";
-import manifest from "@/pkg/main/fresh.gen.ts";
-import {
-  createQuestion,
-  createUser,
-  createVote,
-  getUser,
-  listQuestionsByUser,
-  type Question,
-  randomQuestion,
-  randomUser,
-} from "@/pkg/main/utils/db.ts";
 import {
   assert,
   assertArrayIncludes,
@@ -23,6 +12,17 @@ import {
 } from "std/assert/mod.ts";
 import { isRedirectStatus } from "std/http/status.ts";
 import { returnsNext, stub } from "std/testing/mock.ts";
+import manifest from "@/pkg/main/fresh.gen.ts";
+import {
+  createQuestion,
+  createUser,
+  createVote,
+  getUser,
+  listQuestionsByUser,
+  type Question,
+  randomQuestion,
+  randomUser,
+} from "@/pkg/main/services/db.ts";
 import options from "@/pkg/main/fresh.config.ts";
 import { _internals } from "@/pkg/main/plugins/kv-oauth.ts";
 
@@ -224,19 +224,19 @@ Deno.test("[e2e] GET /dash", async (test) => {
     assertRedirect(resp, "/auth/login");
   });
 
-  await test.step("redirects to `/dash/stats` when the session user is an editor", async () => {
+  await test.step("redirects to `/dash/stats/` when the session user is an editor", async () => {
     const resp = await handler(
       new Request(url, {
         headers: { cookie: "site-session=" + userEditor.sessionId },
       }),
     );
 
-    assertRedirect(resp, "/dash/stats");
+    assertRedirect(resp, "/dash/stats/");
   });
 });
 
-Deno.test("[e2e] GET /dash/stats", async (test) => {
-  const url = "http://localhost/dash/stats";
+Deno.test("[e2e] GET /dash/stats/", async (test) => {
+  const url = "http://localhost/dash/stats/";
 
   const user = randomUser();
   await createUser(user);
