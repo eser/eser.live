@@ -55,9 +55,10 @@
     "daisyui": "npm:daisyui"
   },
   "exclude": [
-    "cov/",
+    "test/coverage/",
     "_fresh/",
-    "**/_fresh/*"
+    "**/_fresh/*",
+    "pkg/old-*"
   ],
   "lint": {
     "rules": {
