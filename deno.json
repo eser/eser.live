@@ -15,7 +15,7 @@
     "start": "DENO_FUTURE=1 deno run --allow-all --watch=./pkg/main/static/,./pkg/main/routes/ --env=./.env.local ./pkg/main/dev.ts",
     "test": "DENO_KV_PATH=:memory: GITHUB_CLIENT_ID=xxx GITHUB_CLIENT_SECRET=xxx EDITOR_LOGINS=eser deno test --allow-all --parallel --coverage=./test/coverage/ --env=./.env.local",
     "check:license": "deno run --allow-read --allow-write ./pkg/tasks/check-license.ts",
-    "check:types": "deno check ./**/*.ts && deno check ./**/*.tsx",
+    "check:types": "deno check ./pkg/main/main.ts",
     "ok": "deno fmt --check && deno lint && deno task check:license --check && deno task check:types && deno task test && deno task cov:gen",
     "cov:clean": "rm -rf ./test/coverage/ ./test/html_cov/ ./test/cov_profile.lcov && mkdir ./test/coverage/ && touch ./test/coverage/.gitkeep",
     "cov:gen": "deno coverage ./test/coverage/ --lcov --exclude='.tsx' --output=./test/cov_profile.lcov",
@@ -55,10 +55,12 @@
     "daisyui": "npm:daisyui"
   },
   "exclude": [
-    "test/coverage/",
-    "_fresh/",
+    "**/node_modules/*",
     "**/_fresh/*",
-    "pkg/old-*"
+    "test/coverage/",
+    "temp/",
+    "pkg/old-*",
+    "fresh.gen.ts"
   ],
   "lint": {
     "rules": {

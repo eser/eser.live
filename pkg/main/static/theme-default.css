@@ -123,7 +123,8 @@ html.theme-default {
   h4,
   h5,
   h6 {
-    @apply font-heading;
+    /* @apply font-heading; */
+    font-family: var(--var-font-family-heading);
   }
 
   abbr:where([title]) {

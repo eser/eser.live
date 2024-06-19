@@ -6,14 +6,18 @@ import { walk } from "std/fs/walk.ts";
 const EXTENSIONS = [".ts", ".tsx"];
 const EXCLUDED_PATTERNS = [
   /node_modules\/*$/,
-  /data\/*$/,
+  /_fresh\/*$/,
+  /test\/coverage\/*$/,
+  /content\/*$/,
+  /temp\/*$/,
   /static\/*$/,
+  /pkg\/old\-/,
   /fresh.gen.ts/,
 ];
 
 const ROOT = new URL("../../", import.meta.url);
 const CHECK = Deno.args.includes("--check");
-const BASE_YEAR = "2023";
+const BASE_YEAR = "2024";
 // const CURRENT_YEAR = new Date().getFullYear();
 const RX_COPYRIGHT = new RegExp(
   `// Copyright ([0-9]{4})-present the Deno authors\\. All rights reserved\\. MIT license\\.\n`,
