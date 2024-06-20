@@ -12,6 +12,7 @@ Thumbs.db
 .idea/*
 
 # local API keys and secrets
+.env
 .env.local
 .env.*.local
 

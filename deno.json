@@ -7,11 +7,11 @@
     "temporal"
   ],
   "tasks": {
-    "db:dump": "deno run --allow-read --allow-env --env=./.env.local ./pkg/tasks/db-dump.ts",
-    "db:restore": "deno run --allow-read --allow-env --env=./.env.local ./pkg/tasks/db-restore.ts",
+    "db:dump": "deno run --allow-read --allow-env --allow-net --env=./.env.local ./pkg/tasks/db-dump.ts",
+    "db:restore": "deno run --allow-read --allow-env --allow-net --env=./.env.local ./pkg/tasks/db-restore.ts",
     "db:seed": "deno run --allow-read --allow-env --allow-net --env=./.env.local ./pkg/tasks/db-seed.ts",
     "db:migrate": "deno run --allow-read --allow-env --allow-net --env=./.env.local ./pkg/tasks/db-migrate.ts",
-    "db:reset": "deno run --allow-read --allow-env --env=./.env.local ./pkg/tasks/db-reset.ts",
+    "db:reset": "deno run --allow-read --allow-env --allow-net --env=./.env.local ./pkg/tasks/db-reset.ts",
     "start": "DENO_FUTURE=1 deno run --allow-all --watch=./pkg/main/static/,./pkg/main/routes/ --env=./.env.local ./pkg/main/dev.ts",
     "test": "DENO_KV_PATH=:memory: GITHUB_CLIENT_ID=xxx GITHUB_CLIENT_SECRET=xxx EDITOR_LOGINS=eser deno test --allow-all --parallel --coverage=./test/coverage/ --env=./.env.local",
     "check:license": "deno run --allow-read --allow-write ./pkg/tasks/check-license.ts",

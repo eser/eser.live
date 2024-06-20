@@ -1,10 +1,21 @@
 # eser.live web site
 
-[![Discord Chat](https://img.shields.io/discord/684898665143206084?logo=discord&style=social)](https://discord.gg/ckS4huSvEk)
-[![CI](https://github.com/eser/eser.live/actions/workflows/ci.yml/badge.svg)](https://github.com/eser/eser.live/actions/workflows/ci.yml)
-[![codecov](https://codecov.io/gh/eser/eser.live/branch/main/graph/badge.svg?token=77F8TYTP13)](https://codecov.io/gh/eser/eser.live)
+[![discord chat][discord-image]][discord-url] [![build][build-image]][build-url]
+[![test coverage][coverage-image]][coverage-url]
+[![license][license-image]][license-url]
 
-## Features
+## Project Description
+
+This codebase contains all the necessary code to operate the
+[eser.live](https://eser.live/) website. Since there's no hidden parts
+-excluding some API keys- and it's completely open-source, it simply allows you
+to modify it or run your own website by following the instructions below.
+
+Additionally, this repository serves as a template for a full-stack web
+application built with [Deno Fresh](https://fresh.deno.dev/) and
+[Tailwind CSS](https://tailwindcss.com/).
+
+## Components
 
 - Deno's built-in [formatter](https://deno.land/manual/tools/formatter),
   [linter](https://deno.land/manual/tools/linter) and
@@ -13,12 +24,8 @@
 - In-built data persistence with [Deno KV](https://deno.com/kv)
 - High-level OAuth with [Deno KV OAuth](https://deno.land/x/deno_kv_oauth)
 - Modern CSS framework with [Tailwind CSS](https://tailwindcss.com/)
-- Responsive, SaaS-oriented design
-- Dashboard with users view and statistics chart
-- First-class web performance
-- [REST API](#rest-api-reference)
-- Blog with RSS feed and social sharing icons
-- HTTP security headers
+- UI components with [Daisy UI](https://daisyui.com/)
+- Pre-commit hooks with [pre-commit](https://pre-commit.com/)
 
 ## Get Started
 
@@ -34,10 +41,17 @@ To get started:
 
 1. Clone this repo:
    ```bash
-   git clone https://github.com/denoland/saaskit.git
-   cd saaskit
+   git clone https://github.com/eser/eser.live.git
+   cd eser.live
    ```
-1. Create a new `.env` file.
+1. Create a new `.env` file:
+   ```
+   DENO_KV_PATH=:memory:
+   DENO_KV_ACCESS_TOKEN=
+   GITHUB_CLIENT_ID=
+   GITHUB_CLIENT_SECRET=
+   EDITOR_LOGINS=
+   ```
 1. Navigate to GitHub's
    [**New OAuth Application** page](https://github.com/settings/applications/new).
 1. Set **Application name** to your desired application name. E.g. `ACME, Inc`.
@@ -57,7 +71,7 @@ To get started:
    ```bash
    deno task start
    ```
-1. Navigate to `http://localhost:8000` to start playing with your new SaaS app.
+1. Navigate to `http://localhost:8000` to start playing with the app.
 
 ### Bootstrap the Database (Optional)
 
@@ -75,14 +89,16 @@ Use the following commands to work with your local Deno KV database:
 
 ### Global Constants
 
-The [./constants.ts](./constants.ts) file includes global values used across
-various aspects of the codebase. Update these values according to your needs.
+The [./pkg/main/constants.ts](./pkg/main/constants.ts) file includes global
+values used across various aspects of the codebase. Update these values
+according to your needs.
 
 ### Create a Blog Post
 
 1. Create a `.md` file in the [./content/posts](./content/posts) with the
    filename as the slug of the blog post URL. E.g. a file with path
-   `/content/posts/hello-there.md` will have path `/blog/hello-there`.
+   `/content/posts/20240620-hello-there.md` will have path
+   `/blog/20240620-hello-there`.
 1. Write the
    [Front Matter](https://daily-dev-tips.com/posts/what-exactly-is-frontmatter/)
    then [Markdown](https://www.markdownguide.org/cheat-sheet/) text to define
@@ -91,7 +107,7 @@ various aspects of the codebase. Update these values according to your needs.
    ````md
    ---
    title: This is my first blog post!
-   publishedAt: 2022-11-04T15:00:00.000Z
+   publishedAt: 2024-06-20T15:00:00.000Z
    summary: This is an excerpt of my first blog post.
    ---
 
@@ -108,21 +124,16 @@ various aspects of the codebase. Update these values according to your needs.
    deno task start
    ```
 1. Navigate to the URL of the newly created blog post. E.g.
-   `http://localhost:8000/blog/hello-there`.
+   `http://localhost:8000/blog/20240620-hello-there`.
 
 See other examples of blog post files in [./content/posts](./content/posts).
 
-### Themes
+### Stylesheets
 
-You can customize theme options such as spacing, color, etc. By default, Deno
-SaaSKit comes with `primary` and `secondary` colors predefined within
-`tailwind.config.ts`. Change these values to match your desired color scheme.
-
-### Cover Image
-
-To replace the cover image, replace the [./static/cover.png](./static/cover.png)
-file. If you'd like to change the filename, also be sure to change the
-`imageUrl` property in the [`<Head />`](./components/Head.tsx) component.
+You can create and customize styles within the capabilities of
+[Tailwind CSS](https://tailwindcss.com/) and [Daisy UI](https://daisyui.com/).
+Tailwind configuration can be found at
+[./pkg/main/tailwind.config.ts](./pkg/main/tailwind.config.ts).
 
 ## Deploy to Production
 
@@ -131,16 +142,15 @@ This section assumes that a
 
 1. Navigate to your
    [GitHub OAuth application settings page](https://github.com/settings/developers).
-1. Set the **Homepage URL** to your production URL. E.g.
-   `https://hunt.deno.land`.
+1. Set the **Homepage URL** to your production URL. E.g. `https://eser.live`.
 1. Set the **Authorization callback URL** to your production URL with the
-   `/auth/callback` path. E.g. `https://hunt.deno.land/auth/callback`.
+   `/auth/callback` path. E.g. `https://eser.live/auth/callback`.
 1. Copy all the environment variables in your `.env` file to your production
    environment.
 
 ### Deploy to [Deno Deploy](https://deno.com/deploy)
 
-1. Clone this repository for your SaaSKit project.
+1. Clone this repository.
 1. Sign into [Deno Deploy](https://dash.deno.com) with your GitHub account.
 1. Select your GitHub organization or user, repository, and branch.
 1. Select **Automatic** deployment mode and `main.ts` as the entry point.
@@ -356,10 +366,14 @@ apply, such as:
 
 ## Community and Resources
 
-Join [the `#saaskit` channel in Deno's Discord](https://discord.gg/deno) to meet
-other SaaSKit developers, ask questions, and get unblocked.
+Join [the `#lobi` channel in eser.live Discord][discord-url] to ask questions,
+and get unblocked.
 
-Here's a list of articles, how to guides, and videos about SaaSKit:
-
-- [Announcing Deno SaaSKit](https://deno.com/blog/announcing-deno-saaskit)
-- [Getting Started with SaaSKit (video walkthrough)](https://www.youtube.com/watch?v=1GYs3NbVCfE)
+[discord-image]: https://img.shields.io/discord/684898665143206084?logo=discord&style=social
+[discord-url]: https://discord.gg/ckS4huSvEk
+[build-image]: https://github.com/eser/eser.live/actions/workflows/ci-cd.yml/badge.svg
+[build-url]: https://github.com/eser/eser.live/actions/workflows/ci-cd.yml
+[coverage-image]: https://codecov.io/gh/eser/eser.live/branch/main/graph/badge.svg?token=77F8TYTP13
+[coverage-url]: https://codecov.io/gh/eser/eser.live
+[license-image]: https://img.shields.io/github/license/eser/eser.live.svg?style=flat-square
+[license-url]: https://github.com/eser/eser.live/blob/main/LICENSE
