@@ -286,11 +286,11 @@ Example:
 
 ## Acknowledgement, Goals and Philosophy
 
-This project is a fork of [Deno SaaSKit](https://github.com/denoland/saaskit),
+This codebase is a fork of [Deno SaaSKit](https://github.com/denoland/saaskit),
 we would like to thank the contributors and maintainers of the original project.
 
-This project maintains the same philosophy and goals of the original project,
-but with some modifications to fit the needs of the eser.live and the community
+Our project maintains the same philosophy and goals of the original project, but
+with some modifications to fit the needs of the eser.live and the community
 around us.
 
 For the user, the website should be fast, secure and have a design with clear
@@ -313,6 +313,7 @@ apply, such as:
 ### Requirements
 
 - Deno 1.44 or higher (https://deno.land/)
+- pre-commit (https://pre-commit.com/)
 
 ### Versioning
 
