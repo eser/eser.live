@@ -205,60 +205,31 @@ for pagination. Limited to 10 questions per page.
 Example 1:
 
 ```jsonc
-// https://hunt.deno.land/api/questions
+// https://eser.live/api/questions
 {
   "items": [
+    // 9 more items...
     {
-      "id": "01HAY7A4ZD737BHJKXW20H59NH",
-      "userLogin": "Deniswarui4",
-      "question": "czxdczs",
-      "score": 0
-    },
-    {
-      "id": "01HAD9KYMCC5RS2FNPQBMYFRSK",
-      "userLogin": "jlucaso1",
-      "question": "Ok",
-      "score": 0
-    },
-    {
-      "id": "01HA7YJJ2T66MSEP78NAG8910A",
-      "userLogin": "BrunoBernardino",
-      "question": "LockDB: Handle process/event locking",
-      "score": 2
+      "id": "01HRRK8DNTDEX83265MX9G2MHD",
+      "userLogin": "eser",
+      "question": "Test sorusu",
+      "score": 1,
+      "hidden": false
     }
-    // 7 more items...
   ],
-  "cursor": "AjAxSDdUNTBBUkY0QzhEUjRXWjkyVDJZSFhZAA=="
+  "cursor": "01HRRK8DNTDEX83265MX9G2MHD"
 }
 ```
 
 Example 2 (using `cursor` field from page 1):
 
 ```jsonc
-// https://hunt.deno.land/api/questions?cursor=AjAxSDdUNTBBUkY0QzhEUjRXWjkyVDJZSFhZAA==
+// https://eser.live/api/questions?cursor=01HRRK8DNTDEX83265MX9G2MHD
 {
   "items": [
-    {
-      "id": "01H777YG17VY8HANDHE84ZXKGW",
-      "userLogin": "BrunoBernardino",
-      "question": "Ask Soph about a dead philosopher",
-      "score": 2
-    },
-    {
-      "id": "01H6RG2V3AV82FJA2VY6NJD9EP",
-      "userLogin": "retraigo",
-      "question": "Appraisal: Feature Extraction, Feature Conversion in TypeScript",
-      "score": 0
-    },
-    {
-      "id": "01H64TZ3TNKFWS35MJ9PSGNWE1",
-      "userLogin": "lambtron",
-      "question": "How Deno works (blog post)",
-      "score": 2
-    }
     // 7 more items...
   ],
-  "cursor": "AjAxSDJUSlBYWUJRM1g0OEo2UlIzSFgyQUQ0AA=="
+  "cursor": ""
 }
 ```
 
@@ -269,12 +240,13 @@ Get the question with the given ID.
 Example:
 
 ```jsonc
-// https://hunt.deno.land/api/questions/01H5379J1VZ7EB54KSCSQSCRJC
+// https://eser.live/api/questions/01HRRK8DNTDEX83265MX9G2MHD
 {
-  "id": "01H5379J1VZ7EB54KSCSQSCRJC",
-  "userLogin": "lambtron",
-  "question": "saaskit-danet: a modern SaaS template built for Fresh for SSR and Danet for the API",
-  "score": 10
+  "id": "01HRRK8DNTDEX83265MX9G2MHD",
+  "userLogin": "eser",
+  "question": "Test sorusu",
+  "score": 1,
+  "hidden": false
 }
 ```
 
@@ -283,51 +255,18 @@ Example:
 Get all users in alphabetical order by GitHub login. Add `?cursor=<cursor>` URL
 parameter for pagination. Limited to 10 users per page.
 
-Example 1:
+Example:
 
 ```jsonc
-// https://hunt.deno.land/api/users
+// https://eser.live/api/users
 {
   "items": [
     {
-      "login": "51chengxu",
-      "sessionId": "9a6745a1-3a46-45c8-a265-c7469ff73678"
-    },
-    {
-      "login": "AiridasSal",
-      "sessionId": "adb25cac-9be7-494f-864b-8f05b80f7168"
-    },
-    {
-      "login": "ArkhamCookie",
-      "sessionId": "fd8e7aec-2701-44ae-925b-25e17ff288c4"
+      "login": "eser",
+      "sessionId": "1b10cfe8-25c4-4d77-b999-0602fa1760cc"
     }
-    // 7 more users...
   ],
-  "cursor": "AkVob3ItZGV2ZWxvcGVyAA=="
-}
-```
-
-Example 2 (using `cursor` field from page 1):
-
-```jsonc
-// https://hunt.deno.land/api/users?cursor=AkVob3ItZGV2ZWxvcGVyAA==
-{
-  "items": [
-    {
-      "login": "EthanThatOneKid",
-      "sessionId": "ae7425c1-7932-412a-9956-e456787d557f"
-    },
-    {
-      "login": "Fleury99",
-      "sessionId": "2e4920a3-f386-43e1-8c0d-61b5e0edfc0d"
-    },
-    {
-      "login": "FriendlyUser",
-      "sessionId": "508ff291-7d1c-4a67-b19f-447ad73b5914"
-    }
-    // 7 more users...
-  ],
-  "cursor": "Ak5ld1lhbmtvAA=="
+  "cursor": ""
 }
 ```
 
@@ -338,14 +277,21 @@ Get the user with the given GitHub login.
 Example:
 
 ```jsonc
-// https://hunt.deno.land/api/users/hashrock
+// https://eser.live/api/users/eser
 {
-  "login": "hashrock",
-  "sessionId": "97eec97a-6636-485e-9b14-253bfa3ce1de"
+  "login": "eser",
+  "sessionId": "1b10cfe8-25c4-4d77-b999-0602fa1760cc"
 }
 ```
 
-## Goals and Philosophy
+## Acknowledgement, Goals and Philosophy
+
+This project is a fork of [Deno SaaSKit](https://github.com/denoland/saaskit),
+we would like to thank the contributors and maintainers of the original project.
+
+This project maintains the same philosophy and goals of the original project,
+but with some modifications to fit the needs of the eser.live and the community
+around us.
 
 For the user, the website should be fast, secure and have a design with clear
 intent. Additionally, the HTML should be well-structured and indexable by search
@@ -364,10 +310,29 @@ apply, such as:
 - Modular functionality
 - Clearly defined behavior with validation through tests
 
+### Requirements
+
+- Deno 1.44 or higher (https://deno.land/)
+
+### Versioning
+
+This project follows [Semantic Versioning](https://semver.org/). For the
+versions available, see the
+[tags on this repository](https://github.com/eser/eser.live/tags).
+
 ## Community and Resources
 
 Join [the `#lobi` channel in eser.live Discord][discord-url] to ask questions,
 and get unblocked.
+
+### License
+
+This project is licensed under the MIT License. For further details, please see
+the [LICENSE](LICENSE) file.
+
+### To support the project...
+
+[Visit my GitHub Sponsors profile at github.com/sponsors/eser](https://github.com/sponsors/eser)
 
 [discord-image]: https://img.shields.io/discord/684898665143206084?logo=discord&style=social
 [discord-url]: https://discord.gg/ckS4huSvEk
