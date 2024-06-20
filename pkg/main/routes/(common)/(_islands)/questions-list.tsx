@@ -5,7 +5,7 @@ import IconInfo from "tabler_icons_tsx/info-circle.tsx";
 import IconMessageCircleQuestion from "tabler_icons_tsx/message-circle-question.tsx";
 import { decodeTime } from "std/ulid/mod.ts";
 import { GitHubAvatarImg } from "@/pkg/main/routes/(common)/(_components)/github-avatar-img.tsx";
-import { type Question } from "@/pkg/main/services/db.ts";
+import { type Question } from "@/pkg/main/services/questions.ts";
 import { fetchValues } from "@/pkg/main/library/http/fetch-values.ts";
 import { timeAgo } from "@/pkg/main/library/display/time-ago.ts";
 

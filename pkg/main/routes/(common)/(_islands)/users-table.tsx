@@ -1,7 +1,7 @@
 // Copyright 2024-present the Deno authors. All rights reserved. MIT license.
 import { useSignal } from "@preact/signals";
 import { useEffect } from "preact/hooks";
-import { type User } from "@/pkg/main/services/db.ts";
+import { type User } from "@/pkg/main/services/users.ts";
 import { GitHubAvatarImg } from "@/pkg/main/routes/(common)/(_components)/github-avatar-img.tsx";
 import { fetchValues } from "@/pkg/main/library/http/fetch-values.ts";
 

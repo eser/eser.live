@@ -2,7 +2,7 @@
 import { STATUS_CODE } from "std/http/status.ts";
 import { type Handlers } from "$fresh/server.ts";
 import { type LoggedInState } from "@/pkg/main/plugins/session.ts";
-import { createVote } from "@/pkg/main/services/db.ts";
+import { createVote } from "@/pkg/main/services/questions.ts";
 import { BadRequestError } from "@/pkg/main/library/http/bad-request-error.ts";
 
 export const handler: Handlers<undefined, LoggedInState> = {

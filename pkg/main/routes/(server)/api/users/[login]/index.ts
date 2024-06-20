@@ -1,6 +1,6 @@
 // Copyright 2024-present the Deno authors. All rights reserved. MIT license.
 import { type Handlers } from "$fresh/server.ts";
-import { getUser } from "@/pkg/main/services/db.ts";
+import { getUser } from "@/pkg/main/services/users.ts";
 
 export const handler: Handlers = {
   async GET(_req, ctx) {

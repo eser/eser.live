@@ -13,16 +13,14 @@ import {
 import { isRedirectStatus } from "std/http/status.ts";
 import { returnsNext, stub } from "std/testing/mock.ts";
 import manifest from "@/pkg/main/fresh.gen.ts";
+import { createUser, getUser, randomUser } from "@/pkg/main/services/users.ts";
 import {
   createQuestion,
-  createUser,
   createVote,
-  getUser,
   listQuestionsByUser,
   type Question,
   randomQuestion,
-  randomUser,
-} from "@/pkg/main/services/db.ts";
+} from "@/pkg/main/services/questions.ts";
 import options from "@/pkg/main/fresh.config.ts";
 import { _internals } from "@/pkg/main/plugins/kv-oauth.ts";
 

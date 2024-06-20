@@ -1,6 +1,6 @@
 // Copyright 2024-present the Deno authors. All rights reserved. MIT license.
 // Description: Seeds the kv db with Hacker News stories
-import { createUser } from "@/pkg/main/services/db.ts";
+import { createUser } from "@/pkg/main/services/users.ts";
 import { ulid } from "std/ulid/mod.ts";
 
 // Reference: https://github.com/HackerNews/API

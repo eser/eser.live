@@ -11,7 +11,7 @@ import {
   getUser,
   updateUserSession,
   type User,
-} from "@/pkg/main/services/db.ts";
+} from "@/pkg/main/services/users.ts";
 import { getGitHubUser } from "@/pkg/main/services/github.ts";
 
 // Exported for mocking and spying in e2e tests

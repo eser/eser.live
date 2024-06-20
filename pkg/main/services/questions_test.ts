@@ -1,24 +1,18 @@
 // Copyright 2024-present the Deno authors. All rights reserved. MIT license.
 import { assertEquals, assertRejects } from "std/assert/mod.ts";
 import { ulid } from "std/ulid/mod.ts";
+import { createUser, getUser, randomUser } from "./users.ts";
 import {
   createQuestion,
-  createUser,
   createVote,
   getAreVotedByUser,
   getQuestion,
-  getUser,
-  getUserBySession,
   listQuestions,
   listQuestionsByUser,
   listQuestionsVotedByUser,
   type Question,
   randomQuestion,
-  randomUser,
-  // updateUser,
-  updateUserSession,
-  // type User,
-} from "./db.ts";
+} from "./questions.ts";
 
 Deno.test("[db] questions", async () => {
   const user = randomUser();
@@ -56,32 +50,6 @@ Deno.test("[db] questions", async () => {
       question1,
       question2,
     ],
-  );
-});
-
-Deno.test("[db] user", async () => {
-  const user = randomUser();
-
-  assertEquals(await getUser(user.login), null);
-  assertEquals(await getUserBySession(user.sessionId), null);
-
-  await createUser(user);
-  await assertRejects(async () => await createUser(user));
-  assertEquals(await getUser(user.login), user);
-  assertEquals(await getUserBySession(user.sessionId), user);
-
-  const newSessionId = crypto.randomUUID();
-  await updateUserSession(user, newSessionId);
-  assertEquals(await getUserBySession(user.sessionId), null);
-  assertEquals(await getUserBySession(newSessionId), {
-    ...user,
-    sessionId: newSessionId,
-  });
-
-  await assertRejects(
-    async () => await updateUserSession(user, newSessionId),
-    Error,
-    "Failed to update user session",
   );
 });
 

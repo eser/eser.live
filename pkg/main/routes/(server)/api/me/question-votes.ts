@@ -1,6 +1,6 @@
 // Copyright 2024-present the Deno authors. All rights reserved. MIT license.
 import { type Handlers } from "$fresh/server.ts";
-import { listQuestionsVotedByUser } from "@/pkg/main/services/db.ts";
+import { listQuestionsVotedByUser } from "@/pkg/main/services/questions.ts";
 import { LoggedInState } from "@/pkg/main/plugins/session.ts";
 
 export const handler: Handlers<undefined, LoggedInState> = {

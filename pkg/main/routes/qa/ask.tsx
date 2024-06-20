@@ -11,7 +11,7 @@ import {
   type LoggedInState,
   type State,
 } from "@/pkg/main/plugins/session.ts";
-import { createQuestion } from "@/pkg/main/services/db.ts";
+import { createQuestion } from "@/pkg/main/services/questions.ts";
 import { redirect } from "@/pkg/main/library/http/redirect.ts";
 
 export const handler: Handlers<undefined, LoggedInState> = {

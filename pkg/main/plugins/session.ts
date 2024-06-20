@@ -1,7 +1,7 @@
 // Copyright 2024-present the Deno authors. All rights reserved. MIT license.
 import { type FreshContext, Plugin } from "$fresh/server.ts";
 import { getSessionId } from "kv_oauth/mod.ts";
-import { getUserBySession, type User } from "@/pkg/main/services/db.ts";
+import { getUserBySession, type User } from "@/pkg/main/services/users.ts";
 import { UnauthorizedError } from "@/pkg/main/library/http/unauthorized-error.ts";
 
 export interface State {

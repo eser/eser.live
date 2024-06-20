@@ -3,7 +3,7 @@
 // import {
 //   SITE_NAME,
 // } from "@/pkg/main/constants.ts";
-import { User } from "@/pkg/main/services/db.ts";
+import { type User } from "@/pkg/main/services/users.ts";
 // import IconSearch from "tabler_icons_tsx/search.tsx";
 import IconBrandYouTube from "tabler_icons_tsx/brand-youtube-filled.tsx";
 // import IconMenu from "tabler_icons_tsx/menu-2.tsx";

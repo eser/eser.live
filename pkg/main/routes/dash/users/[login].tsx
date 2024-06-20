@@ -5,7 +5,7 @@ import { type State } from "@/pkg/main/plugins/session.ts";
 import { Head } from "@/pkg/main/routes/(common)/(_components)/head.tsx";
 import { GitHubAvatarImg } from "@/pkg/main/routes/(common)/(_components)/github-avatar-img.tsx";
 import { QuestionsList } from "@/pkg/main/routes/(common)/(_islands)/questions-list.tsx";
-import { getUser } from "@/pkg/main/services/db.ts";
+import { getUser } from "@/pkg/main/services/users.ts";
 
 interface UserProfileProps {
   login: string;

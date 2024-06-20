@@ -2,7 +2,7 @@
 import { defineRoute } from "$fresh/src/server/defines.ts";
 import { type State } from "@/pkg/main/plugins/session.ts";
 import { Head } from "@/pkg/main/routes/(common)/(_components)/head.tsx";
-import { type User } from "@/pkg/main/services/db.ts";
+import { type User } from "@/pkg/main/services/users.ts";
 
 interface WelcomeStripProps {
   /** Currently logged-in user */

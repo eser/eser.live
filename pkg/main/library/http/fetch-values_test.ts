@@ -2,7 +2,10 @@
 import { returnsNext, stub } from "std/testing/mock.ts";
 import { assertEquals, assertRejects } from "std/assert/mod.ts";
 import { STATUS_CODE } from "$fresh/server.ts";
-import { Question, randomQuestion } from "@/pkg/main/services/db.ts";
+import {
+  type Question,
+  randomQuestion,
+} from "@/pkg/main/services/questions.ts";
 import { fetchValues } from "./fetch-values.ts";
 
 Deno.test("[http] fetchValues()", async () => {

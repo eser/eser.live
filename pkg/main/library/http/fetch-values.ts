@@ -8,7 +8,7 @@
  * @example
  * ```ts
  * import { fetchValues } from "@/pkg/main/library/http/fetch-values.ts";
- * import { type Question } from "@/pkg/main/services/db.ts";
+ * import { type Question } from "@/pkg/main/services/questions.ts";
  *
  * const body = await fetchValues<Question>("https://hunt.deno.land/api/questions", "12345");
  * body.items[0].id; // Returns "13f34b7e-5563-4001-98ed-9ee04d7af717"
