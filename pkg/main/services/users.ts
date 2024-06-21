@@ -1,4 +1,5 @@
 // Copyright 2024-present the Deno authors. All rights reserved. MIT license.
+import { ulid } from "std/ulid/mod.ts";
 import { kv } from "./db.ts";
 
 // User
@@ -11,8 +12,8 @@ export interface User {
 /** For testing */
 export function randomUser(login?: string): User {
   return {
-    login: login ?? crypto.randomUUID(),
-    sessionId: crypto.randomUUID(),
+    login: login ?? ulid(),
+    sessionId: ulid(),
   };
 }
 
@@ -26,7 +27,7 @@ export function randomUser(login?: string): User {
  *
  * await createUser({
  *   login: "john",
- *   sessionId: crypto.randomUUID(),
+ *   sessionId: ulid(),
  * });
  * ```
  */
@@ -56,7 +57,7 @@ export async function createUser(user: User) {
  *
  * await updateUser({
  *   login: "john",
- *   sessionId: crypto.randomUUID(),
+ *   sessionId: ulid(),
  * });
  * ```
  */

@@ -9,6 +9,7 @@ Thumbs.db
 !.vscode/extensions.json
 !.vscode/launch.json
 !.vscode/settings.json
+!.vscode/tailwind.json
 .idea/*
 
 # local API keys and secrets

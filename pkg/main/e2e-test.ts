@@ -1,6 +1,5 @@
 // Copyright 2024-present the Deno authors. All rights reserved. MIT license.
 
-import { createHandler, STATUS_CODE } from "$fresh/server.ts";
 import {
   assert,
   assertArrayIncludes,
@@ -12,6 +11,8 @@ import {
 } from "std/assert/mod.ts";
 import { isRedirectStatus } from "std/http/status.ts";
 import { returnsNext, stub } from "std/testing/mock.ts";
+import { ulid } from "std/ulid/mod.ts";
+import { createHandler, STATUS_CODE } from "$fresh/server.ts";
 import manifest from "@/pkg/main/fresh.gen.ts";
 import { createUser, getUser, randomUser } from "@/pkg/main/services/users.ts";
 import {
@@ -93,19 +94,19 @@ Deno.test("[e2e] GET /", async () => {
 });
 
 Deno.test("[e2e] GET /auth/callback", async (test) => {
-  const login = crypto.randomUUID();
-  const sessionId = crypto.randomUUID();
+  const login = ulid();
+  const sessionId = ulid();
 
   await test.step("creates a new user if it doesn't already exist", async () => {
     const handleCallbackResp = {
       response: new Response(),
       tokens: {
-        accessToken: crypto.randomUUID(),
-        tokenType: crypto.randomUUID(),
+        accessToken: ulid(),
+        tokenType: ulid(),
       },
       sessionId,
     };
-    // const id = crypto.randomUUID();
+    // const id = ulid();
     const handleCallbackStub = stub(
       _internals,
       "handleCallback",
@@ -113,7 +114,7 @@ Deno.test("[e2e] GET /auth/callback", async (test) => {
     );
     const githubRespBody = {
       login,
-      email: crypto.randomUUID(),
+      email: ulid(),
     };
     const fetchStub = stub(
       window,
@@ -136,12 +137,12 @@ Deno.test("[e2e] GET /auth/callback", async (test) => {
     const handleCallbackResp = {
       response: new Response(),
       tokens: {
-        accessToken: crypto.randomUUID(),
-        tokenType: crypto.randomUUID(),
+        accessToken: ulid(),
+        tokenType: ulid(),
       },
-      sessionId: crypto.randomUUID(),
+      sessionId: ulid(),
     };
-    // const id = crypto.randomUUID();
+    // const id = ulid();
     const handleCallbackStub = stub(
       _internals,
       "handleCallback",
@@ -149,7 +150,7 @@ Deno.test("[e2e] GET /auth/callback", async (test) => {
     );
     const githubRespBody = {
       login,
-      email: crypto.randomUUID(),
+      email: ulid(),
     };
     const fetchStub = stub(
       window,

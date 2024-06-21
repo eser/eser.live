@@ -1,5 +1,6 @@
 // Copyright 2024-present the Deno authors. All rights reserved. MIT license.
 import { assertEquals, assertRejects } from "std/assert/mod.ts";
+import { ulid } from "std/ulid/mod.ts";
 import {
   createUser,
   getUser,
@@ -21,7 +22,7 @@ Deno.test("[db] user", async () => {
   assertEquals(await getUser(user.login), user);
   assertEquals(await getUserBySession(user.sessionId), user);
 
-  const newSessionId = crypto.randomUUID();
+  const newSessionId = ulid();
   await updateUserSession(user, newSessionId);
   assertEquals(await getUserBySession(user.sessionId), null);
   assertEquals(await getUserBySession(newSessionId), {

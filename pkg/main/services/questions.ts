@@ -17,8 +17,8 @@ export interface Question {
 export function randomQuestion(): Question {
   return {
     id: ulid(),
-    userLogin: crypto.randomUUID(),
-    question: crypto.randomUUID(),
+    userLogin: ulid(),
+    question: ulid(),
     score: 0,
     hidden: false,
   };
@@ -50,12 +50,13 @@ export async function createQuestion(question: Question) {
     question.id,
   ];
 
-  const res = await kv.atomic()
+  const atomicOp = kv.atomic()
     .check({ key: questionsKey, versionstamp: null })
     .check({ key: questionsByUserKey, versionstamp: null })
     .set(questionsKey, question)
-    .set(questionsByUserKey, question)
-    .commit();
+    .set(questionsByUserKey, question);
+
+  const res = await atomicOp.commit();
 
   if (!res.ok) {
     throw new Error("Failed to create question");
@@ -78,6 +79,7 @@ export async function createQuestion(question: Question) {
  */
 export async function getQuestion(id: string) {
   const res = await kv.get<Question>(["questions", id]);
+
   return res.value;
 }
 

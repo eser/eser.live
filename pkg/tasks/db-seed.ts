@@ -47,7 +47,7 @@ for (const login of users) {
   userPromises.push(
     createUser({
       login,
-      sessionId: crypto.randomUUID(),
+      sessionId: ulid(),
     }),
   );
 }

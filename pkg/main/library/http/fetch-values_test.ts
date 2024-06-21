@@ -1,6 +1,7 @@
 // Copyright 2024-present the Deno authors. All rights reserved. MIT license.
 import { returnsNext, stub } from "std/testing/mock.ts";
 import { assertEquals, assertRejects } from "std/assert/mod.ts";
+import { ulid } from "std/ulid/mod.ts";
 import { STATUS_CODE } from "$fresh/server.ts";
 import {
   type Question,
@@ -14,9 +15,9 @@ Deno.test("[http] fetchValues()", async () => {
   );
   const resp2Body = {
     items: [randomQuestion(), randomQuestion()],
-    cursor: crypto.randomUUID(),
+    cursor: ulid(),
   };
-  const resp2Cursor = crypto.randomUUID();
+  const resp2Cursor = ulid();
   const resp2 = Promise.resolve(Response.json(resp2Body));
   const fetchStub = stub(
     globalThis,

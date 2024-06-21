@@ -1,0 +1,42 @@
+services:
+  app:
+    container_name: app
+    build: .
+    restart: always
+    tty: true
+    stdin_open: true
+    environment:
+      # - DENO_DEPLOYMENT_ID=${DENO_DEPLOYMENT_ID}
+      - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID}
+      - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET}
+      - POSTGRES_CONNSTR=postgres://postgres:s3cr3t@0.0.0.0:5432/postgres
+    networks:
+      - compose-network
+    ports:
+      - "8000:8000"
+
+  postgres:
+    container_name: postgres
+    image: postgres:16-bookworm
+    restart: unless-stopped
+    environment:
+      PGUSER: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: s3cr3t
+      POSTGRES_DB: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "psql -U 'postgres' -c '\\q'"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    # volumes:
+    #   - ./deployments/db-seeds/dumps/:/tmp/dumps/
+    #   - ./deployments/db-seeds/init.sh:/docker-entrypoint-initdb.d/init.sh
+    networks:
+      - compose-network
+    ports:
+      - "5432:5432"
+
+networks:
+  compose-network:
+    driver: bridge
