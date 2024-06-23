@@ -5,10 +5,10 @@
  *
  * @example
  * ```bash
- * deno task db:restore ./temp/backup.json
+ * deno task kv:restore ./temp/backup.json
  * ```
  */
-import { kv } from "@/pkg/main/services/db.ts";
+import { kv } from "@/pkg/main/services/kv-connection.ts";
 
 interface StoredKvU64 {
   value: string;
@@ -26,7 +26,9 @@ function reviver(_key: unknown, value: unknown) {
 if (!confirm("WARNING: The database will be restored. Continue?")) Deno.exit();
 
 const [filePath] = Deno.args;
-if (filePath === undefined) throw new Error("File path must be defined");
+if (filePath === undefined) {
+  throw new Error("File path must be defined");
+}
 
 const rawEntries = Deno.readTextFileSync(filePath);
 const entries = JSON.parse(rawEntries, reviver) as Omit<

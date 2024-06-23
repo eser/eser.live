@@ -46,6 +46,7 @@ To get started:
    ```
 1. Create a new `.env` file:
    ```
+   POSTGRES_CONNSTR=postgres://postgres:s3cr3t@0.0.0.0:5432/postgres
    DENO_KV_PATH=:memory:
    DENO_KV_ACCESS_TOKEN=
    GITHUB_CLIENT_ID=
@@ -77,13 +78,13 @@ To get started:
 
 Use the following commands to work with your local Deno KV database:
 
-- `deno task db:seed` - Populate the database with data from the
+- `deno task kv:seed` - Populate the database with data from the
   [Hacker News API](https://github.com/HackerNews/API).
-- `deno task db:dump > ./temp/backup.json` - Write all database entries to
+- `deno task kv:dump > ./temp/backup.json` - Write all database entries to
   `./temp/backup.json`.
-- `deno task db:restore ./temp/backup.json` - Restore the database from
+- `deno task kv:restore ./temp/backup.json` - Restore the database from
   `./temp/backup.json`.
-- `deno task db:reset` - Reset the database. This is not recoverable.
+- `deno task kv:reset` - Reset the database. This is not recoverable.
 
 ## Customize and Extend
 

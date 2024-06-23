@@ -1,9 +1,9 @@
 // Copyright 2024-present the Deno authors. All rights reserved. MIT license.
+import * as ulid from "@std/ulid";
 import { Signal, useComputed, useSignal } from "@preact/signals";
 import { useEffect } from "preact/hooks";
 import IconInfo from "tabler_icons_tsx/info-circle.tsx";
 import IconMessageCircleQuestion from "tabler_icons_tsx/message-circle-question.tsx";
-import { decodeTime } from "std/ulid/mod.ts";
 import { GitHubAvatarImg } from "@/pkg/main/routes/(common)/(_components)/github-avatar-img.tsx";
 import { type Question } from "@/pkg/main/services/questions.ts";
 import { fetchValues } from "@/pkg/main/library/http/fetch-values.ts";
@@ -165,7 +165,7 @@ function QuestionSummary(props: QuestionSummaryProps) {
             {props.question.userLogin}
           </a>
           {" - "}
-          {timeAgo(new Date(decodeTime(props.question.id)))}
+          {timeAgo(new Date(ulid.decodeTime(props.question.id)))}
           {props.isEditor === true
             ? (
               <>

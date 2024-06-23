@@ -1,11 +1,6 @@
 // Copyright 2024-present the Deno authors. All rights reserved. MIT license.
 import { type Plugin } from "$fresh/server.ts";
-import {
-  createGitHubOAuthConfig,
-  handleCallback,
-  signIn,
-  signOut,
-} from "kv_oauth/mod.ts";
+import * as oauth from "@/pkg/main/library/oauth/mod.ts";
 import {
   createUser,
   getUser,
@@ -14,8 +9,19 @@ import {
 } from "@/pkg/main/services/users.ts";
 import { getGitHubUser } from "@/pkg/main/services/github.ts";
 
+export const oauthClient = oauth.createClient({
+  oauth: {
+    clientId: Deno.env.get("GITHUB_CLIENT_ID") ?? "",
+    clientSecret: Deno.env.get("GITHUB_CLIENT_SECRET"),
+    authorizationEndpointUri: "https://github.com/login/oauth/authorize",
+    tokenUri: "https://github.com/login/oauth/access_token",
+    // redirectUri: config?.redirectUri,
+    // defaults: { scope: config?.scope },
+  },
+});
+
 // Exported for mocking and spying in e2e tests
-export const _internals = { handleCallback };
+export const _internals = { oauthClient };
 
 /**
  * This custom plugin centralizes all authentication logic using the
@@ -30,15 +36,15 @@ export default {
   routes: [
     {
       path: "/auth/login",
-      handler: async (req) => await signIn(req, createGitHubOAuthConfig()),
+      handler: async (req) => await _internals.oauthClient.signIn(req),
     },
     {
       path: "/auth/callback",
       handler: async (req) => {
-        const { response, tokens, sessionId } = await _internals.handleCallback(
-          req,
-          createGitHubOAuthConfig(),
-        );
+        const { response, tokens, sessionId } = await _internals.oauthClient
+          .handleCallback(
+            req,
+          );
 
         const githubUser = await getGitHubUser(tokens.accessToken);
         const user = await getUser(githubUser.login);
@@ -58,7 +64,7 @@ export default {
     },
     {
       path: "/auth/logout",
-      handler: signOut,
+      handler: _internals.oauthClient.signOut,
     },
   ],
 } as Plugin;

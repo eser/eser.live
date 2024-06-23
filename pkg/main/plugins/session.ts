@@ -1,8 +1,8 @@
 // Copyright 2024-present the Deno authors. All rights reserved. MIT license.
 import { type FreshContext, Plugin } from "$fresh/server.ts";
-import { getSessionId } from "kv_oauth/mod.ts";
 import { getUserBySession, type User } from "@/pkg/main/services/users.ts";
 import { UnauthorizedError } from "@/pkg/main/library/http/unauthorized-error.ts";
+import { oauthClient } from "./kv-oauth.ts";
 
 export interface State {
   sessionUser?: User;
@@ -63,7 +63,7 @@ async function setSessionState(
     ctx.state[key] = value;
   }
 
-  const sessionId = await getSessionId(req);
+  const sessionId = await oauthClient.getSessionId(req);
   if (sessionId === undefined) {
     return await ctx.next();
   }

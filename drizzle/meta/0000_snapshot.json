@@ -1,17 +1,23 @@
 {
-  "id": "4268f1a5-f632-4a92-8da4-10af24d0492d",
+  "id": "42e29230-604c-4261-84e8-fcd1c044b809",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.users": {
-      "name": "users",
+    "public.user": {
+      "name": "user",
       "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "char(26)",
           "primaryKey": true,
+          "notNull": true
+        },
+        "kind": {
+          "name": "kind",
+          "type": "text",
+          "primaryKey": false,
           "notNull": true
         },
         "name": {
@@ -22,31 +28,32 @@
         },
         "email": {
           "name": "email",
-          "type": "varchar(256)",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         },
         "phone": {
           "name": "phone",
-          "type": "varchar(256)",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         },
-        "role": {
-          "name": "role",
+        "github_handle": {
+          "name": "github_handle",
           "type": "text",
           "primaryKey": false,
           "notNull": false
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamp",
+          "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "now()"
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "timestamp",
+          "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": false
         }
@@ -55,11 +62,291 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "users_email_unique": {
-          "name": "users_email_unique",
+        "user_email_unique": {
+          "name": "user_email_unique",
           "nullsNotDistinct": false,
           "columns": [
             "email"
+          ]
+        }
+      }
+    },
+    "public.user_session": {
+      "name": "user_session",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "char(26)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user": {
+          "name": "user",
+          "type": "char(26)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "user_session_user_index": {
+          "name": "user_session_user_index",
+          "columns": [
+            {
+              "expression": "user",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.profile": {
+      "name": "profile",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "char(26)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "kind": {
+          "name": "kind",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "profile_picture_uri": {
+          "name": "profile_picture_uri",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "show_stories": {
+          "name": "show_stories",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "show_projects": {
+          "name": "show_projects",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "profile_slug_unique": {
+          "name": "profile_slug_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "slug"
+          ]
+        }
+      }
+    },
+    "public.profile_membership": {
+      "name": "profile_membership",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "char(26)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "kind": {
+          "name": "kind",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "profile": {
+          "name": "profile",
+          "type": "char(26)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user": {
+          "name": "user",
+          "type": "char(26)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "profile_membership_profile_user_unique": {
+          "name": "profile_membership_profile_user_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "profile",
+            "user"
+          ]
+        }
+      }
+    },
+    "public.question": {
+      "name": "question",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "char(26)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user": {
+          "name": "user",
+          "type": "char(26)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "content": {
+          "name": "content",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "is_hidden": {
+          "name": "is_hidden",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.question_vote": {
+      "name": "question_vote",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "char(26)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "question": {
+          "name": "question",
+          "type": "char(26)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user": {
+          "name": "user",
+          "type": "char(26)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "score": {
+          "name": "score",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "question_vote_question_user_unique": {
+          "name": "question_vote_question_user_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "question",
+            "user"
           ]
         }
       }

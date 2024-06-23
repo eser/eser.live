@@ -2,28 +2,19 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Deno Launch: API",
-      "type": "node",
       "request": "launch",
-      "cwd": "${workspaceFolder}",
-      "runtimeExecutable": "deno",
-      "runtimeArgs": [
-        "task",
-        "api:dev"
-      ],
-      "outputCapture": "std"
-    },
-    {
-      "name": "Deno Launch: Web",
+      "name": "Launch",
       "type": "node",
-      "request": "launch",
+      "program": "${workspaceFolder}/pkg/main/dev.ts",
       "cwd": "${workspaceFolder}",
-      "runtimeExecutable": "deno",
+      "env": {},
+      "runtimeExecutable": "/Users/eser/.deno/bin/deno",
       "runtimeArgs": [
-        "task",
-        "web:dev"
+        "run",
+        "--inspect-wait",
+        "--allow-all"
       ],
-      "outputCapture": "std"
+      "attachSimplePort": 9229
     }
   ]
 }

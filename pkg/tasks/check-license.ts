@@ -1,7 +1,7 @@
 // Copyright 2024-present the Deno authors. All rights reserved. MIT license.
 // Copied from std/_tools/check_license.ts
 
-import { walk } from "std/fs/walk.ts";
+import * as fsWalk from "@std/fs/walk";
 
 const EXTENSIONS = [".ts", ".tsx"];
 const EXCLUDED_PATTERNS = [
@@ -28,7 +28,7 @@ const COPYRIGHT =
 let failed = false;
 
 for await (
-  const { path } of walk(ROOT, {
+  const { path } of fsWalk.walk(ROOT, {
     exts: EXTENSIONS,
     skip: EXCLUDED_PATTERNS,
     includeDirs: false,

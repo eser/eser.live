@@ -1,8 +1,8 @@
 // Copyright 2024-present the Deno authors. All rights reserved. MIT license.
+import * as dotenv from "@std/dotenv";
 import postgres from "postgres";
 import { drizzle } from "drizzle-orm/postgres-js";
-import { load } from "std/dotenv/mod.ts";
-import { schema } from "./schema.ts";
+import * as schema from "./schema.ts";
 
 async function readEnvKey(key: string): Promise<string | undefined> {
   let value = undefined;
@@ -17,7 +17,7 @@ async function readEnvKey(key: string): Promise<string | undefined> {
   return value;
 }
 
-await load({ export: true });
+await dotenv.load({ export: true });
 
 export const postgresConnStr = await readEnvKey("POSTGRES_CONNSTR") ??
   "postgres://0.0.0.0:5432/postgres";

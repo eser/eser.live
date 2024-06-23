@@ -1,5 +1,5 @@
 // Copyright 2024-present the Deno authors. All rights reserved. MIT license.
-import { STATUS_CODE, STATUS_TEXT } from "std/http/status.ts";
+import * as httpStatus from "@std/http/status";
 import { type Plugin } from "$fresh/server.ts";
 import { type State } from "@/pkg/main/plugins/session.ts";
 import { redirect } from "@/pkg/main/library/http/redirect.ts";
@@ -21,18 +21,18 @@ import {
  */
 export function toErrorStatus(error: Error) {
   if (error instanceof Deno.errors.NotFound) {
-    return STATUS_CODE.NotFound;
+    return httpStatus.STATUS_CODE.NotFound;
   }
 
   if (error instanceof UnauthorizedError) {
-    return STATUS_CODE.Unauthorized;
+    return httpStatus.STATUS_CODE.Unauthorized;
   }
 
   if (error instanceof BadRequestError) {
-    return STATUS_CODE.BadRequest;
+    return httpStatus.STATUS_CODE.BadRequest;
   }
 
-  return STATUS_CODE.InternalServerError;
+  return httpStatus.STATUS_CODE.InternalServerError;
 }
 
 export default {
@@ -62,7 +62,7 @@ export default {
           } catch (error) {
             const status = toErrorStatus(error);
             return new Response(error.message, {
-              statusText: STATUS_TEXT[status],
+              statusText: httpStatus.STATUS_TEXT[status],
               status,
             });
           }

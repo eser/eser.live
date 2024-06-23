@@ -5,20 +5,20 @@
  *
  * @example
  * ```bash
- * deno task db:dump > ./temp/backup.json
+ * deno task kv:dump > ./temp/backup.json
  * ```
  */
-import { kv } from "@/pkg/main/services/db.ts";
+import { kv } from "@/pkg/main/services/kv-connection.ts";
 
 // https://github.com/GoogleChromeLabs/jsbi/issues/30#issuecomment-521460510
 function replacer(_key: unknown, value: unknown) {
   return typeof value === "bigint" ? value.toString() : value;
 }
 
-const questions = await Array.fromAsync(
+const items = await Array.fromAsync(
   kv.list({ prefix: [] }),
   ({ key, value }) => ({ key, value }),
 );
-console.log(JSON.stringify(questions, replacer, 2));
+console.log(JSON.stringify(items, replacer, 2));
 
 kv.close();

@@ -1,5 +1,5 @@
 // Copyright 2024-present the Deno authors. All rights reserved. MIT license.
-import { difference, type Unit } from "std/datetime/difference.ts";
+import * as datetimeDifference from "@std/datetime/difference";
 import { pluralize } from "./pluralize.ts";
 
 /**
@@ -7,11 +7,11 @@ import { pluralize } from "./pluralize.ts";
  *
  * @example
  * ```ts
+ * import * as datetimeConstants from "@std/datetime/constants";
  * import { timeAgo } from "@/pkg/main/library/display/time-ago.ts";
- * import { SECOND, MINUTE, HOUR } from "std/datetime/constants.ts";
  *
  * timeAgo(new Date()); // Returns "just now"
- * timeAgo(new Date(Date.now() - 3 * HOUR)); // Returns "3 hours ago"
+ * timeAgo(new Date(Date.now() - 3 * datetimeConstants.HOUR)); // Returns "3 hours ago"
  * ```
  */
 export function timeAgo(date: Date) {
@@ -22,7 +22,7 @@ export function timeAgo(date: Date) {
   }
 
   const match = Object.entries(
-    difference(now, date, {
+    datetimeDifference.difference(now, date, {
       // These units make sense for a web UI
       units: [
         "seconds",
@@ -44,7 +44,7 @@ export function timeAgo(date: Date) {
 
   const [unit, amount] = match;
 
-  const unitMapping: Record<Unit, string> = {
+  const unitMapping: Record<datetimeDifference.Unit, string> = {
     milliseconds: "milisaniye",
     seconds: "saniye",
     minutes: "dakika",
@@ -56,5 +56,7 @@ export function timeAgo(date: Date) {
     years: "yıl",
   };
 
-  return `${pluralize(amount, unitMapping[<Unit> unit])} önce`;
+  return `${
+    pluralize(amount, unitMapping[<datetimeDifference.Unit> unit])
+  } önce`;
 }

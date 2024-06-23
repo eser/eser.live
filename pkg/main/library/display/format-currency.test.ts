@@ -1,7 +1,7 @@
 // Copyright 2024-present the Deno authors. All rights reserved. MIT license.
+import * as assert from "@std/assert";
 import { formatCurrency } from "./format-currency.ts";
-import { assertEquals } from "std/assert/mod.ts";
 
 Deno.test("[display] formatCurrency()", () => {
-  assertEquals(formatCurrency(5, "USD"), "$5");
+  assert.assertEquals(formatCurrency(5, "USD"), "$5");
 });

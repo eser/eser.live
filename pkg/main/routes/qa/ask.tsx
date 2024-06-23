@@ -1,5 +1,5 @@
 // Copyright 2024-present the Deno authors. All rights reserved. MIT license.
-import { ulid } from "std/ulid/mod.ts";
+import * as ulid from "@std/ulid";
 import IconCheckCircle from "tabler_icons_tsx/circle-check.tsx";
 import IconCircleX from "tabler_icons_tsx/circle-x.tsx";
 import IconMailForward from "tabler_icons_tsx/mail-forward.tsx";
@@ -28,7 +28,7 @@ export const handler: Handlers<undefined, LoggedInState> = {
     }
 
     await createQuestion({
-      id: ulid(),
+      id: ulid.ulid(),
       userLogin: ctx.state.sessionUser.login,
       question,
       score: 0,

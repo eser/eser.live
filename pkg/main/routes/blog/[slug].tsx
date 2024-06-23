@@ -1,6 +1,6 @@
 // Copyright 2024-present the Deno authors. All rights reserved. MIT license.
 import { defineRoute } from "$fresh/server.ts";
-import { CSS, render } from "$gfm";
+import { CSS, render } from "@deno/gfm";
 import { type State } from "@/pkg/main/plugins/session.ts";
 import { Head } from "@/pkg/main/routes/(common)/(_components)/head.tsx";
 import { Share } from "@/pkg/main/routes/(common)/(_islands)/share.tsx";

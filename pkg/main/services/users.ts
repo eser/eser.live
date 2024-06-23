@@ -1,6 +1,6 @@
 // Copyright 2024-present the Deno authors. All rights reserved. MIT license.
-import { ulid } from "std/ulid/mod.ts";
-import { kv } from "./db.ts";
+import * as ulid from "@std/ulid";
+import { kv } from "./kv-connection.ts";
 
 // User
 export interface User {
@@ -12,8 +12,8 @@ export interface User {
 /** For testing */
 export function randomUser(login?: string): User {
   return {
-    login: login ?? ulid(),
-    sessionId: ulid(),
+    login: login ?? ulid.ulid(),
+    sessionId: ulid.ulid(),
   };
 }
 

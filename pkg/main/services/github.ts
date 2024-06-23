@@ -1,15 +1,5 @@
 // Copyright 2024-present the Deno authors. All rights reserved. MIT license.
-import { createGitHubOAuthConfig } from "kv_oauth/mod.ts";
 import { BadRequestError } from "@/pkg/main/library/http/bad-request-error.ts";
-
-export function isGitHubSetup() {
-  try {
-    createGitHubOAuthConfig();
-    return true;
-  } catch {
-    return false;
-  }
-}
 
 interface GitHubUser {
   login: string;

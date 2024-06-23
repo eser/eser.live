@@ -1,5 +1,5 @@
 // Copyright 2024-present the Deno authors. All rights reserved. MIT license.
-import { kv } from "@/pkg/main/services/db.ts";
+import { kv } from "@/pkg/main/services/kv-connection.ts";
 
 if (!confirm("WARNING: The database will be reset. Continue?")) {
   Deno.exit();

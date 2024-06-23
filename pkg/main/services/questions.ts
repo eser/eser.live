@@ -1,6 +1,6 @@
 // Copyright 2024-present the Deno authors. All rights reserved. MIT license.
-import { ulid } from "std/ulid/mod.ts";
-import { kv } from "./db.ts";
+import * as ulid from "@std/ulid";
+import { kv } from "./kv-connection.ts";
 import { type User } from "./users.ts";
 
 // Question
@@ -16,9 +16,9 @@ export interface Question {
 /** For testing */
 export function randomQuestion(): Question {
   return {
-    id: ulid(),
-    userLogin: ulid(),
-    question: ulid(),
+    id: ulid.ulid(),
+    userLogin: ulid.ulid(),
+    question: ulid.ulid(),
     score: 0,
     hidden: false,
   };
@@ -30,11 +30,11 @@ export function randomQuestion(): Question {
  *
  * @example
  * ```ts
+ * import * as ulid from "@std/ulid";
  * import { createQuestion } from "@/pkg/main/services/questions.ts";
- * import { ulid } from "std/ulid/mod.ts";
  *
  * await createQuestion({
- *   id: ulid(),
+ *   id: ulid.ulid(),
  *   userLogin: "john_doe",
  *   question: "example-question",
  *   score: 0,
