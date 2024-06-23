@@ -1,13 +1,13 @@
 // Copyright 2024-present the Deno authors. All rights reserved. MIT license.
 import { relations } from "drizzle-orm/relations";
-import { userSessionSchema } from "./user-session.ts";
+import { sessionSchema } from "./session.ts";
 import { userSchema } from "./user.ts";
 
-export const userSessionRelations = relations(
-  userSessionSchema,
+export const sessionRelations = relations(
+  sessionSchema,
   ({ one }) => ({
     user: one(userSchema, {
-      fields: [userSessionSchema.user],
+      fields: [sessionSchema.loggedInUserId],
       references: [userSchema.id],
     }),
   }),

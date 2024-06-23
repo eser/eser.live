@@ -1,5 +1,5 @@
 {
-  "id": "42e29230-604c-4261-84e8-fcd1c044b809",
+  "id": "91d6be1a-1d38-4568-8169-54fdca4d59c0",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -70,51 +70,6 @@
           ]
         }
       }
-    },
-    "public.user_session": {
-      "name": "user_session",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "char(26)",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "user": {
-          "name": "user",
-          "type": "char(26)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {
-        "user_session_user_index": {
-          "name": "user_session_user_index",
-          "columns": [
-            {
-              "expression": "user",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
     },
     "public.profile": {
       "name": "profile",
@@ -213,14 +168,14 @@
           "primaryKey": false,
           "notNull": true
         },
-        "profile": {
-          "name": "profile",
+        "profile_id": {
+          "name": "profile_id",
           "type": "char(26)",
           "primaryKey": false,
           "notNull": true
         },
-        "user": {
-          "name": "user",
+        "user_id": {
+          "name": "user_id",
           "type": "char(26)",
           "primaryKey": false,
           "notNull": true
@@ -243,15 +198,90 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "profile_membership_profile_user_unique": {
-          "name": "profile_membership_profile_user_unique",
+        "profile_membership_profile_id_user_id_unique": {
+          "name": "profile_membership_profile_id_user_id_unique",
           "nullsNotDistinct": false,
           "columns": [
-            "profile",
-            "user"
+            "profile_id",
+            "user_id"
           ]
         }
       }
+    },
+    "public.session": {
+      "name": "session",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "char(26)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "oauth_request_state": {
+          "name": "oauth_request_state",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "oauth_request_code_verifier": {
+          "name": "oauth_request_code_verifier",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "logged_in_user_id": {
+          "name": "logged_in_user_id",
+          "type": "char(26)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "logged_in_at": {
+          "name": "logged_in_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "session_logged_in_user_id_index": {
+          "name": "session_logged_in_user_id_index",
+          "columns": [
+            {
+              "expression": "logged_in_user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
     },
     "public.question": {
       "name": "question",
@@ -263,8 +293,8 @@
           "primaryKey": true,
           "notNull": true
         },
-        "user": {
-          "name": "user",
+        "user_id": {
+          "name": "user_id",
           "type": "char(26)",
           "primaryKey": false,
           "notNull": true
@@ -311,14 +341,14 @@
           "primaryKey": true,
           "notNull": true
         },
-        "question": {
-          "name": "question",
+        "question_id": {
+          "name": "question_id",
           "type": "char(26)",
           "primaryKey": false,
           "notNull": true
         },
-        "user": {
-          "name": "user",
+        "user_id": {
+          "name": "user_id",
           "type": "char(26)",
           "primaryKey": false,
           "notNull": true
@@ -341,12 +371,12 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "question_vote_question_user_unique": {
-          "name": "question_vote_question_user_unique",
+        "question_vote_question_id_user_id_unique": {
+          "name": "question_vote_question_id_user_id_unique",
           "nullsNotDistinct": false,
           "columns": [
-            "question",
-            "user"
+            "question_id",
+            "user_id"
           ]
         }
       }

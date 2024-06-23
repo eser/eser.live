@@ -34,6 +34,7 @@ export async function getAndDeleteOAuthSession(
   const key = oauthSessionKey(id);
   const oauthSessionRes = await kv.get<OAuthSession>(key);
   const oauthSession = oauthSessionRes.value;
+
   if (oauthSession === null) {
     throw new Deno.errors.NotFound("OAuth session not found");
   }
@@ -43,7 +44,10 @@ export async function getAndDeleteOAuthSession(
     .delete(key)
     .commit();
 
-  if (!res.ok) throw new Error("Failed to delete OAuth session");
+  if (!res.ok) {
+    throw new Error("Failed to delete OAuth session");
+  }
+
   return oauthSession;
 }
 
@@ -55,9 +59,9 @@ export async function setOAuthSession(
    * require a persistent and restartable KV instance. This is difficult to do
    * in this module, as the KV instance is initialized top-level.
    */
-  options: { expireIn: number },
+  expireIn: number,
 ) {
-  await kv.set(oauthSessionKey(id), value, options);
+  await kv.set(oauthSessionKey(id), value, { expireIn });
 }
 
 /**
@@ -73,6 +77,7 @@ function siteSessionKey(id: string): [string, string] {
 
 export async function isSiteSession(id: string): Promise<boolean> {
   const res = await kv.get<SiteSession>(siteSessionKey(id));
+
   return res.value !== null;
 }
 

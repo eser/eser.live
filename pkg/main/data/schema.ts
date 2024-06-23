@@ -2,14 +2,14 @@
 export * from "./models/user.ts";
 export * from "./models/user.relations.ts";
 
-export * from "./models/user-session.ts";
-export * from "./models/user-session.relations.ts";
-
 export * from "./models/profile.ts";
 export * from "./models/profile.relations.ts";
 
 export * from "./models/profile-membership.ts";
 export * from "./models/profile-membership.relations.ts";
+
+export * from "./models/session.ts";
+export * from "./models/session.relations.ts";
 
 export * from "./models/question.ts";
 export * from "./models/question.relations.ts";

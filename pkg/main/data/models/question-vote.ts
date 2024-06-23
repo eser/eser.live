@@ -6,8 +6,8 @@ export const questionVoteSchema = pgTable(
   {
     id: char("id", { length: 26 }).primaryKey(),
 
-    question: char("question", { length: 26 }).notNull(),
-    user: char("user", { length: 26 }).notNull(),
+    questionId: char("question_id", { length: 26 }).notNull(),
+    userId: char("user_id", { length: 26 }).notNull(),
 
     score: integer("score").notNull(),
 
@@ -17,8 +17,8 @@ export const questionVoteSchema = pgTable(
   },
   (table) => ({
     voteUnq: unique().on(
-      table.question,
-      table.user,
+      table.questionId,
+      table.userId,
     ),
   }),
 );

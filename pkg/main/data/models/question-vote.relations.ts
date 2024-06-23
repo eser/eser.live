@@ -8,11 +8,11 @@ export const questionVoteRelations = relations(
   questionVoteSchema,
   ({ one }) => ({
     profile: one(questionSchema, {
-      fields: [questionVoteSchema.question],
+      fields: [questionVoteSchema.questionId],
       references: [questionSchema.id],
     }),
     user: one(userSchema, {
-      fields: [questionVoteSchema.user],
+      fields: [questionVoteSchema.userId],
       references: [userSchema.id],
     }),
   }),

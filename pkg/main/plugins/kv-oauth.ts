@@ -8,6 +8,13 @@ import {
   type User,
 } from "@/pkg/main/services/users.ts";
 import { getGitHubUser } from "@/pkg/main/services/github.ts";
+import {
+  deleteSiteSession,
+  getAndDeleteOAuthSession,
+  isSiteSession,
+  setOAuthSession,
+  setSiteSession,
+} from "@/pkg/main/library/oauth/_kv.ts";
 
 export const oauthClient = oauth.createClient({
   oauth: {
@@ -17,6 +24,13 @@ export const oauthClient = oauth.createClient({
     tokenUri: "https://github.com/login/oauth/access_token",
     // redirectUri: config?.redirectUri,
     // defaults: { scope: config?.scope },
+  },
+  hooks: {
+    setOAuthSession: setOAuthSession,
+    getAndDeleteOAuthSession: getAndDeleteOAuthSession,
+    deleteSiteSession: deleteSiteSession,
+    isSiteSession: isSiteSession,
+    setSiteSession: setSiteSession,
   },
 });
 

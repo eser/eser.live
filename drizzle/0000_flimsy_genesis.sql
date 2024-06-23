@@ -10,12 +10,6 @@ CREATE TABLE IF NOT EXISTS "user" (
 	CONSTRAINT "user_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "user_session" (
-	"id" char(26) PRIMARY KEY NOT NULL,
-	"user" char(26) NOT NULL,
-	"created_at" timestamp with time zone DEFAULT now() NOT NULL
-);
---> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "profile" (
 	"id" char(26) PRIMARY KEY NOT NULL,
 	"kind" text NOT NULL,
@@ -33,16 +27,27 @@ CREATE TABLE IF NOT EXISTS "profile" (
 CREATE TABLE IF NOT EXISTS "profile_membership" (
 	"id" char(26) PRIMARY KEY NOT NULL,
 	"kind" text NOT NULL,
-	"profile" char(26) NOT NULL,
-	"user" char(26) NOT NULL,
+	"profile_id" char(26) NOT NULL,
+	"user_id" char(26) NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone,
-	CONSTRAINT "profile_membership_profile_user_unique" UNIQUE("profile","user")
+	CONSTRAINT "profile_membership_profile_id_user_id_unique" UNIQUE("profile_id","user_id")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "session" (
+	"id" char(26) PRIMARY KEY NOT NULL,
+	"status" text NOT NULL,
+	"oauth_request_state" text NOT NULL,
+	"oauth_request_code_verifier" text NOT NULL,
+	"logged_in_user_id" char(26),
+	"logged_in_at" timestamp with time zone,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"updated_at" timestamp with time zone
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "question" (
 	"id" char(26) PRIMARY KEY NOT NULL,
-	"user" char(26) NOT NULL,
+	"user_id" char(26) NOT NULL,
 	"content" text NOT NULL,
 	"is_hidden" boolean DEFAULT false NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
@@ -51,11 +56,11 @@ CREATE TABLE IF NOT EXISTS "question" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "question_vote" (
 	"id" char(26) PRIMARY KEY NOT NULL,
-	"question" char(26) NOT NULL,
-	"user" char(26) NOT NULL,
+	"question_id" char(26) NOT NULL,
+	"user_id" char(26) NOT NULL,
 	"score" integer NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
-	CONSTRAINT "question_vote_question_user_unique" UNIQUE("question","user")
+	CONSTRAINT "question_vote_question_id_user_id_unique" UNIQUE("question_id","user_id")
 );
 --> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "user_session_user_index" ON "user_session" USING btree ("user");
+CREATE INDEX IF NOT EXISTS "session_logged_in_user_id_index" ON "session" USING btree ("logged_in_user_id");

@@ -16,8 +16,8 @@ export const profileMembershipSchema = pgTable(
       ],
     }).notNull(),
 
-    profile: char("profile", { length: 26 }).notNull(),
-    user: char("user", { length: 26 }).notNull(),
+    profileId: char("profile_id", { length: 26 }).notNull(),
+    userId: char("user_id", { length: 26 }).notNull(),
 
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow()
       .notNull(),
@@ -25,8 +25,8 @@ export const profileMembershipSchema = pgTable(
   },
   (table) => ({
     roleUnq: unique().on(
-      table.profile,
-      table.user,
+      table.profileId,
+      table.userId,
     ),
   }),
 );

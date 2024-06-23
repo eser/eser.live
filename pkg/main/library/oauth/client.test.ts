@@ -13,7 +13,9 @@ import {
   SITE_COOKIE_NAME,
 } from "./client.ts";
 import {
+  deleteSiteSession,
   getAndDeleteOAuthSession,
+  isSiteSession,
   type OAuthSession,
   setOAuthSession,
   setSiteSession,
@@ -49,6 +51,13 @@ const createTestClient = () => {
         scope,
       },
     },
+    hooks: {
+      setOAuthSession: setOAuthSession,
+      getAndDeleteOAuthSession: getAndDeleteOAuthSession,
+      deleteSiteSession: deleteSiteSession,
+      isSiteSession: isSiteSession,
+      setSiteSession: setSiteSession,
+    },
   });
 
   return { clientId, clientSecret, scope, testClient };
@@ -70,6 +79,13 @@ const createTestClientWithRedirectUri = () => {
       defaults: {
         scope,
       },
+    },
+    hooks: {
+      setOAuthSession: setOAuthSession,
+      getAndDeleteOAuthSession: getAndDeleteOAuthSession,
+      deleteSiteSession: deleteSiteSession,
+      isSiteSession: isSiteSession,
+      setSiteSession: setSiteSession,
     },
   });
 
@@ -242,9 +258,7 @@ Deno.test({
     const oauthSessionId = ulid.ulid();
     const oauthSession = randomOAuthSession();
 
-    await setOAuthSession(oauthSessionId, oauthSession, {
-      expireIn: 1_000,
-    });
+    await setOAuthSession(oauthSessionId, oauthSession, 1_000);
 
     const request = new Request("http://example.com", {
       headers: { cookie: `${OAUTH_COOKIE_NAME}=${oauthSessionId}` },
@@ -273,9 +287,7 @@ Deno.test({
     const oauthSessionId = ulid.ulid();
     const oauthSession = randomOAuthSession();
 
-    await setOAuthSession(oauthSessionId, oauthSession, {
-      expireIn: 1_000,
-    });
+    await setOAuthSession(oauthSessionId, oauthSession, 1_000);
 
     const searchParams = new URLSearchParams({
       "response_type": "code",
@@ -331,9 +343,7 @@ Deno.test({
     const oauthSessionId = ulid.ulid();
     const oauthSession = randomOAuthSession();
 
-    await setOAuthSession(oauthSessionId, oauthSession, {
-      expireIn: 1_000,
-    });
+    await setOAuthSession(oauthSessionId, oauthSession, 1_000);
 
     const searchParams = new URLSearchParams({
       "response_type": "code",

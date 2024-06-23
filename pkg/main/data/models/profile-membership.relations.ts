@@ -8,11 +8,11 @@ export const profileMembershipRelations = relations(
   profileMembershipSchema,
   ({ one }) => ({
     profile: one(profileSchema, {
-      fields: [profileMembershipSchema.profile],
+      fields: [profileMembershipSchema.profileId],
       references: [profileSchema.id],
     }),
     user: one(userSchema, {
-      fields: [profileMembershipSchema.user],
+      fields: [profileMembershipSchema.userId],
       references: [userSchema.id],
     }),
   }),

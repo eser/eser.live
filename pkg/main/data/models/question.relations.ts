@@ -7,7 +7,7 @@ export const questionRelations = relations(
   questionSchema,
   ({ one }) => ({
     user: one(userSchema, {
-      fields: [questionSchema.user],
+      fields: [questionSchema.userId],
       references: [userSchema.id],
     }),
   }),

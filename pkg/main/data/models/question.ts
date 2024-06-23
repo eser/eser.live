@@ -6,7 +6,7 @@ export const questionSchema = pgTable(
   {
     id: char("id", { length: 26 }).primaryKey(),
 
-    user: char("user", { length: 26 }).notNull(),
+    userId: char("user_id", { length: 26 }).notNull(),
 
     content: text("content").notNull(),
 

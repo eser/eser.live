@@ -10,16 +10,15 @@ import {
 } from "oauth2-client";
 import { isHttps } from "@/pkg/main/library/http/is-http.ts";
 import { redirect } from "@/pkg/main/library/http/redirect.ts";
-import {
-  deleteSiteSession,
-  getAndDeleteOAuthSession,
-  isSiteSession,
-  setOAuthSession,
-  setSiteSession,
-} from "./_kv.ts";
 
 export const OAUTH_COOKIE_NAME = "oauth-session";
 export const SITE_COOKIE_NAME = "site-session";
+
+export interface OAuthSession {
+  state: string;
+  codeVerifier: string;
+  successUrl: string;
+}
 
 /**
  * Dynamically prefixes the cookie name, depending on whether it's for a secure
@@ -74,6 +73,17 @@ export function getSessionIdCookie(
 export type ClientOptions = {
   oauth: OAuth2ClientConfig;
   cookie?: Partial<httpCookie.Cookie>;
+  hooks: {
+    setOAuthSession: (
+      id: string,
+      value: OAuthSession,
+      expireIn: number,
+    ) => Promise<void>;
+    getAndDeleteOAuthSession: (id: string) => Promise<OAuthSession>;
+    deleteSiteSession: (id: string) => Promise<void>;
+    isSiteSession: (id: string) => Promise<boolean>;
+    setSiteSession: (id: string, expireIn?: number) => Promise<void>;
+  };
 };
 
 export type ClientState = {
@@ -171,9 +181,11 @@ export const Client = class {
     };
     const successUrl = getSuccessUrl(request);
 
-    await setOAuthSession(oauthSessionId, { state, codeVerifier, successUrl }, {
-      expireIn: oauthCookie.maxAge! * datetimeConstants.SECOND,
-    });
+    await this.state.options.hooks.setOAuthSession(oauthSessionId, {
+      state,
+      codeVerifier,
+      successUrl,
+    }, oauthCookie.maxAge! * datetimeConstants.SECOND);
 
     const response = redirect(uri.toString(), httpStatus.STATUS_CODE.Found);
     httpCookie.setCookie(response.headers, oauthCookie);
@@ -195,7 +207,8 @@ export const Client = class {
     if (oauthSessionId === undefined) {
       throw new Error("OAuth cookie not found");
     }
-    const oauthSession = await getAndDeleteOAuthSession(oauthSessionId);
+    const oauthSession = await this.state.options.hooks
+      .getAndDeleteOAuthSession(oauthSessionId);
 
     const tokens = await new OAuth2Client(this.state.options.oauth)
       .code.getToken(request.url, oauthSession);
@@ -213,7 +226,7 @@ export const Client = class {
       ...this.state.options.cookie,
     };
     httpCookie.setCookie(response.headers, siteCookie);
-    await setSiteSession(
+    await this.state.options.hooks.setSiteSession(
       sessionId,
       siteCookie.maxAge
         ? siteCookie.maxAge * datetimeConstants.SECOND
@@ -239,7 +252,7 @@ export const Client = class {
       return response;
     }
 
-    await deleteSiteSession(sessionId);
+    await this.state.options.hooks.deleteSiteSession(sessionId);
 
     const cookieName = this.state.options.cookie?.name ??
       getCookieName(SITE_COOKIE_NAME, isHttps(request.url));
@@ -257,7 +270,8 @@ export const Client = class {
       request,
       this.state.options.cookie?.name,
     );
-    return (sessionId !== undefined && await isSiteSession(sessionId))
+    return (sessionId !== undefined &&
+        await this.state.options.hooks.isSiteSession(sessionId))
       ? sessionId
       : undefined;
   }
