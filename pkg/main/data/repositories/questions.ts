@@ -44,6 +44,8 @@ export class QuestionRepository {
         name: userSchema.name,
         githubHandle: userSchema.githubHandle,
       },
+      createdAt: questionSchema.createdAt,
+      updatedAt: questionSchema.updatedAt,
       scoreSumTotal: sql<
         number
       >`CAST(COALESCE(SUM(${questionVoteSchema.score}), 0) AS INT)`.as(
@@ -90,6 +92,8 @@ export class QuestionRepository {
         name: userSchema.name,
         githubHandle: userSchema.githubHandle,
       },
+      createdAt: questionSchema.createdAt,
+      updatedAt: questionSchema.updatedAt,
       scoreSumTotal: sql<
         number
       >`CAST(COALESCE(SUM(${questionVoteSchema.score}), 0) AS INT)`.as(

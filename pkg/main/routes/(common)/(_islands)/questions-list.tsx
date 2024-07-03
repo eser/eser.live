@@ -1,5 +1,5 @@
 // Copyright 2024-present the Deno authors. All rights reserved. MIT license.
-import * as ulid from "@std/ulid";
+import * as datetime from "@std/datetime";
 import { Signal, useComputed, useSignal } from "@preact/signals";
 import { useEffect } from "preact/hooks";
 import IconInfo from "tabler_icons_tsx/info-circle.tsx";
@@ -146,6 +146,8 @@ function QuestionSummary(props: QuestionSummaryProps) {
   const isVotedSig = useSignal(props.question.scoreSumUser > 0);
   const isHiddenSig = useSignal(false); // props.question.isHidden
 
+  const date = new Date(props.question.updatedAt ?? props.question.createdAt);
+
   return (
     <div class="py-2 flex gap-4">
       <div class="pr-2 text-center flex flex-col justify-center">
@@ -169,7 +171,9 @@ function QuestionSummary(props: QuestionSummaryProps) {
           />
           <UserProfileLink user={props.question.user ?? undefined} />
           {" - "}
-          {timeAgo(new Date(ulid.decodeTime(props.question.id)))}
+          <span title={datetime.format(date, "yyyy-MM-dd HH:mm:ss")}>
+            {timeAgo(date)}
+          </span>
           {props.isEditor === true
             ? (
               <>
