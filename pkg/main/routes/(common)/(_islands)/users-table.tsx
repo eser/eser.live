@@ -2,21 +2,25 @@
 import { useSignal } from "@preact/signals";
 import { useEffect } from "preact/hooks";
 import { type User } from "@/pkg/main/data/models/user.ts";
-import { GitHubAvatarImg } from "@/pkg/main/routes/(common)/(_components)/github-avatar-img.tsx";
+import { UserProfilePicture } from "@/pkg/main/routes/(common)/(_components)/user-profile-picture.tsx";
 
 const TH_STYLES = "p-4 text-left";
 const TD_STYLES = "p-4";
 
-function UserTableRow(props: User) {
+interface UserTableRowProps {
+  user: User;
+}
+
+function UserTableRow(props: UserTableRowProps) {
   return (
     <tr class="hover:bg-gray-50 hover:dark:bg-gray-900 border-b border-gray-200">
       <td scope="col" class={TD_STYLES}>
-        <GitHubAvatarImg login={props.githubHandle!} size={32} />
+        <UserProfilePicture user={props.user ?? undefined} size={32} />
         <a
           class="hover:underline ml-4 align-middle"
-          href={`/dash/users/${props.id}`}
+          href={`/dash/users/${props.user.id}`}
         >
-          {props.name}
+          {props.user.name}
         </a>
       </td>
     </tr>
@@ -70,7 +74,7 @@ export function UsersTable(props: UsersTableProps) {
           </tr>
         </thead>
         <tbody>
-          {usersSig.value.map((user) => <UserTableRow {...user} />)}
+          {usersSig.value.map((user) => <UserTableRow user={user} />)}
         </tbody>
       </table>
       {cursorSig.value !== "" && (

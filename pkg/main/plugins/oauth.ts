@@ -4,7 +4,7 @@ import { type Plugin } from "$fresh/server.ts";
 import * as oauth from "@/pkg/main/library/oauth/mod.ts";
 import * as users from "@/pkg/main/data/repositories/users.ts";
 import * as sessions from "@/pkg/main/data/repositories/sessions.ts";
-import { getGitHubUser } from "@/pkg/main/services/github.ts";
+import * as github from "@/pkg/main/services/github.ts";
 
 export async function getSession(
   id: string,
@@ -51,17 +51,18 @@ export const onLoginCallback = async (
   expiresAt: Date,
   tokens: oauth.Tokens,
 ) => {
-  const githubUser = await getGitHubUser(tokens.accessToken);
-  let user = await users.userRepository.findByGitHubHandle(githubUser.login);
+  const githubUser = await github.getGitHubUser(tokens.accessToken);
+  let user = await users.userRepository.findByGitHubRemoteId(githubUser.id);
 
   if (user === undefined) {
-    user = await users.userRepository.upsertByGithubHandle({
+    user = await users.userRepository.upsertByGithubRemoteId({
       id: ulid.ulid(),
       kind: "regular",
 
       name: githubUser.name,
       email: githubUser.email,
       phone: null,
+      githubRemoteId: githubUser.id,
       githubHandle: githubUser.login,
       xHandle: githubUser.twitter_username,
     });

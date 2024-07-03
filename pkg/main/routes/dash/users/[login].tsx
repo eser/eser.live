@@ -1,28 +1,30 @@
 // Copyright 2024-present the Deno authors. All rights reserved. MIT license.
 import IconBrandGithub from "tabler_icons_tsx/brand-github-filled.tsx";
 import { defineRoute } from "$fresh/server.ts";
-import { userRepository } from "@/pkg/main/data/repositories/users.ts";
+import {
+  type User,
+  userRepository,
+} from "@/pkg/main/data/repositories/users.ts";
 import { type State } from "@/pkg/main/plugins/session.ts";
 import { Head } from "@/pkg/main/routes/(common)/(_components)/head.tsx";
-import { GitHubAvatarImg } from "@/pkg/main/routes/(common)/(_components)/github-avatar-img.tsx";
+import { UserProfilePicture } from "@/pkg/main/routes/(common)/(_components)/user-profile-picture.tsx";
 import { QuestionsList } from "@/pkg/main/routes/(common)/(_islands)/questions-list.tsx";
 
 interface UserProfileProps {
-  name?: string;
-  githubHandle?: string | null;
+  user: User;
 }
 
 function UserProfile(props: UserProfileProps) {
   return (
     <div class="flex flex-col items-center w-[16rem]">
-      <GitHubAvatarImg login={props.githubHandle!} size={200} />
+      <UserProfilePicture user={props.user} size={200} />
       <div class="flex gap-x-2 px-4 mt-4 items-center">
         <div class="font-semibold text-xl">
-          {props.name}
+          {props.user.name}
         </div>
         <a
-          href={`https://github.com/${props.githubHandle}`}
-          aria-label={`${props.name}'s GitHub profile`}
+          href={`https://github.com/${props.user.githubHandle}`}
+          aria-label={`${props.user.name}'s GitHub profile`}
           class="text-slate-500 transition duration-100 hover:text-black hover:dark:text-white"
           target="_blank"
         >
@@ -38,7 +40,7 @@ export default defineRoute<State>(
     const { login } = ctx.params;
     const user = await userRepository.findById(login);
 
-    if (user === null) {
+    if (user === undefined) {
       return await ctx.renderNotFound();
     }
 
@@ -66,7 +68,7 @@ export default defineRoute<State>(
         <main>
           <div class="content-area">
             <div class="flex justify-center p-4">
-              <UserProfile {...user} />
+              <UserProfile user={user} />
             </div>
             <QuestionsList
               endpoint={endpoint}

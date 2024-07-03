@@ -4,7 +4,8 @@ import { Signal, useComputed, useSignal } from "@preact/signals";
 import { useEffect } from "preact/hooks";
 import IconInfo from "tabler_icons_tsx/info-circle.tsx";
 import IconMessageCircleQuestion from "tabler_icons_tsx/message-circle-question.tsx";
-import { GitHubAvatarImg } from "@/pkg/main/routes/(common)/(_components)/github-avatar-img.tsx";
+import { UserProfilePicture } from "@/pkg/main/routes/(common)/(_components)/user-profile-picture.tsx";
+import { UserProfileLink } from "@/pkg/main/routes/(common)/(_components)/user-profile-link.tsx";
 import { questionRepository } from "@/pkg/main/data/repositories/questions.ts";
 import { timeAgo } from "@/pkg/main/library/display/time-ago.ts";
 
@@ -161,17 +162,12 @@ function QuestionSummary(props: QuestionSummaryProps) {
           {props.question.content}
         </p>
         <p class="text-slate-500">
-          <GitHubAvatarImg
-            login={props.question.user!.githubHandle!}
+          <UserProfilePicture
+            user={props.question.user ?? undefined}
             size={24}
             class="mr-2"
           />
-          <a
-            class="hover:underline"
-            href={`/dash/users/${props.question.user!.id}`}
-          >
-            {props.question.user!.name}
-          </a>
+          <UserProfileLink user={props.question.user ?? undefined} />
           {" - "}
           {timeAgo(new Date(ulid.decodeTime(props.question.id)))}
           {props.isEditor === true

@@ -27,7 +27,30 @@ type GitHubUser = {
  */
 export const getGitHubUser = async (accessToken: string) => {
   const resp = await fetch("https://api.github.com/user", {
-    headers: { authorization: `Bearer ${accessToken}` },
+    headers: {
+      authorization: `Bearer ${accessToken}`,
+      accept: "application/vnd.github+json",
+    },
+  });
+
+  if (!resp.ok) {
+    const { message } = await resp.json();
+
+    throw new BadRequestError(message);
+  }
+
+  return await resp.json() as Promise<GitHubUser>;
+};
+
+export const getGitHubUserByLogin = async (
+  accessToken: string,
+  login: string,
+) => {
+  const resp = await fetch(`https://api.github.com/users/${login}`, {
+    headers: {
+      authorization: `Bearer ${accessToken}`,
+      accept: "application/vnd.github+json",
+    },
   });
 
   if (!resp.ok) {

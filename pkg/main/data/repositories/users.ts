@@ -35,6 +35,18 @@ export class UserRepository {
     return result;
   }
 
+  async findByGitHubRemoteId(gitHubRemoteId: string) {
+    const result = await db.query.userSchema
+      .findFirst({
+        where: and(
+          eq(userSchema.githubRemoteId, gitHubRemoteId),
+          isNull(userSchema.deletedAt),
+        ),
+      });
+
+    return result;
+  }
+
   async findByGitHubHandle(gitHubHandle: string) {
     const result = await db.query.userSchema
       .findFirst({
@@ -50,6 +62,19 @@ export class UserRepository {
   async create(user: UserPartial) {
     const [result] = await db.insert(userSchema)
       .values(user)
+      .returning();
+
+    return result;
+  }
+
+  async upsertByGithubRemoteId(user: UserPartial) {
+    const [result] = await db.insert(userSchema)
+      .values(user)
+      .onConflictDoUpdate({
+        target: userSchema.githubRemoteId,
+        targetWhere: isNull(userSchema.deletedAt),
+        set: { ...user, updatedAt: new Date() },
+      })
       .returning();
 
     return result;

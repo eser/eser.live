@@ -4,7 +4,7 @@ import { Partial } from "$fresh/runtime.ts";
 import { type LoggedInState } from "@/pkg/main/plugins/session.ts";
 import { Head } from "@/pkg/main/routes/(common)/(_components)/head.tsx";
 import { TabsBar } from "@/pkg/main/routes/(common)/(_components)/tabs-bar.tsx";
-import { GitHubAvatarImg } from "@/pkg/main/routes/(common)/(_components)/github-avatar-img.tsx";
+import { UserProfilePicture } from "@/pkg/main/routes/(common)/(_components)/user-profile-picture.tsx";
 
 export default defineRoute<LoggedInState>((_req, ctx) => {
   return (
@@ -35,8 +35,8 @@ export default defineRoute<LoggedInState>((_req, ctx) => {
           />
           <Partial name="account">
             <div>
-              <GitHubAvatarImg
-                login={ctx.state.sessionUser.githubHandle!}
+              <UserProfilePicture
+                user={ctx.state.sessionUser}
                 size={240}
                 class="mx-auto"
               />
