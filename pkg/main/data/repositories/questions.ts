@@ -58,6 +58,12 @@ export class QuestionRepository {
         questionVoteSchema,
         eq(questionSchema.id, questionVoteSchema.questionId),
       )
+      .where(
+        and(
+          eq(questionSchema.isHidden, false),
+          isNull(questionSchema.deletedAt),
+        ),
+      )
       .groupBy(
         questionSchema.id,
         questionSchema.content,
@@ -99,7 +105,11 @@ export class QuestionRepository {
         eq(questionSchema.id, questionVoteSchema.questionId),
       )
       .where(
-        eq(questionSchema.userId, userId),
+        and(
+          eq(questionSchema.userId, userId),
+          eq(questionSchema.isHidden, false),
+          isNull(questionSchema.deletedAt),
+        ),
       )
       .groupBy(
         questionSchema.id,

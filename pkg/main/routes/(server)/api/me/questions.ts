@@ -5,7 +5,8 @@ import { questionRepository } from "@/pkg/main/data/repositories/questions.ts";
 
 export const handler: Handlers<undefined, LoggedInState> = {
   async GET(_req, ctx) {
-    const items = await questionRepository.findAllByUserId(
+    const items = await questionRepository.findAllByUserIdWithScores(
+      ctx.state.sessionUser.id,
       ctx.state.sessionUser.id,
     );
 
