@@ -9,8 +9,8 @@ import * as $_server_api_questions_id_ from "./routes/(server)/api/questions/[id
 import * as $_server_api_questions_hide from "./routes/(server)/api/questions/hide.ts";
 import * as $_server_api_questions_index from "./routes/(server)/api/questions/index.ts";
 import * as $_server_api_questions_vote from "./routes/(server)/api/questions/vote.ts";
-import * as $_server_api_users_login_index from "./routes/(server)/api/users/[login]/index.ts";
-import * as $_server_api_users_login_questions from "./routes/(server)/api/users/[login]/questions.ts";
+import * as $_server_api_users_id_index from "./routes/(server)/api/users/[id]/index.ts";
+import * as $_server_api_users_id_questions from "./routes/(server)/api/users/[id]/questions.ts";
 import * as $_server_api_users_index from "./routes/(server)/api/users/index.ts";
 import * as $_404 from "./routes/_404.tsx";
 import * as $_500 from "./routes/_500.tsx";
@@ -23,7 +23,7 @@ import * as $community_index from "./routes/community/index.tsx";
 import * as $cookbook_index from "./routes/cookbook/index.tsx";
 import * as $dash_index from "./routes/dash/index.tsx";
 import * as $dash_stats from "./routes/dash/stats.tsx";
-import * as $dash_users_login_ from "./routes/dash/users/[login].tsx";
+import * as $dash_users_id_ from "./routes/dash/users/[id].tsx";
 import * as $dash_users_index from "./routes/dash/users/index.tsx";
 import * as $index from "./routes/index.tsx";
 import * as $projects_index from "./routes/projects/index.tsx";
@@ -47,10 +47,9 @@ const manifest = {
     "./routes/(server)/api/questions/hide.ts": $_server_api_questions_hide,
     "./routes/(server)/api/questions/index.ts": $_server_api_questions_index,
     "./routes/(server)/api/questions/vote.ts": $_server_api_questions_vote,
-    "./routes/(server)/api/users/[login]/index.ts":
-      $_server_api_users_login_index,
-    "./routes/(server)/api/users/[login]/questions.ts":
-      $_server_api_users_login_questions,
+    "./routes/(server)/api/users/[id]/index.ts": $_server_api_users_id_index,
+    "./routes/(server)/api/users/[id]/questions.ts":
+      $_server_api_users_id_questions,
     "./routes/(server)/api/users/index.ts": $_server_api_users_index,
     "./routes/_404.tsx": $_404,
     "./routes/_500.tsx": $_500,
@@ -63,7 +62,7 @@ const manifest = {
     "./routes/cookbook/index.tsx": $cookbook_index,
     "./routes/dash/index.tsx": $dash_index,
     "./routes/dash/stats.tsx": $dash_stats,
-    "./routes/dash/users/[login].tsx": $dash_users_login_,
+    "./routes/dash/users/[id].tsx": $dash_users_id_,
     "./routes/dash/users/index.tsx": $dash_users_index,
     "./routes/index.tsx": $index,
     "./routes/projects/index.tsx": $projects_index,

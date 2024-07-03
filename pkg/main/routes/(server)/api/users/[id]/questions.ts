@@ -6,14 +6,15 @@ import { questionRepository } from "@/pkg/main/data/repositories/questions.ts";
 
 export const handler: Handlers<undefined, LoggedInState> = {
   async GET(_req, ctx) {
-    const user = await userRepository.findByGitHubHandle(ctx.params.login);
+    const user = await userRepository.findById(ctx.params.id);
 
     if (user === undefined) {
       throw new Deno.errors.NotFound("User not found");
     }
 
-    const items = await questionRepository.findAllByUserId(
+    const items = await questionRepository.findAllByUserIdWithScores(
       user.id,
+      ctx.state.sessionUser?.id,
     );
 
     return Response.json({

@@ -29,11 +29,11 @@ export class QuestionRepository {
     return result;
   }
 
-  async findAllWithScores(userId?: string) {
-    const scoreSumUserCalculation = userId !== undefined
+  async findAllWithScores(viewingUserId?: string) {
+    const scoreSumUserCalculation = viewingUserId !== undefined
       ? sql<
         number
-      >`CAST(SUM(CASE WHEN ${questionVoteSchema.userId} = ${userId} THEN ${questionVoteSchema.score} ELSE 0 END) AS INT)`
+      >`CAST(SUM(CASE WHEN ${questionVoteSchema.userId} = ${viewingUserId} THEN ${questionVoteSchema.score} ELSE 0 END) AS INT)`
       : sql<number>`CAST(0 AS INT)`;
 
     const result = await db.select({
@@ -57,6 +57,49 @@ export class QuestionRepository {
       .leftJoin(
         questionVoteSchema,
         eq(questionSchema.id, questionVoteSchema.questionId),
+      )
+      .groupBy(
+        questionSchema.id,
+        questionSchema.content,
+        userSchema.id,
+        userSchema.name,
+        userSchema.githubHandle,
+      );
+
+    return result;
+  }
+
+  async findAllByUserIdWithScores(userId: string, viewingUserId?: string) {
+    const scoreSumUserCalculation = viewingUserId !== undefined
+      ? sql<
+        number
+      >`CAST(SUM(CASE WHEN ${questionVoteSchema.userId} = ${viewingUserId} THEN ${questionVoteSchema.score} ELSE 0 END) AS INT)`
+      : sql<number>`CAST(0 AS INT)`;
+
+    const result = await db.select({
+      id: questionSchema.id,
+      content: questionSchema.content,
+      user: {
+        id: userSchema.id,
+        name: userSchema.name,
+        githubHandle: userSchema.githubHandle,
+      },
+      scoreSumTotal: sql<
+        number
+      >`CAST(COALESCE(SUM(${questionVoteSchema.score}), 0) AS INT)`.as(
+        "total_score_sum",
+      ),
+      scoreSumUser: scoreSumUserCalculation
+        .as("user_score_sum"),
+    })
+      .from(questionSchema)
+      .leftJoin(userSchema, eq(questionSchema.userId, userSchema.id))
+      .leftJoin(
+        questionVoteSchema,
+        eq(questionSchema.id, questionVoteSchema.questionId),
+      )
+      .where(
+        eq(questionSchema.userId, userId),
       )
       .groupBy(
         questionSchema.id,

@@ -37,15 +37,15 @@ function UserProfile(props: UserProfileProps) {
 
 export default defineRoute<State>(
   async (_req, ctx) => {
-    const { login } = ctx.params;
-    const user = await userRepository.findById(login);
+    const id = ctx.params.id;
+    const user = await userRepository.findById(id);
 
     if (user === undefined) {
       return await ctx.renderNotFound();
     }
 
     const isLoggedIn = ctx.state.sessionUser !== undefined;
-    const endpoint = `/api/users/${login}/questions`;
+    const endpoint = `/api/users/${id}/questions`;
 
     return (
       <>
