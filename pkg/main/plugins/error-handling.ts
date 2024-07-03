@@ -35,7 +35,7 @@ export function toErrorStatus(error: Error) {
   return httpStatus.STATUS_CODE.InternalServerError;
 }
 
-export default {
+export const errorHandlingPlugin: Plugin<State> = {
   name: "error-handling",
   middlewares: [
     {
@@ -70,4 +70,4 @@ export default {
       },
     },
   ],
-} as Plugin<State>;
+};

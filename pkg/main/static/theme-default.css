@@ -5,7 +5,7 @@
 
 .theme-variables-light {
   --p: 96.24% 0.043 156.74;         /* primary */
-  --pc: 0% 0.037 257.28;         /* primary content */
+  --pc: 0% 0.037 257.28;            /* primary content */
 
   --s: 69.71% 0.329 342.55;         /* secondary */
   --sc: 98.71% 0.0106 342.55;       /* secondary content */
@@ -39,8 +39,8 @@
 }
 
 .theme-variables-dark {
-  --p: 0% 0 156.74;                 /* primary */
-  --pc: 100% 0.037 257.28;          /* primary content */
+  --p: 31.38% 0.021 254.14;         /* primary */
+  --pc: 74.65% 0.022 264.44;        /* primary content */
 
   --s: 74.8% 0.26 342.55;           /* secondary */
   --sc: 98.71% 0.0106 342.55;       /* secondary content */

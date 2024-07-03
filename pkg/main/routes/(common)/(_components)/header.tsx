@@ -3,7 +3,7 @@
 // import {
 //   SITE_NAME,
 // } from "@/pkg/main/constants.ts";
-import { type User } from "@/pkg/main/services/users.ts";
+import { type User } from "@/pkg/main/data/models/user.ts";
 // import IconSearch from "tabler_icons_tsx/search.tsx";
 import IconBrandYouTube from "tabler_icons_tsx/brand-youtube-filled.tsx";
 // import IconMenu from "tabler_icons_tsx/menu-2.tsx";
@@ -164,8 +164,8 @@ export function Header(props: HeaderProps) {
                 >
                   <div class="w-10 rounded-full">
                     <img
-                      alt={`${props.sessionUser.login} profile picture`}
-                      src={`https://github.com/${props.sessionUser.login}.png?size=200`}
+                      alt={`${props.sessionUser.name} profile picture`}
+                      src={`https://github.com/${props.sessionUser.githubHandle}.png?size=200`}
                     />
                   </div>
                 </div>

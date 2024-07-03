@@ -11,7 +11,7 @@ import {
   type LoggedInState,
   type State,
 } from "@/pkg/main/plugins/session.ts";
-import { createQuestion } from "@/pkg/main/services/questions.ts";
+import { questionRepository } from "@/pkg/main/data/repositories/questions.ts";
 import { redirect } from "@/pkg/main/library/http/redirect.ts";
 
 export const handler: Handlers<undefined, LoggedInState> = {
@@ -27,13 +27,13 @@ export const handler: Handlers<undefined, LoggedInState> = {
       return redirect("/qa/ask?error");
     }
 
-    await createQuestion({
+    await questionRepository.create({
       id: ulid.ulid(),
-      userLogin: ctx.state.sessionUser.login,
-      question,
-      score: 0,
-      hidden: false,
+      userId: ctx.state.sessionUser.id,
+      content: question,
+      isHidden: false,
     });
+
     return redirect("/qa");
   },
 };
@@ -102,8 +102,9 @@ export default defineRoute<State>((_req, ctx) => {
             </div>
 
             {ctx.url.searchParams.has("error") && (
-              <div class="w-full text-red-500 mt-4">
-                <IconInfo class="inline-block" /> Question body is required
+              <div class="w-full text-error mt-4 flex align-center">
+                <IconInfo class="inline-block mr-2" />
+                Soru için bir metin girmelisiniz.
               </div>
             )}
             <div class="my-10 flex flex-row gap-6 justify-center md:justify-end">
@@ -115,7 +116,7 @@ export default defineRoute<State>((_req, ctx) => {
                   </a>
                 )
                 : (
-                  <button class="btn btn-primary">
+                  <button class="border-0 btn btn-primary">
                     <IconMailForward class="h-6 w-6" />
                     Soruyu gönder &#8250;
                   </button>

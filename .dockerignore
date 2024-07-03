@@ -10,7 +10,7 @@ temp/
 .pre-commit-config.yaml
 CODEOWNERS
 CONTRIBUTING.md
-docker-compose.yml
+compose.yml
 Dockerfile
 LICENSE
 README.md

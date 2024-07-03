@@ -1,9 +1,8 @@
 // Copyright 2024-present the Deno authors. All rights reserved. MIT license.
 import { useSignal } from "@preact/signals";
 import { useEffect } from "preact/hooks";
-import { type User } from "@/pkg/main/services/users.ts";
+import { type User } from "@/pkg/main/data/models/user.ts";
 import { GitHubAvatarImg } from "@/pkg/main/routes/(common)/(_components)/github-avatar-img.tsx";
-import { fetchValues } from "@/pkg/main/library/http/fetch-values.ts";
 
 const TH_STYLES = "p-4 text-left";
 const TD_STYLES = "p-4";
@@ -12,12 +11,12 @@ function UserTableRow(props: User) {
   return (
     <tr class="hover:bg-gray-50 hover:dark:bg-gray-900 border-b border-gray-200">
       <td scope="col" class={TD_STYLES}>
-        <GitHubAvatarImg login={props.login} size={32} />
+        <GitHubAvatarImg login={props.githubHandle!} size={32} />
         <a
           class="hover:underline ml-4 align-middle"
-          href={`/dash/users/${props.login}`}
+          href={`/dash/users/${props.id}`}
         >
-          {props.login}
+          {props.name}
         </a>
       </td>
     </tr>
@@ -42,10 +41,12 @@ export function UsersTable(props: UsersTableProps) {
     isLoadingSig.value = true;
 
     try {
-      const { items, cursor } = await fetchValues<User>(
-        props.endpoint,
-        cursorSig.value,
-      );
+      const resp = await fetch(props.endpoint);
+      if (!resp.ok) {
+        throw new Error(`Request failed: GET ${props.endpoint}`);
+      }
+
+      const { items, cursor } = await resp.json();
 
       usersSig.value = [...usersSig.value, ...items];
       cursorSig.value = cursor;

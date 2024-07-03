@@ -1,27 +1,28 @@
 // Copyright 2024-present the Deno authors. All rights reserved. MIT license.
 import IconBrandGithub from "tabler_icons_tsx/brand-github-filled.tsx";
 import { defineRoute } from "$fresh/server.ts";
+import { userRepository } from "@/pkg/main/data/repositories/users.ts";
 import { type State } from "@/pkg/main/plugins/session.ts";
 import { Head } from "@/pkg/main/routes/(common)/(_components)/head.tsx";
 import { GitHubAvatarImg } from "@/pkg/main/routes/(common)/(_components)/github-avatar-img.tsx";
 import { QuestionsList } from "@/pkg/main/routes/(common)/(_islands)/questions-list.tsx";
-import { getUser } from "@/pkg/main/services/users.ts";
 
 interface UserProfileProps {
-  login: string;
+  name?: string;
+  githubHandle?: string | null;
 }
 
 function UserProfile(props: UserProfileProps) {
   return (
     <div class="flex flex-col items-center w-[16rem]">
-      <GitHubAvatarImg login={props.login} size={200} />
+      <GitHubAvatarImg login={props.githubHandle!} size={200} />
       <div class="flex gap-x-2 px-4 mt-4 items-center">
         <div class="font-semibold text-xl">
-          {props.login}
+          {props.name}
         </div>
         <a
-          href={`https://github.com/${props.login}`}
-          aria-label={`${props.login}'s GitHub profile`}
+          href={`https://github.com/${props.githubHandle}`}
+          aria-label={`${props.name}'s GitHub profile`}
           class="text-slate-500 transition duration-100 hover:text-black hover:dark:text-white"
           target="_blank"
         >
@@ -35,7 +36,7 @@ function UserProfile(props: UserProfileProps) {
 export default defineRoute<State>(
   async (_req, ctx) => {
     const { login } = ctx.params;
-    const user = await getUser(login);
+    const user = await userRepository.findById(login);
 
     if (user === null) {
       return await ctx.renderNotFound();
@@ -46,7 +47,7 @@ export default defineRoute<State>(
 
     return (
       <>
-        <Head title={`Kullanıcı: ${user.login}`} href={ctx.url.href}>
+        <Head title={`Kullanıcı: ${user!.name}`} href={ctx.url.href}>
           <link
             as="fetch"
             crossOrigin="anonymous"

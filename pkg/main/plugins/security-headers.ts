@@ -1,7 +1,7 @@
 // Copyright 2024-present the Deno authors. All rights reserved. MIT license.
 import { type Plugin } from "$fresh/server.ts";
 
-export default {
+export const securityHeadersPlugin: Plugin = {
   name: "security-headers",
   middlewares: [
     {
@@ -36,4 +36,4 @@ export default {
       },
     },
   ],
-} as Plugin;
+};

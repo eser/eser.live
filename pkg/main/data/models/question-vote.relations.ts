@@ -7,7 +7,7 @@ import { userSchema } from "./user.ts";
 export const questionVoteRelations = relations(
   questionVoteSchema,
   ({ one }) => ({
-    profile: one(questionSchema, {
+    question: one(questionSchema, {
       fields: [questionVoteSchema.questionId],
       references: [questionSchema.id],
     }),

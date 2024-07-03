@@ -1,8 +1,9 @@
 // Copyright 2024-present the Deno authors. All rights reserved. MIT license.
 import { type FreshContext, Plugin } from "$fresh/server.ts";
-import { getUserBySession, type User } from "@/pkg/main/services/users.ts";
+import { type User } from "@/pkg/main/data/models/user.ts";
+import * as sessions from "@/pkg/main/data/repositories/sessions.ts";
 import { UnauthorizedError } from "@/pkg/main/library/http/unauthorized-error.ts";
-import { oauthClient } from "./kv-oauth.ts";
+import { oauthClient } from "./oauth.ts";
 
 export interface State {
   sessionUser?: User;
@@ -63,20 +64,20 @@ async function setSessionState(
     ctx.state[key] = value;
   }
 
-  const sessionId = await oauthClient.getSessionId(req);
+  const sessionId = oauthClient.getSessionId(req);
   if (sessionId === undefined) {
     return await ctx.next();
   }
 
-  const user = await getUserBySession(sessionId);
-  if (user === null) {
+  const session = await sessions.sessionRepository.findById(sessionId);
+  if (session === null) {
     return await ctx.next();
   }
 
-  ctx.state.sessionUser = user;
+  ctx.state.sessionUser = session?.user ?? undefined;
+  const kind = ctx.state.sessionUser?.kind ?? "none";
 
-  const editors = getEnv("EDITOR_LOGINS", "").split(",");
-  if (editors.includes(user.login)) {
+  if (["editor", "admin"].includes(kind)) {
     ctx.state.isEditor = true;
   }
 
@@ -115,7 +116,7 @@ async function ensureIsEditor(
  * @see {@link https://fresh.deno.dev/docs/concepts/plugins|Plugins documentation}
  * for more information on Fresh's plugin functionality.
  */
-export default {
+export const sessionPlugin: Plugin<State> = {
   name: "session",
   middlewares: [
     {
@@ -139,4 +140,4 @@ export default {
       middleware: { handler: ensureIsEditor },
     },
   ],
-} as Plugin<State>;
+};

@@ -16,5 +16,9 @@ import config from "../../drizzle.config.ts";
  * deno task db:migrate
  * ```
  */
-await migrate(db, { migrationsFolder: config.out ?? "./drizzle" });
-await postgresClient.end();
+const main = async () => {
+  await migrate(db, { migrationsFolder: config.out ?? "./drizzle" });
+  await postgresClient.end();
+};
+
+main();

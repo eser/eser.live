@@ -11,13 +11,20 @@ import {
 import { isHttps } from "@/pkg/main/library/http/is-http.ts";
 import { redirect } from "@/pkg/main/library/http/redirect.ts";
 
-export const OAUTH_COOKIE_NAME = "oauth-session";
+export { type Tokens } from "oauth2-client";
 export const SITE_COOKIE_NAME = "site-session";
 
-export interface OAuthSession {
+export interface Session {
+  id: string;
+  status: "active" | "logged_out" | "expired" | "revoked" | "login_requested";
+
   state: string;
   codeVerifier: string;
-  successUrl: string;
+  redirectUri?: string;
+
+  loggedInUserId?: string;
+  loggedInAt?: Date;
+  expiresAt?: Date;
 }
 
 /**
@@ -25,7 +32,7 @@ export interface OAuthSession {
  * origin (HTTPS).
  */
 export function getCookieName(name: string, isHttps: boolean): string {
-  return isHttps ? "__Host-" + name : name;
+  return isHttps ? `__Host-${name}` : name;
 }
 
 /**
@@ -42,15 +49,12 @@ export const COOKIE_BASE = {
   Pick<httpCookie.Cookie, "path" | "httpOnly" | "maxAge" | "sameSite">
 >;
 
-/**
- * @see {@link https://deno.land/x/deno_kv_oauth@v0.9.0#redirects-after-sign-in-and-sign-out}
- */
-export function getSuccessUrl(request: Request): string {
+export function getSuccessUri(request: Request): string {
   const url = new URL(request.url);
 
-  const successUrl = url.searchParams.get("success_url");
-  if (successUrl !== null) {
-    return successUrl;
+  const successUri = url.searchParams.get("successUri");
+  if (successUri !== null) {
+    return successUri;
   }
 
   const referrer = request.headers.get("referer");
@@ -61,28 +65,20 @@ export function getSuccessUrl(request: Request): string {
   return "/";
 }
 
-export function getSessionIdCookie(
-  request: Request,
-  cookieName = getCookieName(SITE_COOKIE_NAME, isHttps(request.url)),
-): string | undefined {
-  return httpCookie.getCookies(request.headers)[cookieName];
-}
-
 // client
 
 export type ClientOptions = {
   oauth: OAuth2ClientConfig;
   cookie?: Partial<httpCookie.Cookie>;
   hooks: {
-    setOAuthSession: (
+    getSession: (id: string) => Promise<Session | undefined>;
+    onLoginRequested: (session: Session) => Promise<void>;
+    onLoginCallback: (
       id: string,
-      value: OAuthSession,
-      expireIn: number,
+      expiresAt: Date,
+      tokens: Tokens,
     ) => Promise<void>;
-    getAndDeleteOAuthSession: (id: string) => Promise<OAuthSession>;
-    deleteSiteSession: (id: string) => Promise<void>;
-    isSiteSession: (id: string) => Promise<boolean>;
-    setSiteSession: (id: string, expireIn?: number) => Promise<void>;
+    onLogout: (id: string) => Promise<void>;
   };
 };
 
@@ -149,15 +145,33 @@ export const Client = class {
     this.state = state;
   }
 
+  getSessionCookie(
+    request: Request,
+    defaultCookieName?: string,
+  ): { cookieName: string; sessionId: string | undefined } {
+    const cookies = httpCookie.getCookies(request.headers);
+    const cookieName = defaultCookieName ?? this.state.options.cookie?.name ??
+      getCookieName(SITE_COOKIE_NAME, isHttps(request.url));
+
+    const sessionId = cookies[cookieName];
+
+    return {
+      cookieName,
+      sessionId,
+    };
+  }
+
   async signIn(
     request: Request,
     urlParams?: Record<string, string>,
   ): Promise<Response> {
+    const sessionId = ulid.ulid();
     const state = ulid.ulid();
-    const { uri, codeVerifier } = await new OAuth2Client(
-      this.state.options.oauth,
-    )
-      .code.getAuthorizationUri({ state });
+
+    const oauthClient = new OAuth2Client(this.state.options.oauth);
+    const { uri, codeVerifier } = await oauthClient.code.getAuthorizationUri({
+      state,
+    });
 
     if (urlParams !== undefined) {
       for (const [key, value] of Object.entries(urlParams)) {
@@ -165,12 +179,12 @@ export const Client = class {
       }
     }
 
-    const oauthSessionId = ulid.ulid();
-    const oauthCookie: httpCookie.Cookie = {
+    const siteCookie: httpCookie.Cookie = {
       ...COOKIE_BASE,
-      name: getCookieName(OAUTH_COOKIE_NAME, isHttps(request.url)),
-      value: oauthSessionId,
+      name: getCookieName(SITE_COOKIE_NAME, isHttps(request.url)),
+      value: sessionId,
       secure: isHttps(request.url),
+      ...this.state.options.cookie,
       /**
        * A maximum authorization code lifetime of 10 minutes is recommended.
        * This cookie lifetime matches that value.
@@ -179,83 +193,87 @@ export const Client = class {
        */
       maxAge: 10 * 60,
     };
-    const successUrl = getSuccessUrl(request);
 
-    await this.state.options.hooks.setOAuthSession(oauthSessionId, {
-      state,
-      codeVerifier,
-      successUrl,
-    }, oauthCookie.maxAge! * datetimeConstants.SECOND);
+    const expiresAt = new Date();
+    expiresAt.setSeconds(
+      expiresAt.getSeconds() + (siteCookie.maxAge! * datetimeConstants.SECOND),
+    );
+
+    const session: Session = {
+      id: sessionId,
+      status: "login_requested",
+
+      state: state,
+      codeVerifier: codeVerifier,
+      redirectUri: getSuccessUri(request),
+
+      expiresAt: expiresAt,
+    };
+
+    await this.state.options.hooks.onLoginRequested(session);
 
     const response = redirect(uri.toString(), httpStatus.STATUS_CODE.Found);
-    httpCookie.setCookie(response.headers, oauthCookie);
+    httpCookie.setCookie(response.headers, siteCookie);
 
     return response;
   }
 
-  async handleCallback(request: Request): Promise<{
-    response: Response;
-    sessionId: string;
-    tokens: Tokens;
-  }> {
-    const oauthCookieName = getCookieName(
-      OAUTH_COOKIE_NAME,
-      isHttps(request.url),
-    );
-    const oauthSessionId =
-      httpCookie.getCookies(request.headers)[oauthCookieName];
-    if (oauthSessionId === undefined) {
+  async handleCallback(request: Request): Promise<Response> {
+    const { cookieName, sessionId } = this.getSessionCookie(request);
+
+    if (sessionId === undefined) {
       throw new Error("OAuth cookie not found");
     }
-    const oauthSession = await this.state.options.hooks
-      .getAndDeleteOAuthSession(oauthSessionId);
 
-    const tokens = await new OAuth2Client(this.state.options.oauth)
-      .code.getToken(request.url, oauthSession);
+    const session = await this.state.options.hooks
+      .getSession(sessionId);
 
-    const sessionId = ulid.ulid();
-    const response = redirect(
-      oauthSession.successUrl,
-      httpStatus.STATUS_CODE.Found,
-    );
+    if (session === undefined) {
+      throw new Deno.errors.NotFound("OAuth session not found");
+    }
+
+    const oauthClient = new OAuth2Client(this.state.options.oauth);
+    const tokens = await oauthClient.code.getToken(request.url, session);
+
     const siteCookie: httpCookie.Cookie = {
       ...COOKIE_BASE,
-      name: getCookieName(SITE_COOKIE_NAME, isHttps(request.url)),
+      name: cookieName,
       value: sessionId,
       secure: isHttps(request.url),
       ...this.state.options.cookie,
     };
-    httpCookie.setCookie(response.headers, siteCookie);
-    await this.state.options.hooks.setSiteSession(
-      sessionId,
-      siteCookie.maxAge
-        ? siteCookie.maxAge * datetimeConstants.SECOND
-        : undefined,
+
+    const expiresAt = new Date();
+    expiresAt.setSeconds(
+      expiresAt.getSeconds() + (siteCookie.maxAge! * datetimeConstants.SECOND),
     );
 
-    return {
-      response,
+    await this.state.options.hooks.onLoginCallback(
       sessionId,
+      expiresAt,
       tokens,
-    };
+    );
+
+    const response = redirect(
+      session.redirectUri ?? "/",
+      httpStatus.STATUS_CODE.Found,
+    );
+    httpCookie.setCookie(response.headers, siteCookie);
+
+    return response;
   }
 
   async signOut(request: Request): Promise<Response> {
-    const successUrl = getSuccessUrl(request);
-    const response = redirect(successUrl, httpStatus.STATUS_CODE.Found);
+    const successUri = getSuccessUri(request);
+    const response = redirect(successUri, httpStatus.STATUS_CODE.Found);
 
-    const sessionId = getSessionIdCookie(
-      request,
-      this.state.options.cookie?.name,
-    );
+    const { cookieName, sessionId } = this.getSessionCookie(request);
+
     if (sessionId === undefined) {
       return response;
     }
 
-    await this.state.options.hooks.deleteSiteSession(sessionId);
-
-    const cookieName = this.state.options.cookie?.name ??
-      getCookieName(SITE_COOKIE_NAME, isHttps(request.url));
+    await this.state.options.hooks.onLogout(sessionId);
 
     httpCookie.deleteCookie(response.headers, cookieName, {
       path: COOKIE_BASE.path,
@@ -265,15 +283,14 @@ export const Client = class {
     return response;
   }
 
-  async getSessionId(request: Request): Promise<string | undefined> {
-    const sessionId = getSessionIdCookie(
-      request,
-      this.state.options.cookie?.name,
-    );
-    return (sessionId !== undefined &&
-        await this.state.options.hooks.isSiteSession(sessionId))
-      ? sessionId
-      : undefined;
+  getSessionId(request: Request): string | undefined {
+    const { sessionId } = this.getSessionCookie(request);
+
+    if (sessionId === undefined) {
+      return undefined;
+    }
+
+    return sessionId;
   }
 };
 

@@ -21,8 +21,7 @@ application built with [Deno Fresh](https://fresh.deno.dev/) and
   [linter](https://deno.land/manual/tools/linter) and
   [test runner](https://deno.land/manual/basics/testing) and TypeScript support
 - Next-gen web framework with [Fresh](https://fresh.deno.dev/)
-- In-built data persistence with [Deno KV](https://deno.com/kv)
-- High-level OAuth with [Deno KV OAuth](https://deno.land/x/deno_kv_oauth)
+- Data persistence with [Drizzle ORM](https://orm.drizzle.team/)
 - Modern CSS framework with [Tailwind CSS](https://tailwindcss.com/)
 - UI components with [Daisy UI](https://daisyui.com/)
 - Pre-commit hooks with [pre-commit](https://pre-commit.com/)
@@ -47,11 +46,8 @@ To get started:
 1. Create a new `.env` file:
    ```
    POSTGRES_CONNSTR=postgres://postgres:s3cr3t@0.0.0.0:5432/postgres
-   DENO_KV_PATH=:memory:
-   DENO_KV_ACCESS_TOKEN=
    GITHUB_CLIENT_ID=
    GITHUB_CLIENT_SECRET=
-   EDITOR_LOGINS=
    ```
 1. Navigate to GitHub's
    [**New OAuth Application** page](https://github.com/settings/applications/new).
@@ -74,17 +70,12 @@ To get started:
    ```
 1. Navigate to `http://localhost:8000` to start playing with the app.
 
-### Bootstrap the Database (Optional)
+### Bootstrap the Database
 
-Use the following commands to work with your local Deno KV database:
+Use the following commands to work with your local database:
 
-- `deno task kv:seed` - Populate the database with data from the
-  [Hacker News API](https://github.com/HackerNews/API).
-- `deno task kv:dump > ./temp/backup.json` - Write all database entries to
-  `./temp/backup.json`.
-- `deno task kv:restore ./temp/backup.json` - Restore the database from
-  `./temp/backup.json`.
-- `deno task kv:reset` - Reset the database. This is not recoverable.
+- `deno task db:migrate` - Populate the database with data.
+- `deno task db:reset` - Reset the database. This is not recoverable.
 
 ## Customize and Extend
 

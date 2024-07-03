@@ -36,7 +36,7 @@ export default defineRoute<LoggedInState>((_req, ctx) => {
           <Partial name="account">
             <div>
               <GitHubAvatarImg
-                login={ctx.state.sessionUser.login}
+                login={ctx.state.sessionUser.githubHandle!}
                 size={240}
                 class="mx-auto"
               />
@@ -45,22 +45,22 @@ export default defineRoute<LoggedInState>((_req, ctx) => {
                   <strong>Kullanıcı</strong>
                   <p class="flex flex-wrap justify-between">
                     <span>
-                      {ctx.state.sessionUser.login}
+                      {ctx.state.sessionUser.name}
                     </span>
                   </p>
                 </li>
               </ul>
               <div class="my-10 flex flex-row gap-6 justify-center">
                 <a
-                  href="/auth/logout?success_url=/"
-                  class="btn btn-neutral"
+                  href="/auth/logout?successUri=/"
+                  class="btn btn-primary"
                 >
                   Oturumu sonlandır
                 </a>
 
                 <a
-                  href={`/dash/users/${ctx.state.sessionUser.login}`}
-                  class="btn btn-neutral"
+                  href={`/dash/users/${ctx.state.sessionUser.id}`}
+                  class="btn btn-primary"
                 >
                   Profilime git &#8250;
                 </a>

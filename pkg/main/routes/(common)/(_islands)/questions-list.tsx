@@ -5,9 +5,12 @@ import { useEffect } from "preact/hooks";
 import IconInfo from "tabler_icons_tsx/info-circle.tsx";
 import IconMessageCircleQuestion from "tabler_icons_tsx/message-circle-question.tsx";
 import { GitHubAvatarImg } from "@/pkg/main/routes/(common)/(_components)/github-avatar-img.tsx";
-import { type Question } from "@/pkg/main/services/questions.ts";
-import { fetchValues } from "@/pkg/main/library/http/fetch-values.ts";
+import { questionRepository } from "@/pkg/main/data/repositories/questions.ts";
 import { timeAgo } from "@/pkg/main/library/display/time-ago.ts";
+
+type Question = Awaited<
+  ReturnType<typeof questionRepository.findAllWithScores>
+>[0];
 
 async function fetchVotedQuestions() {
   const url = "/api/me/question-votes";
@@ -17,7 +20,7 @@ async function fetchVotedQuestions() {
     throw new Error(`Request failed: GET ${url}`);
   }
 
-  return await resp.json() as Question[];
+  return await resp.json() as { items: Question[]; cursor: string };
 }
 
 function EmptyQuestionsList() {
@@ -32,6 +35,7 @@ function EmptyQuestionsList() {
 interface VoteButtonProps {
   question: Question;
   scoreSig: Signal<number>;
+  isLoggedIn: boolean;
   isVotedSig: Signal<boolean>;
 }
 
@@ -42,7 +46,7 @@ function VoteButton(props: VoteButtonProps) {
     }
 
     const resp = await fetch(
-      `/api/questions/vote?question_id=${props.question.id}`,
+      `/api/questions/vote?questionId=${props.question.id}`,
       {
         method: "POST",
       },
@@ -56,16 +60,33 @@ function VoteButton(props: VoteButtonProps) {
     props.isVotedSig.value = true;
   }
 
+  if (!props.isLoggedIn) {
+    return (
+      <a
+        role="button"
+        title="log in"
+        class="btn btn-sm btn-neutral"
+        href="/auth/login"
+      >
+        ▲
+      </a>
+    );
+  }
+
   if (props.isVotedSig.value) {
     return (
-      <button class="text-primary">
+      <button title="vote up" class="border-0 btn btn-sm btn-primary">
         ▲
       </button>
     );
   }
 
   return (
-    <button onClick={onClick} class="hover:text-primary">
+    <button
+      title="vote up"
+      onClick={onClick}
+      class="border-0 btn btn-sm btn-primary"
+    >
       ▲
     </button>
   );
@@ -85,7 +106,7 @@ function HideLink(props: HideLinkProps) {
     }
 
     const resp = await fetch(
-      `/api/questions/hide?question_id=${props.question.id}`,
+      `/api/questions/hide?questionId=${props.question.id}`,
       {
         method: "POST",
       },
@@ -120,49 +141,36 @@ interface QuestionSummaryProps {
 }
 
 function QuestionSummary(props: QuestionSummaryProps) {
-  const scoreSig = useSignal(props.question.score);
-  const isVotedSig = useSignal(props.isVoted);
-  const isHiddenSig = useSignal(props.question.hidden);
+  const scoreSig = useSignal(props.question.scoreSumTotal);
+  const isVotedSig = useSignal(props.question.scoreSumUser > 0);
+  const isHiddenSig = useSignal(false); // props.question.isHidden
 
   return (
     <div class="py-2 flex gap-4">
-      <div
-        class={`pr-2 text-center flex flex-col justify-center ${
-          isVotedSig.value ? "text-primary" : "hover:text-primary"
-        }`}
-      >
-        {!props.isLoggedIn && (
-          <a
-            title="Oylamak için giriş yapın"
-            href="/auth/login"
-          >
-            ▲
-          </a>
-        )}
-        {props.isLoggedIn && (
-          <VoteButton
-            question={props.question}
-            scoreSig={scoreSig}
-            isVotedSig={isVotedSig}
-          />
-        )}
-        <p>{scoreSig}</p>
+      <div class="pr-2 text-center flex flex-col justify-center">
+        <VoteButton
+          question={props.question}
+          scoreSig={scoreSig}
+          isLoggedIn={props.isLoggedIn}
+          isVotedSig={isVotedSig}
+        />
+        <p>{scoreSig.value}</p>
       </div>
       <div class="space-y-1">
         <p>
-          {props.question.question}
+          {props.question.content}
         </p>
         <p class="text-slate-500">
           <GitHubAvatarImg
-            login={props.question.userLogin}
+            login={props.question.user!.githubHandle!}
             size={24}
             class="mr-2"
           />
           <a
             class="hover:underline"
-            href={`/dash/users/${props.question.userLogin}`}
+            href={`/dash/users/${props.question.user!.id}`}
           >
-            {props.question.userLogin}
+            {props.question.user!.name}
           </a>
           {" - "}
           {timeAgo(new Date(ulid.decodeTime(props.question.id)))}
@@ -192,7 +200,6 @@ export interface QuestionsListProps {
 export function QuestionsList(props: QuestionsListProps) {
   const questionsSig = useSignal<Question[]>([]);
   const votedQuestionsIdsSig = useSignal<string[]>([]);
-  const cursorSig = useSignal("");
   const isLoadingSig = useSignal<boolean | undefined>(undefined);
   const questionsAreVotedSig = useComputed(() =>
     questionsSig.value.map((question) =>
@@ -208,16 +215,17 @@ export function QuestionsList(props: QuestionsListProps) {
     isLoadingSig.value = true;
 
     try {
-      const result = await fetchValues<Question>(
-        props.endpoint,
-        cursorSig.value,
-      );
+      const resp = await fetch(props.endpoint);
+      if (!resp.ok) {
+        throw new Error(`Request failed: GET ${props.endpoint}`);
+      }
+
+      const result = await resp.json();
 
       questionsSig.value = [
         ...questionsSig.value,
         ...result.items,
       ];
-      cursorSig.value = result.cursor;
     } catch (error) {
       console.error(error.message);
     } finally {
@@ -232,9 +240,9 @@ export function QuestionsList(props: QuestionsListProps) {
     }
 
     fetchVotedQuestions()
-      .then((votedQuestions) =>
-        votedQuestionsIdsSig.value = votedQuestions.map(({ id }) => id)
-      )
+      .then((votedQuestions) => {
+        votedQuestionsIdsSig.value = votedQuestions.items.map(({ id }) => id);
+      })
       .finally(() => loadMoreQuestions());
   }, []);
 
@@ -261,19 +269,16 @@ export function QuestionsList(props: QuestionsListProps) {
           );
         })
         : <EmptyQuestionsList />}
-      {cursorSig.value !== "" && (
-        <button
-          onClick={loadMoreQuestions}
-          class="text-slate-500 transition duration-100 hover:text-black hover:dark:text-white"
-        >
-          {isLoadingSig.value ? "Yükleniyor..." : "Daha fazla göster"}
-        </button>
+      {isLoadingSig.value && (
+        <p class="transition duration-100">
+          Yükleniyor...
+        </p>
       )}
 
       <div class="my-10 flex flex-row gap-6 justify-center">
         <a
           href="/qa/ask"
-          class="btn btn-wide btn-neutral"
+          class="btn btn-wide btn-primary"
         >
           <IconMessageCircleQuestion class="h-6 w-6" />
           Soru sor &#8250;

@@ -2,6 +2,7 @@
 import { type Handlers } from "$fresh/server.ts";
 import { type LoggedInState } from "@/pkg/main/plugins/session.ts";
 import { userRepository } from "@/pkg/main/data/repositories/users.ts";
+import { questionRepository } from "@/pkg/main/data/repositories/questions.ts";
 
 export const handler: Handlers<undefined, LoggedInState> = {
   async GET(_req, ctx) {
@@ -11,6 +12,13 @@ export const handler: Handlers<undefined, LoggedInState> = {
       throw new Deno.errors.NotFound("User not found");
     }
 
-    return Response.json(user);
+    const items = await questionRepository.findAllByUserId(
+      user.id,
+    );
+
+    return Response.json({
+      items: items,
+      cursor: null,
+    });
   },
 };

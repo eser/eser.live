@@ -2,7 +2,7 @@
 import { defineRoute } from "$fresh/src/server/defines.ts";
 import { type State } from "@/pkg/main/plugins/session.ts";
 import { Head } from "@/pkg/main/routes/(common)/(_components)/head.tsx";
-import { type User } from "@/pkg/main/services/users.ts";
+import { type User } from "@/pkg/main/data/models/user.ts";
 
 interface WelcomeStripProps {
   /** Currently logged-in user */
@@ -18,7 +18,7 @@ function WelcomeStrip(props: WelcomeStripProps) {
         <div class="hero-content p-0">
           <div>
             <h1>
-              Merhaba {isAuthenticated ? props.sessionUser!.login : "oradaki"}
+              Merhaba {isAuthenticated ? props.sessionUser!.name : "oradaki"}
               {" "}
               👋🏻
             </h1>

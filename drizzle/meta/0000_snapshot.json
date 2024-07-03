@@ -1,5 +1,5 @@
 {
-  "id": "91d6be1a-1d38-4568-8169-54fdca4d59c0",
+  "id": "a12e0ced-601f-41cf-a220-0b5267110ee0",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -44,6 +44,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "x_handle": {
+          "name": "x_handle",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp with time zone",
@@ -53,6 +59,12 @@
         },
         "updated_at": {
           "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "deleted_at": {
+          "name": "deleted_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": false
@@ -67,6 +79,13 @@
           "nullsNotDistinct": false,
           "columns": [
             "email"
+          ]
+        },
+        "user_github_handle_unique": {
+          "name": "user_github_handle_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "github_handle"
           ]
         }
       }
@@ -137,6 +156,12 @@
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": false
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
@@ -192,6 +217,12 @@
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": false
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
@@ -236,6 +267,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "oauth_redirect_uri": {
+          "name": "oauth_redirect_uri",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
         "logged_in_user_id": {
           "name": "logged_in_user_id",
           "type": "char(26)",
@@ -244,6 +281,12 @@
         },
         "logged_in_at": {
           "name": "logged_in_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "expires_at": {
+          "name": "expires_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": false
@@ -321,6 +364,12 @@
         },
         "updated_at": {
           "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "deleted_at": {
+          "name": "deleted_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": false

@@ -23,4 +23,5 @@ export const postgresConnStr = await readEnvKey("POSTGRES_CONNSTR") ??
   "postgres://0.0.0.0:5432/postgres";
 export const postgresClient = postgres(postgresConnStr);
 
+// @ts-ignore type incompatibility
 export const db = drizzle(postgresClient, { schema });

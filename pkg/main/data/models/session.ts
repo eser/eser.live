@@ -11,9 +11,11 @@ export const sessionSchema = pgTable(
 
     oauthRequestState: text("oauth_request_state").notNull(),
     oauthRequestCodeVerifier: text("oauth_request_code_verifier").notNull(),
+    oauthRedirectUri: text("oauth_redirect_uri"),
 
     loggedInUserId: char("logged_in_user_id", { length: 26 }),
     loggedInAt: timestamp("logged_in_at", { withTimezone: true }),
+    expiresAt: timestamp("expires_at", { withTimezone: true }),
 
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow()
       .notNull(),

@@ -22,6 +22,7 @@ export const profileMembershipSchema = pgTable(
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow()
       .notNull(),
     updatedAt: timestamp("updated_at", { withTimezone: true }),
+    deletedAt: timestamp("deleted_at", { withTimezone: true }),
   },
   (table) => ({
     roleUnq: unique().on(

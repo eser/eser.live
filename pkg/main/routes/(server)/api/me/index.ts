@@ -5,7 +5,7 @@ import { userRepository } from "@/pkg/main/data/repositories/users.ts";
 
 export const handler: Handlers<undefined, LoggedInState> = {
   async GET(_req, ctx) {
-    const user = await userRepository.findByGitHubHandle(ctx.params.login);
+    const user = await userRepository.findById(ctx.state.sessionUser.id);
 
     if (user === undefined) {
       throw new Deno.errors.NotFound("User not found");

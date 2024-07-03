@@ -2,13 +2,15 @@
 // This file SHOULD be checked into source version control.
 // This file is automatically updated during development when running `dev.ts`.
 
+import * as $_server_api_me_index from "./routes/(server)/api/me/index.ts";
 import * as $_server_api_me_question_votes from "./routes/(server)/api/me/question-votes.ts";
+import * as $_server_api_me_questions from "./routes/(server)/api/me/questions.ts";
 import * as $_server_api_questions_id_ from "./routes/(server)/api/questions/[id].ts";
 import * as $_server_api_questions_hide from "./routes/(server)/api/questions/hide.ts";
 import * as $_server_api_questions_index from "./routes/(server)/api/questions/index.ts";
 import * as $_server_api_questions_vote from "./routes/(server)/api/questions/vote.ts";
 import * as $_server_api_users_login_index from "./routes/(server)/api/users/[login]/index.ts";
-import * as $_server_api_users_login_items from "./routes/(server)/api/users/[login]/items.ts";
+import * as $_server_api_users_login_questions from "./routes/(server)/api/users/[login]/questions.ts";
 import * as $_server_api_users_index from "./routes/(server)/api/users/index.ts";
 import * as $_404 from "./routes/_404.tsx";
 import * as $_500 from "./routes/_500.tsx";
@@ -37,16 +39,18 @@ import { type Manifest } from "$fresh/server.ts";
 
 const manifest = {
   routes: {
+    "./routes/(server)/api/me/index.ts": $_server_api_me_index,
     "./routes/(server)/api/me/question-votes.ts":
       $_server_api_me_question_votes,
+    "./routes/(server)/api/me/questions.ts": $_server_api_me_questions,
     "./routes/(server)/api/questions/[id].ts": $_server_api_questions_id_,
     "./routes/(server)/api/questions/hide.ts": $_server_api_questions_hide,
     "./routes/(server)/api/questions/index.ts": $_server_api_questions_index,
     "./routes/(server)/api/questions/vote.ts": $_server_api_questions_vote,
     "./routes/(server)/api/users/[login]/index.ts":
       $_server_api_users_login_index,
-    "./routes/(server)/api/users/[login]/items.ts":
-      $_server_api_users_login_items,
+    "./routes/(server)/api/users/[login]/questions.ts":
+      $_server_api_users_login_questions,
     "./routes/(server)/api/users/index.ts": $_server_api_users_index,
     "./routes/_404.tsx": $_404,
     "./routes/_500.tsx": $_500,

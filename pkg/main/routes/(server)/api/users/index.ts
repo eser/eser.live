@@ -1,17 +1,15 @@
 // Copyright 2024-present the Deno authors. All rights reserved. MIT license.
 import { type Handlers } from "$fresh/server.ts";
-import { listUsers } from "@/pkg/main/services/users.ts";
-import { getCursor } from "@/pkg/main/library/http/get-cursor.ts";
+import { type LoggedInState } from "@/pkg/main/plugins/session.ts";
+import { userRepository } from "@/pkg/main/data/repositories/users.ts";
 
-export const handler: Handlers = {
-  async GET(req) {
-    const url = new URL(req.url);
-    const iter = listUsers({
-      cursor: getCursor(url),
-      limit: 10,
+export const handler: Handlers<undefined, LoggedInState> = {
+  async GET(_req, _ctx) {
+    const items = await userRepository.findAllWithDetails();
+
+    return Response.json({
+      items: items,
+      cursor: null,
     });
-    const values = (await Array.fromAsync(iter)).map((x) => x.value);
-
-    return Response.json({ values, cursor: iter.cursor });
   },
 };
