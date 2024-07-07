@@ -9,7 +9,10 @@ export const questionSchema = pgTable(
     userId: char("user_id", { length: 26 }).notNull(),
 
     content: text("content").notNull(),
+    answeredAt: timestamp("answered_at", { withTimezone: true }),
+    answeredAtUri: text("answered_at_uri"),
 
+    isAnonymous: boolean("is_anonymous").default(false).notNull(),
     isHidden: boolean("is_hidden").default(false).notNull(),
 
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow()

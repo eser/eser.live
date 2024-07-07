@@ -19,19 +19,28 @@ export const handler: Handlers<undefined, LoggedInState> = {
     assertLoggedIn(ctx);
 
     const form = await req.formData();
-    const question = form.get("question");
+    const questionContent = form.get("question_content");
+    const questionIsAnonymous = form.get("question_is_anonymous") === "true";
 
     if (
-      typeof question !== "string" || question === ""
+      questionContent === null || questionContent === undefined ||
+      questionContent.constructor !== String ||
+      questionContent.length < 1
     ) {
       return redirect("/qa/ask?error");
     }
 
     await questionRepository.create({
       id: ulid.ulid(),
+
       userId: ctx.state.sessionUser.id,
-      content: question,
+
+      content: questionContent,
+      answeredAt: null,
+      answeredAtUri: null,
+
       isHidden: false,
+      isAnonymous: questionIsAnonymous,
     });
 
     return redirect("/qa");
@@ -82,16 +91,16 @@ export default defineRoute<State>((_req, ctx) => {
           >
             <div>
               <label
-                htmlFor="share_question"
+                htmlFor="question_content"
                 class="block text-sm font-medium leading-6 text-slate-900 dark:text-white"
               >
                 Soru:
               </label>
               <textarea
-                id="share_question"
+                id="question_content"
                 class={`px-4 py-2 rounded rounded-lg outline-none border-1 border-gray-300 hover:border-black transition duration-100 disabled:opacity-50 disabled:cursor-not-allowed dark:hover:border-white w-full mt-2`}
                 rows={6}
-                name="question"
+                name="question_content"
                 required={true}
                 placeholder={ctx.state.sessionUser === undefined
                   ? "Soru sorabilmek için giriş yapmış olman gerekiyor"
@@ -99,6 +108,22 @@ export default defineRoute<State>((_req, ctx) => {
                 disabled={ctx.state.sessionUser === undefined}
               >
               </textarea>
+            </div>
+            <div>
+              <div class="form-control">
+                <label class="label cursor-pointer justify-start gap-x-2">
+                  <input
+                    id="question_is_anonymous"
+                    class="checkbox"
+                    name="question_is_anonymous"
+                    type="checkbox"
+                    checked={false}
+                    value="true"
+                    disabled={ctx.state.sessionUser === undefined}
+                  />
+                  <span class="label-text">Anonim olarak sor</span>
+                </label>
+              </div>
             </div>
 
             {ctx.url.searchParams.has("error") && (

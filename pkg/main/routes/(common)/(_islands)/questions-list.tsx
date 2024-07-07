@@ -166,10 +166,14 @@ function QuestionSummary(props: QuestionSummaryProps) {
         <p class="text-slate-500">
           <UserProfilePicture
             user={props.question.user ?? undefined}
+            isAnonymous={props.question.isAnonymous}
             size={24}
             class="mr-2"
           />
-          <UserProfileLink user={props.question.user ?? undefined} />
+          <UserProfileLink
+            user={props.question.user ?? undefined}
+            isAnonymous={props.question.isAnonymous}
+          />
           {" - "}
           <span title={datetime.format(date, "yyyy-MM-dd HH:mm:ss")}>
             {timeAgo(date)}

@@ -38,12 +38,15 @@ export class QuestionRepository {
 
     const result = await db.select({
       id: questionSchema.id,
-      content: questionSchema.content,
       user: {
         id: userSchema.id,
         name: userSchema.name,
         githubHandle: userSchema.githubHandle,
       },
+      content: questionSchema.content,
+      isAnonymous: questionSchema.isAnonymous,
+      answeredAt: questionSchema.answeredAt,
+      answeredAtUri: questionSchema.answeredAtUri,
       createdAt: questionSchema.createdAt,
       updatedAt: questionSchema.updatedAt,
       scoreSumTotal: sql<
@@ -86,12 +89,15 @@ export class QuestionRepository {
 
     const result = await db.select({
       id: questionSchema.id,
-      content: questionSchema.content,
       user: {
         id: userSchema.id,
         name: userSchema.name,
         githubHandle: userSchema.githubHandle,
       },
+      content: questionSchema.content,
+      isAnonymous: questionSchema.isAnonymous,
+      answeredAt: questionSchema.answeredAt,
+      answeredAtUri: questionSchema.answeredAtUri,
       createdAt: questionSchema.createdAt,
       updatedAt: questionSchema.updatedAt,
       scoreSumTotal: sql<

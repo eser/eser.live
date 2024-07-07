@@ -15,6 +15,13 @@
       "when": 1720038841622,
       "tag": "0001_clean_the_spike",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1720349921062,
+      "tag": "0002_cheerful_darwin",
+      "breakpoints": true
     }
   ]
 }

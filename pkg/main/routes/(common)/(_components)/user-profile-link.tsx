@@ -3,11 +3,12 @@ import { type User } from "@/pkg/main/data/models/user.ts";
 
 export interface UserProfileLinkProps {
   user: Pick<User, "id" | "name" | "githubHandle"> | undefined;
+  isAnonymous?: boolean;
   class?: string;
 }
 
 export function UserProfileLink(props: UserProfileLinkProps) {
-  if (props.user === undefined) {
+  if (props.isAnonymous === true || props.user === undefined) {
     return (
       <>
         anonim
