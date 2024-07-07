@@ -75,7 +75,8 @@ export class QuestionRepository {
         userSchema.id,
         userSchema.name,
         userSchema.githubHandle,
-      );
+      )
+      .orderBy(sql`total_score_sum DESC, ${questionSchema.createdAt} DESC`);
 
     return result;
   }
@@ -127,7 +128,8 @@ export class QuestionRepository {
         userSchema.id,
         userSchema.name,
         userSchema.githubHandle,
-      );
+      )
+      .orderBy(sql`total_score_sum DESC, ${questionSchema.createdAt} DESC`);
 
     return result;
   }
