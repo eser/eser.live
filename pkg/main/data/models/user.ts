@@ -10,6 +10,8 @@ export const userSchema = pgTable(
     name: text("name").notNull(),
     email: text("email").unique(),
     phone: text("phone"),
+
+    individualProfileId: char("individual_profile_id", { length: 26 }),
     githubRemoteId: text("github_remote_id"),
     githubHandle: text("github_handle"),
     xRemoteId: text("x_remote_id"),

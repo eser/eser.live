@@ -7,11 +7,11 @@
   --p: 96.24% 0.043 156.74;         /* primary */
   --pc: 0% 0.037 257.28;            /* primary content */
 
-  --s: 69.71% 0.329 342.55;         /* secondary */
-  --sc: 98.71% 0.0106 342.55;       /* secondary content */
+  --s: 88.0% 0.021 254.14;          /* secondary */
+  --sc: 36.84% 0.008 248.05;        /* secondary content */
 
   --a: 61.93% 0.171 35.15;          /* accent */
-  /* --ac:                             accent content */
+  --ac: 36.84% 0.008 248.05;        /* accent content */
 
   --n: 32.18% 0.025 255.7;          /* neutral */
   --nc: 89.5% 0.012 252.1;          /* neutral content */
@@ -42,14 +42,14 @@
   --p: 31.38% 0.021 254.14;         /* primary */
   --pc: 74.65% 0.022 264.44;        /* primary content */
 
-  --s: 74.8% 0.26 342.55;           /* secondary */
-  --sc: 98.71% 0.0106 342.55;       /* secondary content */
+  --s: 22.38% 0.021 254.14;         /* secondary */
+  --sc: 91.35% 0.005 258.33;        /* secondary content */
 
   --a: 61.93% 0.171 35.15;          /* accent */
-  /* --ac:                             accent content */
+  --ac: 91.35% 0.005 258.33;        /* accent content */
 
   --n: 31.38% 0.021 254.14;         /* neutral */
-  --nc: 74.65% 0.022 264.44;        /* neutral content */
+  --nc: 91.35% 0.005 258.33;        /* neutral content */
 
   --b1: 25.77% 0.005 248.03;        /* base 100 */
   --b2: 23.26% 0.014 253.1;         /* base 200 */

@@ -35,7 +35,9 @@ export const getEnv = (key: string, defaultValue?: string): string => {
   return value;
 };
 
-export const assertLoggedIn = (
+export const assertLoggedIn: (
+  ctx: { state: State },
+) => asserts ctx is { state: LoggedInState } = (
   ctx: { state: State },
 ): asserts ctx is { state: LoggedInState } => {
   if (ctx.state.sessionUser === undefined) {
@@ -43,7 +45,9 @@ export const assertLoggedIn = (
   }
 };
 
-export const assertIsEditor = (
+export const assertIsEditor: (
+  ctx: { state: State },
+) => asserts ctx is { state: LoggedInState } = (
   ctx: { state: State },
 ): asserts ctx is { state: LoggedInState } => {
   if (ctx.state.isEditor !== true) {
