@@ -8,18 +8,15 @@ import { pluralize } from "./pluralize.ts";
  * @example
  * ```ts
  * import * as datetimeConstants from "@std/datetime/constants";
- * import { timeAgo } from "@/pkg/main/library/display/time-ago.ts";
+ * import { timeDiff } from "@/pkg/main/library/display/time-diff.ts";
  *
- * timeAgo(new Date()); // Returns "just now"
- * timeAgo(new Date(Date.now() - 3 * datetimeConstants.HOUR)); // Returns "3 hours ago"
+ * timeDiff(new Date()); // Returns "şimdi"
+ * timeDiff(new Date(Date.now() - 3 * datetimeConstants.HOUR)); // Returns "3 saat önce"
  * ```
  */
-export const timeAgo = (date: Date) => {
+export const timeDiff = (date: Date) => {
   const now = new Date();
-
-  if (date > now) {
-    throw new Error("Timestamp must be in the past");
-  }
+  const isPast = date < now;
 
   const match = Object.entries(
     datetimeDifference.difference(now, date, {
@@ -56,7 +53,7 @@ export const timeAgo = (date: Date) => {
     years: "yıl",
   };
 
-  return `${
-    pluralize(amount, unitMapping[<datetimeDifference.Unit> unit])
-  } önce`;
+  return `${pluralize(amount, unitMapping[<datetimeDifference.Unit> unit])} ${
+    isPast ? "önce" : "sonra"
+  }`;
 };

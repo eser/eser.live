@@ -2,6 +2,7 @@
 // This file SHOULD be checked into source version control.
 // This file is automatically updated during development when running `dev.ts`.
 
+import * as $_server_api_events_index from "./routes/(server)/api/events/index.ts";
 import * as $_server_api_me_index from "./routes/(server)/api/me/index.ts";
 import * as $_server_api_me_question_votes from "./routes/(server)/api/me/question-votes.ts";
 import * as $_server_api_me_questions from "./routes/(server)/api/me/questions.ts";
@@ -30,6 +31,7 @@ import * as $projects_index from "./routes/projects/index.tsx";
 import * as $qa_ask from "./routes/qa/ask.tsx";
 import * as $qa_index from "./routes/qa/index.tsx";
 import * as $setup_index from "./routes/setup/index.tsx";
+import * as $_common_islands_event_list from "./routes/(common)/(_islands)/event-list.tsx";
 import * as $_common_islands_questions_list from "./routes/(common)/(_islands)/questions-list.tsx";
 import * as $_common_islands_share from "./routes/(common)/(_islands)/share.tsx";
 import * as $_common_islands_shortcuts from "./routes/(common)/(_islands)/shortcuts.tsx";
@@ -39,6 +41,7 @@ import { type Manifest } from "$fresh/server.ts";
 
 const manifest = {
   routes: {
+    "./routes/(server)/api/events/index.ts": $_server_api_events_index,
     "./routes/(server)/api/me/index.ts": $_server_api_me_index,
     "./routes/(server)/api/me/question-votes.ts":
       $_server_api_me_question_votes,
@@ -71,6 +74,7 @@ const manifest = {
     "./routes/setup/index.tsx": $setup_index,
   },
   islands: {
+    "./routes/(common)/(_islands)/event-list.tsx": $_common_islands_event_list,
     "./routes/(common)/(_islands)/questions-list.tsx":
       $_common_islands_questions_list,
     "./routes/(common)/(_islands)/share.tsx": $_common_islands_share,

@@ -7,7 +7,7 @@ import IconMessageCircleQuestion from "tabler_icons_tsx/message-circle-question.
 import { UserProfilePicture } from "@/pkg/main/routes/(common)/(_components)/user-profile-picture.tsx";
 import { UserProfileLink } from "@/pkg/main/routes/(common)/(_components)/user-profile-link.tsx";
 import { questionRepository } from "@/pkg/main/data/repositories/questions.ts";
-import { timeAgo } from "@/pkg/main/library/display/time-ago.ts";
+import { timeDiff } from "@/pkg/main/library/display/time-diff.ts";
 
 type Question = Awaited<
   ReturnType<typeof questionRepository.findAllWithScores>
@@ -24,7 +24,7 @@ const fetchVotedQuestions = async () => {
   return await resp.json() as { items: Question[]; cursor: string };
 };
 
-const EmptyQuestionsList = () => {
+const QuestionsListEmpty = () => {
   return (
     <div class="flex flex-col justify-center items-center gap-2 pt-16">
       <IconInfo class="w-10 h-10 text-slate-400 dark:text-slate-600" />
@@ -176,7 +176,7 @@ const QuestionSummary = (props: QuestionSummaryProps) => {
           />
           {" - "}
           <span title={datetime.format(date, "yyyy-MM-dd HH:mm:ss")}>
-            {timeAgo(date)}
+            {timeDiff(date)}
           </span>
           {props.isEditor === true
             ? (
@@ -188,6 +188,20 @@ const QuestionSummary = (props: QuestionSummaryProps) => {
             : null}
         </p>
       </div>
+    </div>
+  );
+};
+
+const AskQuestionButton = () => {
+  return (
+    <div class="my-10 flex flex-row gap-6 justify-center">
+      <a
+        href="/qa/ask"
+        class="btn btn-wide btn-primary"
+      >
+        <IconMessageCircleQuestion class="h-6 w-6" />
+        Soru sor &#8250;
+      </a>
     </div>
   );
 };
@@ -250,44 +264,43 @@ export const QuestionsList = (props: QuestionsListProps) => {
       .finally(() => loadMoreQuestions());
   }, []);
 
-  if (isLoadingSig.value === undefined) {
+  if (isLoadingSig.value !== false) {
     return (
-      <p class="text-slate-500 transition duration-100 hover:text-black hover:dark:text-white">
-        Yükleniyor...
-      </p>
+      <>
+        <p class="transition duration-100">
+          Yükleniyor...
+        </p>
+
+        <AskQuestionButton />
+      </>
+    );
+  }
+
+  if (questionsSig.value.length === 0) {
+    return (
+      <>
+        <QuestionsListEmpty />
+
+        <AskQuestionButton />
+      </>
     );
   }
 
   return (
-    <div>
-      {questionsSig.value.length
-        ? questionsSig.value.map((question, id) => {
-          return (
-            <QuestionSummary
-              key={question.id}
-              question={question}
-              isVoted={questionsAreVotedSig.value[id]}
-              isLoggedIn={props.isLoggedIn}
-              isEditor={props.isEditor}
-            />
-          );
-        })
-        : <EmptyQuestionsList />}
-      {isLoadingSig.value && (
-        <p class="transition duration-100">
-          Yükleniyor...
-        </p>
-      )}
+    <>
+      {questionsSig.value.map((question, id) => {
+        return (
+          <QuestionSummary
+            key={question.id}
+            question={question}
+            isVoted={questionsAreVotedSig.value[id]}
+            isLoggedIn={props.isLoggedIn}
+            isEditor={props.isEditor}
+          />
+        );
+      })}
 
-      <div class="my-10 flex flex-row gap-6 justify-center">
-        <a
-          href="/qa/ask"
-          class="btn btn-wide btn-primary"
-        >
-          <IconMessageCircleQuestion class="h-6 w-6" />
-          Soru sor &#8250;
-        </a>
-      </div>
-    </div>
+      <AskQuestionButton />
+    </>
   );
 };

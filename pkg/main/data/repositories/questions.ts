@@ -2,7 +2,10 @@
 import { and, eq, isNull, sql } from "drizzle-orm";
 import { type QuestionPartial, questionSchema } from "../models/question.ts";
 import { userSchema } from "../models/user.ts";
-import { questionVoteSchema } from "../models/question-vote.ts";
+import {
+  type QuestionVotePartial,
+  questionVoteSchema,
+} from "../models/question-vote.ts";
 import { db } from "../db.ts";
 
 export { type Question, type QuestionPartial } from "../models/question.ts";
@@ -25,6 +28,27 @@ export class QuestionRepository {
           isNull(questionSchema.deletedAt),
         ),
       });
+
+    return result;
+  }
+
+  async findAllVotesByUserId(userId: string) {
+    const result = await db.query.questionSchema
+      .findMany({
+        where: eq(questionVoteSchema.userId, userId),
+      });
+
+    return result;
+  }
+
+  async upsertVote(questionVote: QuestionVotePartial) {
+    const [result] = await db.insert(questionVoteSchema)
+      .values(questionVote)
+      .onConflictDoUpdate({
+        target: [questionVoteSchema.questionId, questionVoteSchema.userId],
+        set: questionVote,
+      })
+      .returning();
 
     return result;
   }
@@ -71,10 +95,7 @@ export class QuestionRepository {
       )
       .groupBy(
         questionSchema.id,
-        questionSchema.content,
         userSchema.id,
-        userSchema.name,
-        userSchema.githubHandle,
       )
       .orderBy(sql`total_score_sum DESC, ${questionSchema.createdAt} DESC`);
 
@@ -119,15 +140,13 @@ export class QuestionRepository {
         and(
           eq(questionSchema.userId, userId),
           eq(questionSchema.isHidden, false),
+          eq(questionSchema.isAnonymous, false),
           isNull(questionSchema.deletedAt),
         ),
       )
       .groupBy(
         questionSchema.id,
-        questionSchema.content,
         userSchema.id,
-        userSchema.name,
-        userSchema.githubHandle,
       )
       .orderBy(sql`total_score_sum DESC, ${questionSchema.createdAt} DESC`);
 

@@ -6,7 +6,7 @@ import {
   assertLoggedIn,
   type LoggedInState,
 } from "@/pkg/main/plugins/session.ts";
-import { questionVoteRepository } from "@/pkg/main/data/repositories/question-votes.ts";
+import { questionRepository } from "@/pkg/main/data/repositories/questions.ts";
 import { BadRequestError } from "@/pkg/main/library/http/bad-request-error.ts";
 
 export const handler: Handlers<undefined, LoggedInState> = {
@@ -18,7 +18,7 @@ export const handler: Handlers<undefined, LoggedInState> = {
       throw new BadRequestError("`questionId` URL parameter missing");
     }
 
-    await questionVoteRepository.upsert({
+    await questionRepository.upsertVote({
       id: ulid.ulid(),
       questionId: questionId,
       userId: ctx.state.sessionUser.id,

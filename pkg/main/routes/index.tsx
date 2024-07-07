@@ -3,6 +3,7 @@ import { defineRoute } from "$fresh/src/server/defines.ts";
 import { type User } from "@/pkg/main/data/models/user.ts";
 import { type State } from "@/pkg/main/plugins/session.ts";
 import { Head } from "@/pkg/main/routes/(common)/(_components)/head.tsx";
+import { EventsList } from "@/pkg/main/routes/(common)/(_islands)/event-list.tsx";
 
 interface WelcomeStripProps {
   /** Currently logged-in user */
@@ -94,31 +95,41 @@ export const Playlists = () => {
   );
 };
 
-export const Events = () => {
+interface EventsProps {
+  /** Whether the user is logged-in */
+  isLoggedIn: boolean;
+  /** Whether the user is an editor */
+  isEditor?: boolean;
+}
+
+export const Events = (props: EventsProps) => {
+  const endpoint = "/api/events";
+
   return (
     <div class="content-area">
       <h2>Planlı Etkinlik Takvimi</h2>
-      <p>
-        <em>
-          Şu anda planlanmış etkinlik bulunmamaktadır. Anlık yayın ve etkinlik
-          bildirimleri için Telegram üzerinden{" "}
-          <a href="https://t.me/eserlive">
-            eser.live ve yazılımcı ağı telegram duyuru kanalı
-          </a>nı takip edebilirsiniz.
-        </em>
-      </p>
+
+      <EventsList
+        endpoint={endpoint}
+        isLoggedIn={props.isLoggedIn}
+        isEditor={props.isEditor}
+      />
     </div>
   );
 };
 
 export default defineRoute<State>((_req, ctx) => {
+  const isLoggedIn = ctx.state.sessionUser !== undefined;
+  const isEditor = ctx.state.isEditor;
+
   return (
     <>
       <Head href={ctx.url.href} />
       <main>
         <WelcomeStrip sessionUser={ctx.state?.sessionUser} />
+
         <Playlists />
-        <Events />
+        <Events isLoggedIn={isLoggedIn} isEditor={isEditor} />
       </main>
     </>
   );
