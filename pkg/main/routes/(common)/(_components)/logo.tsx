@@ -6,7 +6,7 @@ export interface LogoProps {
   title: string;
 }
 
-export function Logo(props: LogoProps) {
+export const Logo = (props: LogoProps) => {
   return (
     <svg
       width={props.width}
@@ -40,4 +40,4 @@ export function Logo(props: LogoProps) {
       </defs>
     </svg>
   );
-}
+};

@@ -14,7 +14,7 @@ interface UserProfileProps {
   user: User;
 }
 
-function UserProfile(props: UserProfileProps) {
+const UserProfile = (props: UserProfileProps) => {
   return (
     <div class="flex flex-col items-center w-[16rem]">
       <UserProfilePicture user={props.user} size={200} />
@@ -33,7 +33,7 @@ function UserProfile(props: UserProfileProps) {
       </div>
     </div>
   );
-}
+};
 
 export default defineRoute<State>(
   async (_req, ctx) => {

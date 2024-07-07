@@ -14,7 +14,7 @@ import { pluralize } from "./pluralize.ts";
  * timeAgo(new Date(Date.now() - 3 * datetimeConstants.HOUR)); // Returns "3 hours ago"
  * ```
  */
-export function timeAgo(date: Date) {
+export const timeAgo = (date: Date) => {
   const now = new Date();
 
   if (date > now) {
@@ -59,4 +59,4 @@ export function timeAgo(date: Date) {
   return `${
     pluralize(amount, unitMapping[<datetimeDifference.Unit> unit])
   } önce`;
-}
+};

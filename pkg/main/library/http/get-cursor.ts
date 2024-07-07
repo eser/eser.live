@@ -11,6 +11,6 @@
  * getCursor(new URL("http://example.com")); // Returns ""
  * ```
  */
-export function getCursor(url: URL) {
+export const getCursor = (url: URL) => {
   return url.searchParams.get("cursor") ?? "";
-}
+};

@@ -19,7 +19,7 @@ export interface HeaderProps {
   url: URL;
 }
 
-function MenuItems() {
+const MenuItems = () => {
   return (
     <>
       <li>
@@ -72,9 +72,9 @@ function MenuItems() {
       }
     </>
   );
-}
+};
 
-export function Header(props: HeaderProps) {
+export const Header = (props: HeaderProps) => {
   // const NAV_ITEM = "text-slate-500 px-3 py-4 md:py-2";
   return (
     <header>
@@ -256,4 +256,4 @@ export function Header(props: HeaderProps) {
       }
     </header>
   );
-}
+};

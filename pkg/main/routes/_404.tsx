@@ -3,7 +3,7 @@ import { type PageProps } from "$fresh/server.ts";
 import { type State } from "@/pkg/main/plugins/session.ts";
 
 // deno-lint-ignore no-explicit-any
-export default function Error404Page(_props: PageProps<any, State>) {
+export const Error404Page = (_props: PageProps<any, State>) => {
   return (
     <main>
       <div class="content-area">
@@ -14,4 +14,6 @@ export default function Error404Page(_props: PageProps<any, State>) {
       </div>
     </main>
   );
-}
+};
+
+export default Error404Page;

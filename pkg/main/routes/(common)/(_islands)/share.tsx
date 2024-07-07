@@ -12,7 +12,7 @@ import IconBrandX from "tabler_icons_tsx/brand-x.tsx";
  *
  * @see {@link https://schier.co/blog/pure-html-share-buttons}
  */
-export function Share(props: { url: string; title: string }) {
+export const Share = (props: { url: string; title: string }) => {
   const handleClick = (e: MouseEvent) => {
     e.preventDefault();
 
@@ -82,4 +82,4 @@ export function Share(props: { url: string; title: string }) {
       </a>
     </div>
   );
-}
+};

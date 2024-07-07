@@ -11,7 +11,7 @@ interface UserTableRowProps {
   user: User;
 }
 
-function UserTableRow(props: UserTableRowProps) {
+const UserTableRow = (props: UserTableRowProps) => {
   return (
     <tr class="hover:bg-gray-50 hover:dark:bg-gray-900 border-b border-gray-200">
       <td scope="col" class={TD_STYLES}>
@@ -25,19 +25,19 @@ function UserTableRow(props: UserTableRowProps) {
       </td>
     </tr>
   );
-}
+};
 
 export interface UsersTableProps {
   /** Endpoint URL of the REST API to make the fetch request to */
   endpoint: string;
 }
 
-export function UsersTable(props: UsersTableProps) {
+export const UsersTable = (props: UsersTableProps) => {
   const usersSig = useSignal<User[]>([]);
   const cursorSig = useSignal("");
   const isLoadingSig = useSignal(false);
 
-  async function loadMoreUsers() {
+  const loadMoreUsers = async () => {
     if (isLoadingSig.value) {
       return;
     }
@@ -59,7 +59,7 @@ export function UsersTable(props: UsersTableProps) {
     } finally {
       isLoadingSig.value = false;
     }
-  }
+  };
 
   useEffect(() => {
     loadMoreUsers();
@@ -87,4 +87,4 @@ export function UsersTable(props: UsersTableProps) {
       )}
     </div>
   );
-}
+};

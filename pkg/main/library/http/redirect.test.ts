@@ -3,11 +3,11 @@ import * as assert from "@std/assert";
 import * as httpStatus from "@std/http/status";
 import { redirect } from "./redirect.ts";
 
-export function assertRedirect(
+export const assertRedirect = (
   response: Response,
   statusCode: httpStatus.StatusCode = httpStatus.STATUS_CODE.SeeOther,
   location?: string,
-) {
+) => {
   assert.assert(!response.ok);
   assert.assertEquals(response.body, null);
   assert.assertEquals(response.status, statusCode);
@@ -17,7 +17,7 @@ export function assertRedirect(
   } else {
     assert.assert(response.headers.has("location"));
   }
-}
+};
 
 Deno.test("[http] redirect() defaults", () => {
   const location = "/hello-there";

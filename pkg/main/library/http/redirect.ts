@@ -17,17 +17,17 @@ import * as httpStatus from "@std/http/status";
  * redirect("/new-page", 301); // Redirects client to `/new-page` with HTTP status 301
  * ```
  */
-export function redirect(
+export const redirect = (
   location: string,
   status:
     | typeof httpStatus.STATUS_CODE.Found
     | typeof httpStatus.STATUS_CODE.Created
     | httpStatus.RedirectStatus = httpStatus.STATUS_CODE.SeeOther,
-) {
+) => {
   return new Response(null, {
     headers: {
       location,
     },
     status,
   });
-}
+};

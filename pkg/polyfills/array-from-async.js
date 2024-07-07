@@ -1,7 +1,7 @@
 const tooLongErrorMessage =
   "Input is too long and exceeded Number.MAX_SAFE_INTEGER times.";
 
-function isConstructor(obj) {
+const isConstructor = (obj) => {
   if (obj == null) {
     return false;
   }
@@ -19,9 +19,9 @@ function isConstructor(obj) {
   } catch (_err) {
     return false;
   }
-}
+};
 
-export async function fromAsyncIterable(items, mapfn, thisArg) {
+export const fromAsyncIterable = async (items, mapfn, thisArg) => {
   const result = isConstructor(this) ? new this() : Array(0);
 
   let i = 0;
@@ -42,9 +42,9 @@ export async function fromAsyncIterable(items, mapfn, thisArg) {
 
   result.length = i;
   return result;
-}
+};
 
-export async function fromAsyncNonIterable(items, mapfn, thisArg) {
+export const fromAsyncNonIterable = async (items, mapfn, thisArg) => {
   // In this case, the items are assumed to be an arraylike object with
   // a length property and integer properties for each element.
   const result = isConstructor(this)
@@ -72,9 +72,9 @@ export async function fromAsyncNonIterable(items, mapfn, thisArg) {
   result.length = i;
 
   return result;
-}
+};
 
-export default function fromAsync(items, mapfn, thisArg) {
+export const fromAsync = (items, mapfn, thisArg) => {
   const itemsAreIterable = Symbol.asyncIterator in items ||
     Symbol.iterator in items;
 
@@ -83,4 +83,6 @@ export default function fromAsync(items, mapfn, thisArg) {
   }
 
   return fromAsyncNonIterable(items, mapfn, thisArg);
-}
+};
+
+export default fromAsync;

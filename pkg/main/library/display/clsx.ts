@@ -1,7 +1,7 @@
 // Copyright 2024-present the Deno authors. All rights reserved. MIT license.
 import { type MixTypes, toVal } from "./to-val.ts";
 
-export function clsx(...args: Array<MixTypes>) {
+export const clsx = (...args: Array<MixTypes>) => {
   let i = 0, tmp, x, str = "";
   while (i < args.length) {
     // deno-lint-ignore no-cond-assign
@@ -15,4 +15,4 @@ export function clsx(...args: Array<MixTypes>) {
   }
 
   return str;
-}
+};

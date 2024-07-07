@@ -13,7 +13,7 @@ type Question = Awaited<
   ReturnType<typeof questionRepository.findAllWithScores>
 >[0];
 
-async function fetchVotedQuestions() {
+const fetchVotedQuestions = async () => {
   const url = "/api/me/question-votes";
   const resp = await fetch(url);
 
@@ -22,16 +22,16 @@ async function fetchVotedQuestions() {
   }
 
   return await resp.json() as { items: Question[]; cursor: string };
-}
+};
 
-function EmptyQuestionsList() {
+const EmptyQuestionsList = () => {
   return (
     <div class="flex flex-col justify-center items-center gap-2 pt-16">
       <IconInfo class="w-10 h-10 text-slate-400 dark:text-slate-600" />
       <p>Henüz herhangi bir soru sorulmamış</p>
     </div>
   );
-}
+};
 
 interface VoteButtonProps {
   question: Question;
@@ -40,8 +40,8 @@ interface VoteButtonProps {
   isVotedSig: Signal<boolean>;
 }
 
-function VoteButton(props: VoteButtonProps) {
-  async function onClick(event: MouseEvent) {
+const VoteButton = (props: VoteButtonProps) => {
+  const onClick = async (event: MouseEvent) => {
     if (event.detail !== 1) {
       return;
     }
@@ -59,7 +59,7 @@ function VoteButton(props: VoteButtonProps) {
 
     props.scoreSig.value++;
     props.isVotedSig.value = true;
-  }
+  };
 
   if (!props.isLoggedIn) {
     return (
@@ -91,15 +91,15 @@ function VoteButton(props: VoteButtonProps) {
       ▲
     </button>
   );
-}
+};
 
 interface HideLinkProps {
   question: Question;
   isHiddenSig: Signal<boolean>;
 }
 
-function HideLink(props: HideLinkProps) {
-  async function onClick(event: MouseEvent) {
+const HideLink = (props: HideLinkProps) => {
+  const onClick = async (event: MouseEvent) => {
     event.preventDefault();
 
     if (event.detail !== 1) {
@@ -118,7 +118,7 @@ function HideLink(props: HideLinkProps) {
     }
 
     props.isHiddenSig.value = true;
-  }
+  };
 
   if (props.isHiddenSig.value) {
     return <>"gizli"</>;
@@ -129,7 +129,7 @@ function HideLink(props: HideLinkProps) {
       gizle
     </a>
   );
-}
+};
 
 interface QuestionSummaryProps {
   question: Question;
@@ -141,7 +141,7 @@ interface QuestionSummaryProps {
   isEditor?: boolean;
 }
 
-function QuestionSummary(props: QuestionSummaryProps) {
+const QuestionSummary = (props: QuestionSummaryProps) => {
   const scoreSig = useSignal(props.question.scoreSumTotal);
   const isVotedSig = useSignal(props.question.scoreSumUser > 0);
   const isHiddenSig = useSignal(false); // props.question.isHidden
@@ -190,7 +190,7 @@ function QuestionSummary(props: QuestionSummaryProps) {
       </div>
     </div>
   );
-}
+};
 
 export interface QuestionsListProps {
   /** Endpoint URL of the REST API to make the fetch request to */
@@ -201,7 +201,7 @@ export interface QuestionsListProps {
   isEditor?: boolean;
 }
 
-export function QuestionsList(props: QuestionsListProps) {
+export const QuestionsList = (props: QuestionsListProps) => {
   const questionsSig = useSignal<Question[]>([]);
   const votedQuestionsIdsSig = useSignal<string[]>([]);
   const isLoadingSig = useSignal<boolean | undefined>(undefined);
@@ -211,7 +211,7 @@ export function QuestionsList(props: QuestionsListProps) {
     )
   );
 
-  async function loadMoreQuestions() {
+  const loadMoreQuestions = async () => {
     if (isLoadingSig.value) {
       return;
     }
@@ -235,7 +235,7 @@ export function QuestionsList(props: QuestionsListProps) {
     } finally {
       isLoadingSig.value = false;
     }
-  }
+  };
 
   useEffect(() => {
     if (!props.isLoggedIn) {
@@ -290,4 +290,4 @@ export function QuestionsList(props: QuestionsListProps) {
       </div>
     </div>
   );
-}
+};

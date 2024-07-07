@@ -6,9 +6,9 @@ import * as users from "@/pkg/main/data/repositories/users.ts";
 import * as sessions from "@/pkg/main/data/repositories/sessions.ts";
 import * as github from "@/pkg/main/services/github.ts";
 
-export async function getSession(
+export const getSession = async (
   id: string,
-): Promise<oauth.Session | undefined> {
+): Promise<oauth.Session | undefined> => {
   const session = await sessions.sessionRepository.findById(id);
 
   if (session === undefined) {
@@ -27,7 +27,7 @@ export async function getSession(
     loggedInAt: session.loggedInAt ?? undefined,
     expiresAt: session.expiresAt ?? undefined,
   };
-}
+};
 
 export const onLoginRequested = async (session: oauth.Session) => {
   const sessionEntity: sessions.SessionPartial = {

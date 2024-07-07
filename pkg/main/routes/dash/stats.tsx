@@ -6,9 +6,9 @@ import { type State } from "@/pkg/main/plugins/session.ts";
 import { defineRoute } from "$fresh/server.ts";
 import { Partial } from "$fresh/runtime.ts";
 
-function randomNumbers(length: number, ceil: number) {
+const randomNumbers = (length: number, ceil: number) => {
   return Array.from({ length }, () => Math.floor(Math.random() * ceil));
-}
+};
 
 export default defineRoute<State>((_req, ctx) => {
   const labels = [

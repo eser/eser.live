@@ -1,7 +1,7 @@
 // Copyright 2024-present the Deno authors. All rights reserved. MIT license.
 export type MixTypes = boolean | string | number | object | null;
 
-export function toVal(mix: MixTypes) {
+export const toVal = (mix: MixTypes) => {
   let k, y;
 
   if (mix === false || mix === null || mix === undefined) {
@@ -45,4 +45,4 @@ export function toVal(mix: MixTypes) {
   }
 
   return "";
-}
+};

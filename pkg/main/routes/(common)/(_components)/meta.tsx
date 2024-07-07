@@ -10,7 +10,7 @@ export interface MetaProps {
   imageUrl: string;
 }
 
-export default function Meta(props: MetaProps) {
+export const Meta = (props: MetaProps) => {
   return (
     <>
       {/* HTML Meta Tags */}
@@ -39,4 +39,6 @@ export default function Meta(props: MetaProps) {
       <meta name="twitter:image" content={props.imageUrl} />
     </>
   );
-}
+};
+
+export default Meta;

@@ -4,7 +4,7 @@ import postgres from "postgres";
 import { drizzle } from "drizzle-orm/postgres-js";
 import * as schema from "./schema.ts";
 
-async function readEnvKey(key: string): Promise<string | undefined> {
+const readEnvKey = async (key: string): Promise<string | undefined> => {
   let value = undefined;
 
   if (
@@ -15,7 +15,7 @@ async function readEnvKey(key: string): Promise<string | undefined> {
   }
 
   return value;
-}
+};
 
 await dotenv.load({ export: true });
 

@@ -13,10 +13,10 @@
  * formatCurrency(5, "USD"); // Returns "$5"
  * ```
  */
-export function formatCurrency(
+export const formatCurrency = (
   amount: number,
   currency: string,
-): string {
+): string => {
   return new Intl.NumberFormat(
     "en-US",
     {
@@ -29,4 +29,4 @@ export function formatCurrency(
     // Issue: https://stackoverflow.com/questions/44533919/space-after-symbol-with-js-intl
     .replace(/^(\D+)/, "$1")
     .replace(/\s+/, "");
-}
+};

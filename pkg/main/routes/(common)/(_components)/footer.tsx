@@ -4,7 +4,7 @@ import IconBrandX from "tabler_icons_tsx/brand-x.tsx";
 import { SITE_NAME } from "@/pkg/main/constants.ts";
 import { MadeWithCool } from "./made-with-cool.tsx";
 
-export function Footer() {
+export const Footer = () => {
   return (
     <footer class="footer p-4 text-base-content">
       <aside class="items-center grid-flow-col">
@@ -34,4 +34,4 @@ export function Footer() {
       </nav>
     </footer>
   );
-}
+};

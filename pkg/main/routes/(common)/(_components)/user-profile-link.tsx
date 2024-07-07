@@ -7,7 +7,7 @@ export interface UserProfileLinkProps {
   class?: string;
 }
 
-export function UserProfileLink(props: UserProfileLinkProps) {
+export const UserProfileLink = (props: UserProfileLinkProps) => {
   if (props.isAnonymous === true || props.user === undefined) {
     return (
       <>
@@ -28,4 +28,4 @@ export function UserProfileLink(props: UserProfileLinkProps) {
       {name}
     </a>
   );
-}
+};

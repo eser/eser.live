@@ -10,7 +10,7 @@ export interface TabItemProps {
   children?: ComponentChildren;
 }
 
-export function TabItem(props: TabItemProps) {
+export const TabItem = (props: TabItemProps) => {
   return (
     <a
       role="tab"
@@ -23,7 +23,7 @@ export function TabItem(props: TabItemProps) {
       {props.children}
     </a>
   );
-}
+};
 
 export interface TabsBarProps {
   links: {
@@ -34,7 +34,7 @@ export interface TabsBarProps {
   currentPath: string;
 }
 
-export function TabsBar(props: TabsBarProps) {
+export const TabsBar = (props: TabsBarProps) => {
   return (
     <div role="tablist" class="tabs tabs-lifted">
       {props.links.filter((link) => link.isVisible).map((link) => (
@@ -44,4 +44,4 @@ export function TabsBar(props: TabsBarProps) {
       ))}
     </div>
   );
-}
+};

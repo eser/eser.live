@@ -8,7 +8,7 @@ export interface UserProfilePictureProps {
   class?: string;
 }
 
-export function UserProfilePicture(props: UserProfilePictureProps) {
+export const UserProfilePicture = (props: UserProfilePictureProps) => {
   const login = props.isAnonymous === true
     ? undefined
     : props.user?.githubHandle;
@@ -31,4 +31,4 @@ export function UserProfilePicture(props: UserProfilePictureProps) {
       loading="lazy"
     />
   );
-}
+};

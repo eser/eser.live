@@ -21,7 +21,7 @@ export const stateDefaults: State = {
   lang: "tr",
 };
 
-export function getEnv(key: string, defaultValue?: string): string {
+export const getEnv = (key: string, defaultValue?: string): string => {
   const value = Deno.env.get(key);
 
   if (value === undefined) {
@@ -33,28 +33,28 @@ export function getEnv(key: string, defaultValue?: string): string {
   }
 
   return value;
-}
+};
 
-export function assertLoggedIn(
+export const assertLoggedIn = (
   ctx: { state: State },
-): asserts ctx is { state: LoggedInState } {
+): asserts ctx is { state: LoggedInState } => {
   if (ctx.state.sessionUser === undefined) {
     throw new UnauthorizedError("User must be logged in");
   }
-}
+};
 
-export function assertIsEditor(
+export const assertIsEditor = (
   ctx: { state: State },
-): asserts ctx is { state: LoggedInState } {
+): asserts ctx is { state: LoggedInState } => {
   if (ctx.state.isEditor !== true) {
     throw new UnauthorizedError("User must be an editor");
   }
-}
+};
 
-async function setSessionState(
+const setSessionState = async (
   req: Request,
   ctx: FreshContext<State>,
-) {
+) => {
   if (ctx.destination !== "route") {
     return await ctx.next();
   }
@@ -82,25 +82,25 @@ async function setSessionState(
   }
 
   return await ctx.next();
-}
+};
 
-async function ensureLoggedIn(
+const ensureLoggedIn = async (
   _req: Request,
   ctx: FreshContext<State>,
-) {
+) => {
   assertLoggedIn(ctx);
 
   return await ctx.next();
-}
+};
 
-async function ensureIsEditor(
+const ensureIsEditor = async (
   _req: Request,
   ctx: FreshContext<State>,
-) {
+) => {
   assertIsEditor(ctx);
 
   return await ctx.next();
-}
+};
 
 /**
  * Adds middleware to the defined routes that ensures the client is logged-in

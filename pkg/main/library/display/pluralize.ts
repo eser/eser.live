@@ -11,7 +11,7 @@
  * pluralize(1, "meow"); // Returns "1 meow"
  * ```
  */
-export function pluralize(amount: number, unit: string) {
+export const pluralize = (amount: number, unit: string) => {
   // return amount === 1 ? `${amount} ${unit}` : `${amount} ${unit}s`;
   return `${amount} ${unit}`;
-}
+};

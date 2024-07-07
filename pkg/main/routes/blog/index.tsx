@@ -5,7 +5,7 @@ import { Head } from "@/pkg/main/routes/(common)/(_components)/head.tsx";
 import { SITE_LOCALE } from "@/pkg/main/constants.ts";
 import { getPosts, type Post } from "@/pkg/main/services/posts.ts";
 
-function PostCard(props: Post) {
+const PostCard = (props: Post) => {
   return (
     <div class="group card card-compact">
       <a class="no-underline" href={`/blog/${props.slug}`}>
@@ -34,7 +34,7 @@ function PostCard(props: Post) {
       </a>
     </div>
   );
-}
+};
 
 export default defineRoute<State>(async (_req, ctx) => {
   const posts = await getPosts();

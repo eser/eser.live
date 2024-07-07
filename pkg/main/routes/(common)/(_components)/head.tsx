@@ -11,7 +11,7 @@ export type HeadProps =
     children?: ComponentChildren;
   };
 
-export function Head(props: HeadProps) {
+export const Head = (props: HeadProps) => {
   return (
     <HeadFresh>
       <Meta
@@ -23,4 +23,4 @@ export function Head(props: HeadProps) {
       {props.children}
     </HeadFresh>
   );
-}
+};

@@ -35,7 +35,7 @@ export interface Post {
  * post?.content; // Returns '# Heading 1\n\nHello, world!\n\n```javascript\nconsole.log("Hello World");\n```\n'
  * ```
  */
-export async function getPost(slug: string): Promise<Post | null> {
+export const getPost = async (slug: string): Promise<Post | null> => {
   try {
     const text = await Deno.readTextFile(
       path.join("./content/posts", `${slug}.md`),
@@ -51,7 +51,7 @@ export async function getPost(slug: string): Promise<Post | null> {
     console.log("Error on Blog", slug, e);
     return null;
   }
-}
+};
 
 /**
  * Returns an array of {@linkcode Post} objects by reading and parsing files
@@ -71,7 +71,7 @@ export async function getPost(slug: string): Promise<Post | null> {
  * posts[0].content; // Returns '# Heading 1\n\nHello, world!\n\n```javascript\nconsole.log("Hello World");\n```\n'
  * ```
  */
-export async function getPosts(): Promise<Post[]> {
+export const getPosts = async (): Promise<Post[]> => {
   const posts = await Array.fromAsync(
     Deno.readDir("./content/posts"),
     async (file) => await getPost(file.name.replace(".md", "")),
@@ -79,4 +79,4 @@ export async function getPosts(): Promise<Post[]> {
   return posts.toSorted((a, b) =>
     b.publishedAt.getTime() - a.publishedAt.getTime()
   );
-}
+};

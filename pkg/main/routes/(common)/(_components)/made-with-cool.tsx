@@ -1,6 +1,6 @@
 // Copyright 2024-present the Deno authors. All rights reserved. MIT license.
 
-export function MadeWithCool() {
+export const MadeWithCool = () => {
   return (
     <svg
       width="63"
@@ -29,4 +29,4 @@ export function MadeWithCool() {
       />
     </svg>
   );
-}
+};

@@ -3,7 +3,7 @@ import { useEffect } from "preact/hooks";
 
 const modKeys = ["Shift", "Control", "Alt", "Meta"];
 
-function checkKeys(keys: string[], e: globalThis.KeyboardEvent) {
+const checkKeys = (keys: string[], e: globalThis.KeyboardEvent) => {
   for (const key of keys) {
     if (modKeys.includes(key)) {
       if (!e.getModifierState(key)) {
@@ -19,16 +19,16 @@ function checkKeys(keys: string[], e: globalThis.KeyboardEvent) {
   }
 
   return true;
-}
+};
 
-function useShortcut(keys: string[], actionHandler: () => void) {
+const useShortcut = (keys: string[], actionHandler: () => void) => {
   useEffect(() => {
-    function keyDownHandler(e: globalThis.KeyboardEvent) {
+    const keyDownHandler = (e: globalThis.KeyboardEvent) => {
       if (checkKeys(keys, e)) {
         e.preventDefault();
         actionHandler();
       }
-    }
+    };
 
     document.addEventListener("keydown", keyDownHandler);
 
@@ -36,9 +36,9 @@ function useShortcut(keys: string[], actionHandler: () => void) {
       document.removeEventListener("keydown", keyDownHandler);
     };
   }, []);
-}
+};
 
-export function Shortcuts() {
+export const Shortcuts = () => {
   // TODO(@eser) Console with `
 
   useShortcut(["Meta", "1"], () => {
@@ -67,4 +67,4 @@ export function Shortcuts() {
   });
 
   return null;
-}
+};

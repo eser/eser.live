@@ -19,7 +19,7 @@ import {
  * toErrorStatus(new Deno.errors.NotFound) // Returns 404
  * ```
  */
-export function toErrorStatus(error: Error) {
+export const toErrorStatus = (error: Error) => {
   if (error instanceof Deno.errors.NotFound) {
     return httpStatus.STATUS_CODE.NotFound;
   }
@@ -33,7 +33,7 @@ export function toErrorStatus(error: Error) {
   }
 
   return httpStatus.STATUS_CODE.InternalServerError;
-}
+};
 
 export const errorHandlingPlugin: Plugin<State> = {
   name: "error-handling",

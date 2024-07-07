@@ -31,9 +31,9 @@ export interface Session {
  * Dynamically prefixes the cookie name, depending on whether it's for a secure
  * origin (HTTPS).
  */
-export function getCookieName(name: string, isHttps: boolean): string {
+export const getCookieName = (name: string, isHttps: boolean): string => {
   return isHttps ? `__Host-${name}` : name;
-}
+};
 
 /**
  * @see {@link https://web.dev/first-party-cookie-recipes/#the-good-first-party-cookie-recipe}
@@ -49,7 +49,7 @@ export const COOKIE_BASE = {
   Pick<httpCookie.Cookie, "path" | "httpOnly" | "maxAge" | "sameSite">
 >;
 
-export function getSuccessUri(request: Request): string {
+export const getSuccessUri = (request: Request): string => {
   const url = new URL(request.url);
 
   const successUri = url.searchParams.get("successUri");
@@ -63,7 +63,7 @@ export function getSuccessUri(request: Request): string {
   }
 
   return "/";
-}
+};
 
 // client
 

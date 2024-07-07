@@ -9,7 +9,7 @@ interface WelcomeStripProps {
   sessionUser?: User;
 }
 
-function WelcomeStrip(props: WelcomeStripProps) {
+export const WelcomeStrip = (props: WelcomeStripProps) => {
   const isAuthenticated = props.sessionUser !== undefined;
 
   return (
@@ -48,18 +48,71 @@ function WelcomeStrip(props: WelcomeStripProps) {
       </div>
     </div>
   );
-}
+};
 
-export function BroadcastSchedule() {
+type BroadcastPlaylistCardProps = {
+  id: string;
+  title: string;
+  description: string;
+};
+
+export const BroadcastPlaylistCard = (props: BroadcastPlaylistCardProps) => {
+  return (
+    <a
+      href={`https://www.youtube.com/playlist?list=${props.id}`}
+      class="no-underline basis-[32%] flex"
+    >
+      <div class="card glass w-full h-full hover:bg-accent">
+        <div class="card-body">
+          <h3 class="card-title m-0">{props.title}</h3>
+          <p class="m-0">{props.description}</p>
+        </div>
+      </div>
+    </a>
+  );
+};
+
+export const BroadcastPlaylists = () => {
+  return (
+    <div class="content-area">
+      <h2>Playlistler</h2>
+      <div class="flex flex-row flex-wrap gap-4">
+        <BroadcastPlaylistCard
+          id="PLWLiJPAYmgZAS3xwyNPEGPXZ9rE1ABJzZ"
+          title="Yazılımcı Haberleri"
+          description="Her pazartesi YouTube’da gerçekleştirdiğimiz canlı yayınlarda haftanın öne çıkan haberleri hakkında konuşuyoruz. Bekleriz."
+        />
+        <BroadcastPlaylistCard
+          id="PLWLiJPAYmgZBKNq3AEH3yR4EPOa2CJYK5"
+          title="JavaScript"
+          description="JavaScript ekosistemini frameworkleri, kütüphaneleri, standartları ve run-timeları ile full-stack olarak ele aldığımız, incelediğimiz, irdelediğimiz yayınlar."
+        />
+        <BroadcastPlaylistCard
+          id="PLWLiJPAYmgZBLJaOFdjv1cyry82fzvTSA"
+          title="Geliştirme Pratikleri"
+          description="Günlük olarak kullandığımız birçok teknoloji ve aracın pek bilinmeyen özelliklerini veya üzerinde durulması gereken en iyi uygulamalarını konuştuğumuz videolar."
+        />
+      </div>
+    </div>
+  );
+};
+
+export const BroadcastSchedule = () => {
   return (
     <div class="content-area">
       <h2>Planlı Yayın Takvimi</h2>
       <p>
-        <em>Şu anda planlı bir yayın bulunmamaktadır.</em>
+        <em>
+          Şu anda planlı bir yayın bulunmamaktadır. Anlık yayın bildirimleri
+          için Telegram üzerinden{" "}
+          <a href="https://t.me/eserlive">
+            eser.live ve yazılımcı ağı telegram duyuru kanalı
+          </a>nı takip edebilirsiniz.
+        </em>
       </p>
     </div>
   );
-}
+};
 
 export default defineRoute<State>((_req, ctx) => {
   return (
@@ -67,6 +120,7 @@ export default defineRoute<State>((_req, ctx) => {
       <Head href={ctx.url.href} />
       <main>
         <WelcomeStrip sessionUser={ctx.state?.sessionUser} />
+        <BroadcastPlaylists />
         <BroadcastSchedule />
       </main>
     </>
