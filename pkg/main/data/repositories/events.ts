@@ -1,5 +1,6 @@
-// Copyright 2024-present the Deno authors. All rights reserved. MIT license.
+// Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
 import { and, eq, gt, isNull, sql } from "drizzle-orm";
+import { type Cursor } from "@/pkg/main/library/data/cursors.ts";
 import { type EventPartial, eventSchema } from "../models/event.ts";
 import { profileSchema } from "../models/profile.ts";
 import {
@@ -11,25 +12,45 @@ import { db } from "../db.ts";
 export { type Event, type EventPartial } from "../models/event.ts";
 
 export class EventRepository {
-  async findAll() {
-    const result = await db.query.eventSchema
+  async findAll(cursor: Cursor) {
+    const filterConditions = (cursor.offset === "")
+      ? isNull(eventSchema.deletedAt)
+      : and(
+        gt(eventSchema.id, cursor.offset),
+        isNull(eventSchema.deletedAt),
+      );
+
+    const query = await db.query.eventSchema
       .findMany({
-        where: isNull(eventSchema.deletedAt),
+        where: filterConditions,
+        limit: cursor.pageSize,
       });
+
+    const result = await query;
 
     return result;
   }
 
-  async findAllAttendancesByProfileId(profileId: string) {
-    const result = await db.query.eventSchema
+  async findAllAttendancesByProfileId(cursor: Cursor, profileId: string) {
+    const filterConditions = (cursor.offset === "")
+      ? isNull(eventSchema.deletedAt)
+      : and(
+        gt(eventSchema.id, cursor.offset),
+        isNull(eventSchema.deletedAt),
+      );
+
+    const query = db.query.eventSchema
       .findMany({
-        where: isNull(eventSchema.deletedAt),
+        where: filterConditions,
         with: {
           attendances: {
             where: eq(eventAttendanceSchema.profileId, profileId),
           },
         },
+        limit: cursor.pageSize,
       });
+
+    const result = await query;
 
     return result;
   }
@@ -49,7 +70,7 @@ export class EventRepository {
     return result;
   }
 
-  async findAllWithStats(viewingProfileId?: string) {
+  async findAllWithStats(cursor: Cursor, viewingProfileId?: string) {
     const twoHoursLater = new Date(Date.now() + 2 * 60 * 60 * 1000);
 
     const statSumProfileCalculation = viewingProfileId !== undefined
@@ -58,7 +79,7 @@ export class EventRepository {
       >`CAST(SUM(CASE WHEN ${eventAttendanceSchema.profileId} = ${viewingProfileId} THEN 1 ELSE 0 END) AS INT)`
       : sql<number>`CAST(0 AS INT)`;
 
-    const result = await db.select({
+    const queryBase = db.select({
       id: eventSchema.id,
       kind: eventSchema.kind,
 
@@ -89,16 +110,28 @@ export class EventRepository {
         profileSchema,
         eq(eventAttendanceSchema.profileId, profileSchema.id),
       )
-      .where(
+      .groupBy(
+        eventSchema.id,
+      )
+      .orderBy(sql`total_stat_sum DESC, ${eventSchema.createdAt} DESC`)
+      .limit(cursor.pageSize);
+
+    const query = (cursor.offset === "")
+      ? queryBase.where(
         and(
           gt(eventSchema.timeEnd, twoHoursLater),
           isNull(eventSchema.deletedAt),
         ),
       )
-      .groupBy(
-        eventSchema.id,
-      )
-      .orderBy(sql`total_stat_sum DESC, ${eventSchema.createdAt} DESC`);
+      : queryBase.where(
+        and(
+          gt(eventSchema.id, cursor.offset),
+          gt(eventSchema.timeEnd, twoHoursLater),
+          isNull(eventSchema.deletedAt),
+        ),
+      );
+
+    const result = await query;
 
     return result;
   }

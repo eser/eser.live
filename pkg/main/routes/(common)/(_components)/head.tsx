@@ -1,4 +1,4 @@
-// Copyright 2024-present the Deno authors. All rights reserved. MIT license.
+// Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
 import { Head as HeadFresh } from "$fresh/runtime.ts";
 import Meta, { type MetaProps } from "./meta.tsx";
 import { SITE_DESCRIPTION, SITE_NAME } from "@/pkg/main/constants.ts";

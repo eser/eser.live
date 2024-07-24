@@ -1,4 +1,4 @@
-// Copyright 2024-present the Deno authors. All rights reserved. MIT license.
+// Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
 import { type FreshContext, Plugin } from "$fresh/server.ts";
 import { type User } from "@/pkg/main/data/models/user.ts";
 import * as sessions from "@/pkg/main/data/repositories/sessions.ts";

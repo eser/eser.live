@@ -1,4 +1,4 @@
-// Copyright 2024-present the Deno authors. All rights reserved. MIT license.
+// Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
 
 /**
  * Returns a formatted string based on the given amount of currency and the

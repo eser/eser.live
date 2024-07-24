@@ -1,27 +1,45 @@
-// Copyright 2024-present the Deno authors. All rights reserved. MIT license.
-import { and, eq, isNull } from "drizzle-orm";
+// Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
+import { and, eq, gt, isNull } from "drizzle-orm";
+import { type Cursor } from "@/pkg/main/library/data/cursors.ts";
 import { type UserPartial, userSchema } from "../models/user.ts";
 import { db } from "../db.ts";
 
 export { type User, type UserPartial } from "../models/user.ts";
 
 export class UserRepository {
-  async findAll() {
-    const results = await db.select()
+  async findAll(cursor: Cursor) {
+    const queryBase = db.select()
       .from(userSchema)
-      .where(isNull(userSchema.deletedAt));
+      .limit(cursor.pageSize);
 
-    return results;
+    const query = (cursor.offset === "")
+      ? queryBase.where(isNull(userSchema.deletedAt))
+      : queryBase.where(
+        and(gt(userSchema.id, cursor.offset), isNull(userSchema.deletedAt)),
+      );
+
+    const result = await query;
+
+    return result;
   }
 
-  async findAllWithDetails() {
-    const result = await db.select({
+  async findAllWithDetails(cursor: Cursor) {
+    const queryBase = db.select({
       id: userSchema.id,
       name: userSchema.name,
       githubHandle: userSchema.githubHandle,
       xHandle: userSchema.xHandle,
     })
-      .from(userSchema);
+      .from(userSchema)
+      .limit(cursor.pageSize);
+
+    const query = (cursor.offset === "")
+      ? queryBase.where(isNull(userSchema.deletedAt))
+      : queryBase.where(
+        and(gt(userSchema.id, cursor.offset), isNull(userSchema.deletedAt)),
+      );
+
+    const result = await query;
 
     return result;
   }

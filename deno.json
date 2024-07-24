@@ -7,8 +7,9 @@
   ],
   "tasks": {
     "db:generate": "deno run --allow-env --allow-sys --allow-read --allow-write --allow-run npm:drizzle-kit generate",
-    "db:migrate": "deno run --allow-read --allow-env --allow-net ./pkg/tasks/db-migrate.ts",
-    "kv:migrate": "deno run --allow-read --allow-env --allow-net --unstable-kv ./pkg/tasks/kv-migrate.ts",
+    "db:migrate": "deno run --allow-env --allow-read --allow-net ./pkg/tasks/db-migrate.ts",
+    "db:studio": "deno run --allow-env --allow-sys --allow-read --allow-write --allow-run --allow-net npm:drizzle-kit studio",
+    "kv:migrate": "deno run --allow-env --allow-read --allow-net --unstable-kv ./pkg/tasks/kv-migrate.ts",
     "start": "DENO_FUTURE=1 deno run --allow-all --watch=./pkg/main/static/,./pkg/main/routes/ ./pkg/main/dev.ts",
     "test": "GITHUB_CLIENT_ID=xxx GITHUB_CLIENT_SECRET=xxx deno test --allow-all --parallel --coverage=./test/coverage/",
     "check:license": "deno run --allow-read --allow-write ./pkg/tasks/check-license.ts",

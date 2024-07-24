@@ -1,4 +1,4 @@
-// Copyright 2024-present the Deno authors. All rights reserved. MIT license.
+// Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
 import { defineLayout } from "$fresh/server.ts";
 import { Header } from "@/pkg/main/routes/(common)/(_components)/header.tsx";
 import { Footer } from "@/pkg/main/routes/(common)/(_components)/footer.tsx";

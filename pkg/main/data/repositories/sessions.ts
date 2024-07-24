@@ -1,16 +1,24 @@
-// Copyright 2024-present the Deno authors. All rights reserved. MIT license.
-import { eq } from "drizzle-orm";
+// Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
+import { eq, gt } from "drizzle-orm";
+import { type Cursor } from "@/pkg/main/library/data/cursors.ts";
 import { type SessionPartial, sessionSchema } from "../models/session.ts";
 import { db } from "../db.ts";
 
 export { type Session, type SessionPartial } from "../models/session.ts";
 
 export class SessionRepository {
-  async findAll() {
-    const results = await db.select()
-      .from(sessionSchema);
+  async findAll(cursor: Cursor) {
+    const queryBase = db.select()
+      .from(sessionSchema)
+      .limit(cursor.pageSize);
 
-    return results;
+    const query = (cursor.offset === "") ? queryBase : queryBase.where(
+      gt(sessionSchema.id, cursor.offset),
+    );
+
+    const result = await query;
+
+    return result;
   }
 
   async findById(id: string) {

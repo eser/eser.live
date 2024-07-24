@@ -1,4 +1,4 @@
-// Copyright 2024-present the Deno authors. All rights reserved. MIT license.
+// Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
 import IconBrandDiscord from "tabler_icons_tsx/brand-discord-filled.tsx";
 import IconBrandX from "tabler_icons_tsx/brand-x.tsx";
 import { SITE_NAME } from "@/pkg/main/constants.ts";

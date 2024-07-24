@@ -1,5 +1,6 @@
-// Copyright 2024-present the Deno authors. All rights reserved. MIT license.
-import { and, eq, isNull, sql } from "drizzle-orm";
+// Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
+import { and, eq, gt, isNull, sql } from "drizzle-orm";
+import { type Cursor } from "@/pkg/main/library/data/cursors.ts";
 import { type QuestionPartial, questionSchema } from "../models/question.ts";
 import { userSchema } from "../models/user.ts";
 import {
@@ -11,32 +12,63 @@ import { db } from "../db.ts";
 export { type Question, type QuestionPartial } from "../models/question.ts";
 
 export class QuestionRepository {
-  async findAll() {
-    const result = await db.query.questionSchema
+  async findAll(cursor: Cursor) {
+    const filterConditions = (cursor.offset === "")
+      ? isNull(questionSchema.deletedAt)
+      : and(
+        gt(questionSchema.id, cursor.offset),
+        isNull(questionSchema.deletedAt),
+      );
+
+    const query = db.query.questionSchema
       .findMany({
-        where: isNull(questionSchema.deletedAt),
+        where: filterConditions,
+        limit: cursor.pageSize,
       });
+
+    const result = await query;
 
     return result;
   }
 
-  async findAllByUserId(userId: string) {
-    const result = await db.query.questionSchema
+  async findAllByUserId(cursor: Cursor, userId: string) {
+    const filterConditions = (cursor.offset === "")
+      ? and(
+        eq(questionSchema.userId, userId),
+        isNull(questionSchema.deletedAt),
+      )
+      : and(
+        gt(questionSchema.id, cursor.offset),
+        eq(questionSchema.userId, userId),
+        isNull(questionSchema.deletedAt),
+      );
+
+    const query = db.query.questionSchema
       .findMany({
-        where: and(
-          eq(questionSchema.userId, userId),
-          isNull(questionSchema.deletedAt),
-        ),
+        where: filterConditions,
+        limit: cursor.pageSize,
       });
+
+    const result = await query;
 
     return result;
   }
 
-  async findAllVotesByUserId(userId: string) {
-    const result = await db.query.questionSchema
+  async findAllVotesByUserId(cursor: Cursor, userId: string) {
+    const filterConditions = (cursor.offset === "")
+      ? eq(questionVoteSchema.userId, userId)
+      : and(
+        gt(questionVoteSchema.id, cursor.offset),
+        eq(questionVoteSchema.userId, userId),
+      );
+
+    const query = await db.query.questionSchema
       .findMany({
-        where: eq(questionVoteSchema.userId, userId),
+        where: filterConditions,
+        limit: cursor.pageSize,
       });
+
+    const result = await query;
 
     return result;
   }
@@ -53,14 +85,14 @@ export class QuestionRepository {
     return result;
   }
 
-  async findAllWithScores(viewingUserId?: string) {
+  async findAllWithScores(cursor: Cursor, viewingUserId?: string) {
     const scoreSumUserCalculation = viewingUserId !== undefined
       ? sql<
         number
       >`CAST(SUM(CASE WHEN ${questionVoteSchema.userId} = ${viewingUserId} THEN ${questionVoteSchema.score} ELSE 0 END) AS INT)`
       : sql<number>`CAST(0 AS INT)`;
 
-    const result = await db.select({
+    const queryBase = db.select({
       id: questionSchema.id,
       user: {
         id: userSchema.id,
@@ -86,30 +118,46 @@ export class QuestionRepository {
       .leftJoin(
         questionVoteSchema,
         eq(questionSchema.id, questionVoteSchema.questionId),
-      )
-      .where(
-        and(
-          eq(questionSchema.isHidden, false),
-          isNull(questionSchema.deletedAt),
-        ),
       )
       .groupBy(
         questionSchema.id,
         userSchema.id,
       )
-      .orderBy(sql`total_score_sum DESC, ${questionSchema.createdAt} DESC`);
+      .orderBy(sql`total_score_sum DESC, ${questionSchema.createdAt} DESC`)
+      .limit(cursor.pageSize);
+
+    const query = (cursor.offset === "")
+      ? queryBase.where(
+        and(
+          eq(questionSchema.isHidden, false),
+          isNull(questionSchema.deletedAt),
+        ),
+      )
+      : queryBase.where(
+        and(
+          gt(questionSchema.id, cursor.offset),
+          eq(questionSchema.isHidden, false),
+          isNull(questionSchema.deletedAt),
+        ),
+      );
+
+    const result = await query;
 
     return result;
   }
 
-  async findAllByUserIdWithScores(userId: string, viewingUserId?: string) {
+  async findAllByUserIdWithScores(
+    cursor: Cursor,
+    userId: string,
+    viewingUserId?: string,
+  ) {
     const scoreSumUserCalculation = viewingUserId !== undefined
       ? sql<
         number
       >`CAST(SUM(CASE WHEN ${questionVoteSchema.userId} = ${viewingUserId} THEN ${questionVoteSchema.score} ELSE 0 END) AS INT)`
       : sql<number>`CAST(0 AS INT)`;
 
-    const result = await db.select({
+    const queryBase = db.select({
       id: questionSchema.id,
       user: {
         id: userSchema.id,
@@ -136,7 +184,15 @@ export class QuestionRepository {
         questionVoteSchema,
         eq(questionSchema.id, questionVoteSchema.questionId),
       )
-      .where(
+      .groupBy(
+        questionSchema.id,
+        userSchema.id,
+      )
+      .orderBy(sql`total_score_sum DESC, ${questionSchema.createdAt} DESC`)
+      .limit(cursor.pageSize);
+
+    const query = (cursor.offset === "")
+      ? queryBase.where(
         and(
           eq(questionSchema.userId, userId),
           eq(questionSchema.isHidden, false),
@@ -144,11 +200,17 @@ export class QuestionRepository {
           isNull(questionSchema.deletedAt),
         ),
       )
-      .groupBy(
-        questionSchema.id,
-        userSchema.id,
-      )
-      .orderBy(sql`total_score_sum DESC, ${questionSchema.createdAt} DESC`);
+      : queryBase.where(
+        and(
+          gt(questionSchema.id, cursor.offset),
+          eq(questionSchema.userId, userId),
+          eq(questionSchema.isHidden, false),
+          eq(questionSchema.isAnonymous, false),
+          isNull(questionSchema.deletedAt),
+        ),
+      );
+
+    const result = await query;
 
     return result;
   }

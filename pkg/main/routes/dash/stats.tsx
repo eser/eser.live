@@ -1,4 +1,4 @@
-// Copyright 2024-present the Deno authors. All rights reserved. MIT license.
+// Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
 import { Chart } from "./(_islands)/chart.tsx";
 import { Head } from "@/pkg/main/routes/(common)/(_components)/head.tsx";
 import { TabsBar } from "@/pkg/main/routes/(common)/(_components)/tabs-bar.tsx";

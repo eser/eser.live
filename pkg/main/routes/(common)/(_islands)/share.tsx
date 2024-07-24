@@ -1,4 +1,4 @@
-// Copyright 2024-present the Deno authors. All rights reserved. MIT license.
+// Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
 import IconShare from "tabler_icons_tsx/share.tsx";
 import IconBrandWhatsApp from "tabler_icons_tsx/brand-whatsapp.tsx";
 import IconBrandTelegram from "tabler_icons_tsx/brand-telegram.tsx";
