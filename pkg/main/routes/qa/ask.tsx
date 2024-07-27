@@ -100,7 +100,7 @@ export default defineRoute<State>((_req, ctx) => {
               </label>
               <textarea
                 id="question_content"
-                class={`px-4 py-2 rounded rounded-lg outline-none border-1 border-gray-300 hover:border-black transition duration-100 disabled:opacity-50 disabled:cursor-not-allowed dark:hover:border-white w-full mt-2`}
+                class={`px-4 py-2 rounded-lg outline-none border-1 border-gray-300 hover:border-black transition duration-100 disabled:opacity-50 disabled:cursor-not-allowed dark:hover:border-white w-full mt-2`}
                 rows={6}
                 name="question_content"
                 required={true}

@@ -147,10 +147,11 @@ const QuestionSummary = (props: QuestionSummaryProps) => {
   const isHiddenSig = useSignal(false); // props.question.isHidden
 
   const date = new Date(props.question.updatedAt ?? props.question.createdAt);
+  const dateAnswered = new Date(props.question.answeredAt ?? 0);
 
   return (
-    <div class="py-2 flex gap-4">
-      <div class="pr-2 text-center flex flex-col justify-center">
+    <div class="pb-12 flex items-start gap-4">
+      <div class="flex-none pr-2 text-center flex flex-col justify-center">
         <VoteButton
           question={props.question}
           scoreSig={scoreSig}
@@ -159,34 +160,56 @@ const QuestionSummary = (props: QuestionSummaryProps) => {
         />
         <p>{scoreSig.value}</p>
       </div>
-      <div class="space-y-1">
-        <p>
+      <div class="flex-1 indicator flex flex-col">
+        {(props.question.answeredAt !== null)
+          ? (
+            <div class="indicator-item badge badge-outline badge-lg badge-success">
+              ✔︎
+            </div>
+          )
+          : null}
+        <p class="m-0">
           {props.question.content}
         </p>
-        <p class="text-slate-500">
+        <p class="text-secondary-content flex items-center gap-2">
           <UserProfilePicture
             user={props.question.user ?? undefined}
             isAnonymous={props.question.isAnonymous}
             size={24}
-            class="mr-2"
           />
           <UserProfileLink
             user={props.question.user ?? undefined}
             isAnonymous={props.question.isAnonymous}
           />
-          {" - "}
+          <span>-</span>
           <span title={datetime.format(date, "yyyy-MM-dd HH:mm:ss")}>
             {timeDiff(date)}
           </span>
           {props.isEditor === true
             ? (
               <>
-                {" - "}
+                <span>-</span>
                 <HideLink question={props.question} isHiddenSig={isHiddenSig} />
               </>
             )
             : null}
         </p>
+        {(props.question.answeredAt !== null)
+          ? (
+            <div class="answer bg-secondary glass rounded p-5 pb-0">
+              <p class="m-0">
+                {props.question.answerContent}
+              </p>
+              <p class="text-secondary-content flex items-center gap-2">
+                <span
+                  title={datetime.format(dateAnswered, "yyyy-MM-dd HH:mm:ss")}
+                >
+                  {timeDiff(dateAnswered)}
+                </span>
+              </p>
+            </div>
+          )
+          : null}
       </div>
     </div>
   );

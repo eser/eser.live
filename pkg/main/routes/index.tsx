@@ -60,7 +60,7 @@ export const PlaylistCard = (props: PlaylistCardProps) => {
       href={`https://www.youtube.com/playlist?list=${props.id}`}
       class="no-underline basis-[32%] flex"
     >
-      <div class="card card-compact glass w-full h-full bg-secondary text-secondary-content hover:bg-neutral hover:text-neutral-content">
+      <div class="card card-compact glass w-full h-full bg-base-300 text-base-content hover:bg-neutral hover:text-neutral-content">
         <div class="card-body">
           <h3 class="card-title m-0">{props.title}</h3>
           <p class="m-0">{props.description}</p>
