@@ -101,8 +101,10 @@ export class QuestionRepository {
       },
       content: questionSchema.content,
       isAnonymous: questionSchema.isAnonymous,
+      answerKind: questionSchema.answerKind,
+      answerContent: questionSchema.answerContent,
+      answerUri: questionSchema.answerUri,
       answeredAt: questionSchema.answeredAt,
-      answeredAtUri: questionSchema.answeredAtUri,
       createdAt: questionSchema.createdAt,
       updatedAt: questionSchema.updatedAt,
       scoreSumTotal: sql<
@@ -166,8 +168,10 @@ export class QuestionRepository {
       },
       content: questionSchema.content,
       isAnonymous: questionSchema.isAnonymous,
+      answerKind: questionSchema.answerKind,
+      answerContent: questionSchema.answerContent,
+      answerUri: questionSchema.answerUri,
       answeredAt: questionSchema.answeredAt,
-      answeredAtUri: questionSchema.answeredAtUri,
       createdAt: questionSchema.createdAt,
       updatedAt: questionSchema.updatedAt,
       scoreSumTotal: sql<

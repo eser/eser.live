@@ -6,10 +6,9 @@
     "temporal"
   ],
   "tasks": {
+    "db:studio": "deno run --allow-env --allow-sys --allow-read --allow-write --allow-run --allow-net npm:drizzle-kit studio",
     "db:generate": "deno run --allow-env --allow-sys --allow-read --allow-write --allow-run npm:drizzle-kit generate",
     "db:migrate": "deno run --allow-env --allow-read --allow-net ./pkg/tasks/db-migrate.ts",
-    "db:studio": "deno run --allow-env --allow-sys --allow-read --allow-write --allow-run --allow-net npm:drizzle-kit studio",
-    "kv:migrate": "deno run --allow-env --allow-read --allow-net --unstable-kv ./pkg/tasks/kv-migrate.ts",
     "start": "DENO_FUTURE=1 deno run --allow-all --watch=./pkg/main/static/,./pkg/main/routes/ ./pkg/main/dev.ts",
     "test": "GITHUB_CLIENT_ID=xxx GITHUB_CLIENT_SECRET=xxx deno test --allow-all --parallel --coverage=./test/coverage/",
     "check:license": "deno run --allow-read --allow-write ./pkg/tasks/check-license.ts",
@@ -49,8 +48,8 @@
     "@std/ulid": "jsr:@std/ulid@^0.224.1",
     "@tailwindcss/typography": "npm:@tailwindcss/typography@0.5.13",
     "daisyui": "npm:daisyui@4.12.2",
-    "drizzle-kit": "npm:drizzle-kit@0.22.7",
-    "drizzle-orm": "npm:drizzle-orm@0.31.2",
+    "drizzle-kit": "npm:drizzle-kit@0.23.0",
+    "drizzle-orm": "npm:drizzle-orm@0.32.1",
     "feed": "npm:/feed@4.2.2",
     "fresh_charts/": "https://deno.land/x/fresh_charts@0.3.1/",
     "postgres": "https://deno.land/x/postgresjs@v3.4.4/mod.js",

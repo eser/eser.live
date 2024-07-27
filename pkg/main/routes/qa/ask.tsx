@@ -36,8 +36,10 @@ export const handler: Handlers<undefined, LoggedInState> = {
       userId: ctx.state.sessionUser.id,
 
       content: questionContent,
+      answerKind: null,
+      answerContent: null,
+      answerUri: null,
       answeredAt: null,
-      answeredAtUri: null,
 
       isHidden: false,
       isAnonymous: questionIsAnonymous,

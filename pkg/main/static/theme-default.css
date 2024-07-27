@@ -36,6 +36,13 @@
 
   --li: 66.31% 0.008 253.3;         /* link */
   --lih: 25.77% 0.005 248.03;       /* link hover */
+
+  --glass-blur: 40px;
+  --glass-opacity: 30%;
+  --glass-reflex-degree: 100deg;
+  --glass-reflex-opacity: 10%;
+  --glass-border-opacity: 10%;
+  --glass-text-shadow-opacity: 5%;
 }
 
 .theme-variables-dark {
@@ -70,6 +77,13 @@
 
   --li: 66.31% 0.008 253.3;         /* link */
   --lih: 91.35% 0.005 258.33;       /* link hover */
+
+  --glass-blur: 40px;
+  --glass-opacity: 30%;
+  --glass-reflex-degree: 100deg;
+  --glass-reflex-opacity: 10%;
+  --glass-border-opacity: 10%;
+  --glass-text-shadow-opacity: 5%;
 }
 
 :root {
