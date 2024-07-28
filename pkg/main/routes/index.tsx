@@ -106,7 +106,7 @@ export const Events = (props: EventsProps) => {
   const endpoint = "/api/events";
 
   return (
-    <div class="content-area">
+    <div class="content-area mt-12">
       <h2>Planlı Etkinlik Takvimi</h2>
 
       <EventsList

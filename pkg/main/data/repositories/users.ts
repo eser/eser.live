@@ -8,15 +8,15 @@ export { type User, type UserPartial } from "../models/user.ts";
 
 export class UserRepository {
   async findAll(cursor: Cursor) {
-    const queryBase = db.select()
+    const query = db.select()
       .from(userSchema)
+      .where(
+        and(
+          (cursor.offset !== "") ? gt(userSchema.id, cursor.offset) : undefined,
+          isNull(userSchema.deletedAt),
+        ),
+      )
       .limit(cursor.pageSize);
-
-    const query = (cursor.offset === "")
-      ? queryBase.where(isNull(userSchema.deletedAt))
-      : queryBase.where(
-        and(gt(userSchema.id, cursor.offset), isNull(userSchema.deletedAt)),
-      );
 
     const result = await query;
 
@@ -24,20 +24,20 @@ export class UserRepository {
   }
 
   async findAllWithDetails(cursor: Cursor) {
-    const queryBase = db.select({
+    const query = db.select({
       id: userSchema.id,
       name: userSchema.name,
       githubHandle: userSchema.githubHandle,
       xHandle: userSchema.xHandle,
     })
       .from(userSchema)
+      .where(
+        and(
+          (cursor.offset !== "") ? gt(userSchema.id, cursor.offset) : undefined,
+          isNull(userSchema.deletedAt),
+        ),
+      )
       .limit(cursor.pageSize);
-
-    const query = (cursor.offset === "")
-      ? queryBase.where(isNull(userSchema.deletedAt))
-      : queryBase.where(
-        and(gt(userSchema.id, cursor.offset), isNull(userSchema.deletedAt)),
-      );
 
     const result = await query;
 

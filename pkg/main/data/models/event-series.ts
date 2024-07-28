@@ -1,29 +1,15 @@
 // Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
 import { char, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
-export const eventSchema = pgTable(
-  "event",
+export const eventSeriesSchema = pgTable(
+  "event_series",
   {
     id: char("id", { length: 26 }).primaryKey(),
-    kind: text("kind", {
-      enum: ["broadcast", "meetup", "conference"],
-    }).notNull(),
-    status: text("status", {
-      enum: ["draft", "published", "archived"],
-    }).notNull(),
 
-    seriesId: char("series_id", { length: 26 }),
     slug: text("slug").notNull().unique(),
     eventPictureUri: text("event_picture_uri"),
     title: text("title").notNull(),
     description: text("description").notNull(),
-
-    // registrationUri: text("registration_uri"),
-    attendanceUri: text("attendance_uri"),
-
-    publishedAt: timestamp("published_at", { withTimezone: true }),
-    timeStart: timestamp("time_start", { withTimezone: true }).notNull(),
-    timeEnd: timestamp("time_end", { withTimezone: true }).notNull(),
 
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow()
       .notNull(),
@@ -35,5 +21,5 @@ export const eventSchema = pgTable(
   }),
 );
 
-export type Event = typeof eventSchema.$inferSelect;
-export type EventPartial = typeof eventSchema.$inferInsert;
+export type EventSeries = typeof eventSeriesSchema.$inferSelect;
+export type EventSeriesPartial = typeof eventSeriesSchema.$inferInsert;

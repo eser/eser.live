@@ -8,13 +8,14 @@ export { type Session, type SessionPartial } from "../models/session.ts";
 
 export class SessionRepository {
   async findAll(cursor: Cursor) {
-    const queryBase = db.select()
+    const query = db.select()
       .from(sessionSchema)
+      .where(
+        (cursor.offset !== "")
+          ? gt(sessionSchema.id, cursor.offset)
+          : undefined,
+      )
       .limit(cursor.pageSize);
-
-    const query = (cursor.offset === "") ? queryBase : queryBase.where(
-      gt(sessionSchema.id, cursor.offset),
-    );
 
     const result = await query;
 

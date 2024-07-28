@@ -41,6 +41,14 @@ export const timeDiff = (date: Date) => {
 
   const [unit, amount] = match;
 
+  if (unit === "seconds" && amount < 10) {
+    return "şimdi";
+  }
+
+  if (unit === "days" && amount === 1) {
+    return isPast ? "dün" : "yarın";
+  }
+
   const unitMapping: Record<datetimeDifference.Unit, string> = {
     milliseconds: "milisaniye",
     seconds: "saniye",

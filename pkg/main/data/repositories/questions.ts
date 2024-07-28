@@ -92,7 +92,7 @@ export class QuestionRepository {
       >`CAST(SUM(CASE WHEN ${questionVoteSchema.userId} = ${viewingUserId} THEN ${questionVoteSchema.score} ELSE 0 END) AS INT)`
       : sql<number>`CAST(0 AS INT)`;
 
-    const queryBase = db.select({
+    const query = db.select({
       id: questionSchema.id,
       user: {
         id: userSchema.id,
@@ -121,27 +121,21 @@ export class QuestionRepository {
         questionVoteSchema,
         eq(questionSchema.id, questionVoteSchema.questionId),
       )
+      .where(
+        and(
+          (cursor.offset !== "")
+            ? gt(questionSchema.id, cursor.offset)
+            : undefined,
+          eq(questionSchema.isHidden, false),
+          isNull(questionSchema.deletedAt),
+        ),
+      )
       .groupBy(
         questionSchema.id,
         userSchema.id,
       )
       .orderBy(sql`total_score_sum DESC, ${questionSchema.createdAt} DESC`)
       .limit(cursor.pageSize);
-
-    const query = (cursor.offset === "")
-      ? queryBase.where(
-        and(
-          eq(questionSchema.isHidden, false),
-          isNull(questionSchema.deletedAt),
-        ),
-      )
-      : queryBase.where(
-        and(
-          gt(questionSchema.id, cursor.offset),
-          eq(questionSchema.isHidden, false),
-          isNull(questionSchema.deletedAt),
-        ),
-      );
 
     const result = await query;
 
@@ -159,7 +153,7 @@ export class QuestionRepository {
       >`CAST(SUM(CASE WHEN ${questionVoteSchema.userId} = ${viewingUserId} THEN ${questionVoteSchema.score} ELSE 0 END) AS INT)`
       : sql<number>`CAST(0 AS INT)`;
 
-    const queryBase = db.select({
+    const query = db.select({
       id: questionSchema.id,
       user: {
         id: userSchema.id,
@@ -188,31 +182,23 @@ export class QuestionRepository {
         questionVoteSchema,
         eq(questionSchema.id, questionVoteSchema.questionId),
       )
+      .where(
+        and(
+          (cursor.offset !== "")
+            ? gt(questionSchema.id, cursor.offset)
+            : undefined,
+          eq(questionSchema.userId, userId),
+          eq(questionSchema.isHidden, false),
+          eq(questionSchema.isAnonymous, false),
+          isNull(questionSchema.deletedAt),
+        ),
+      )
       .groupBy(
         questionSchema.id,
         userSchema.id,
       )
       .orderBy(sql`total_score_sum DESC, ${questionSchema.createdAt} DESC`)
       .limit(cursor.pageSize);
-
-    const query = (cursor.offset === "")
-      ? queryBase.where(
-        and(
-          eq(questionSchema.userId, userId),
-          eq(questionSchema.isHidden, false),
-          eq(questionSchema.isAnonymous, false),
-          isNull(questionSchema.deletedAt),
-        ),
-      )
-      : queryBase.where(
-        and(
-          gt(questionSchema.id, cursor.offset),
-          eq(questionSchema.userId, userId),
-          eq(questionSchema.isHidden, false),
-          eq(questionSchema.isAnonymous, false),
-          isNull(questionSchema.deletedAt),
-        ),
-      );
 
     const result = await query;
 

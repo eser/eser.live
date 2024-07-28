@@ -2,11 +2,12 @@
 import { and, eq, gt, isNull, sql } from "drizzle-orm";
 import { type Cursor } from "@/pkg/main/library/data/cursors.ts";
 import { type EventPartial, eventSchema } from "../models/event.ts";
-import { profileSchema } from "../models/profile.ts";
+import { eventSeriesSchema } from "../models/event-series.ts";
 import {
   type EventAttendancePartial,
   eventAttendanceSchema,
 } from "../models/event-attendance.ts";
+import { profileSchema } from "../models/profile.ts";
 import { db } from "../db.ts";
 
 export { type Event, type EventPartial } from "../models/event.ts";
@@ -70,24 +71,39 @@ export class EventRepository {
     return result;
   }
 
-  async findAllWithStats(cursor: Cursor, viewingProfileId?: string) {
-    const twoHoursLater = new Date(Date.now() + 2 * 60 * 60 * 1000);
-
+  async findAllWithStats(
+    cursor: Cursor,
+    until?: Date,
+    viewingProfileId?: string,
+  ) {
     const statSumProfileCalculation = viewingProfileId !== undefined
       ? sql<
         number
       >`CAST(SUM(CASE WHEN ${eventAttendanceSchema.profileId} = ${viewingProfileId} THEN 1 ELSE 0 END) AS INT)`
       : sql<number>`CAST(0 AS INT)`;
 
-    const queryBase = db.select({
+    const query = db.select({
       id: eventSchema.id,
       kind: eventSchema.kind,
+      status: eventSchema.status,
+      series: {
+        id: eventSeriesSchema.id,
+
+        slug: eventSeriesSchema.slug,
+        eventPictureUri: eventSeriesSchema.eventPictureUri,
+        title: eventSeriesSchema.title,
+        description: eventSeriesSchema.description,
+      },
 
       slug: eventSchema.slug,
       eventPictureUri: eventSchema.eventPictureUri,
       title: eventSchema.title,
       description: eventSchema.description,
 
+      // registrationUri: eventSchema.registrationUri,
+      attendanceUri: eventSchema.attendanceUri,
+
+      publishedAt: eventSchema.publishedAt,
       timeStart: eventSchema.timeStart,
       timeEnd: eventSchema.timeEnd,
 
@@ -103,6 +119,10 @@ export class EventRepository {
     })
       .from(eventSchema)
       .leftJoin(
+        eventSeriesSchema,
+        eq(eventSeriesSchema.id, eventSchema.seriesId),
+      )
+      .leftJoin(
         eventAttendanceSchema,
         eq(eventSchema.id, eventAttendanceSchema.eventId),
       )
@@ -110,26 +130,23 @@ export class EventRepository {
         profileSchema,
         eq(eventAttendanceSchema.profileId, profileSchema.id),
       )
+      .where(
+        and(
+          (cursor.offset !== "")
+            ? gt(eventSchema.id, cursor.offset)
+            : undefined,
+          until ? gt(eventSchema.timeEnd, until) : undefined,
+          eq(eventSchema.status, "published"),
+          isNull(eventSchema.deletedAt),
+        ),
+      )
       .groupBy(
         eventSchema.id,
+        eventSeriesSchema.id,
       )
-      .orderBy(sql`total_stat_sum DESC, ${eventSchema.createdAt} DESC`)
+      // .orderBy(sql`total_stat_sum DESC, ${eventSchema.createdAt} DESC`)
+      .orderBy(sql`${eventSchema.timeStart} ASC`)
       .limit(cursor.pageSize);
-
-    const query = (cursor.offset === "")
-      ? queryBase.where(
-        and(
-          gt(eventSchema.timeEnd, twoHoursLater),
-          isNull(eventSchema.deletedAt),
-        ),
-      )
-      : queryBase.where(
-        and(
-          gt(eventSchema.id, cursor.offset),
-          gt(eventSchema.timeEnd, twoHoursLater),
-          isNull(eventSchema.deletedAt),
-        ),
-      );
 
     const result = await query;
 

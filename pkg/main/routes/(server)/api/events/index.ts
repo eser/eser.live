@@ -8,9 +8,12 @@ const PAGE_SIZE = 10;
 
 export const handler: Handlers<undefined, LoggedInState> = {
   async GET(req, ctx) {
+    const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000);
+
     const cursor = getCursor(req.url, PAGE_SIZE);
     const items = await eventRepository.findAllWithStats(
       cursor,
+      twoHoursAgo,
       ctx.state.sessionUser?.id,
     );
 
