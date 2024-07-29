@@ -116,10 +116,16 @@ export class QuestionRepository {
         .as("user_score_sum"),
     })
       .from(questionSchema)
-      .leftJoin(userSchema, eq(questionSchema.userId, userSchema.id))
+      .leftJoin(
+        userSchema,
+        and(
+          eq(userSchema.id, questionSchema.userId),
+          isNull(userSchema.deletedAt),
+        ),
+      )
       .leftJoin(
         questionVoteSchema,
-        eq(questionSchema.id, questionVoteSchema.questionId),
+        eq(questionVoteSchema.questionId, questionSchema.id),
       )
       .where(
         and(
@@ -177,10 +183,16 @@ export class QuestionRepository {
         .as("user_score_sum"),
     })
       .from(questionSchema)
-      .leftJoin(userSchema, eq(questionSchema.userId, userSchema.id))
+      .leftJoin(
+        userSchema,
+        and(
+          eq(userSchema.id, questionSchema.userId),
+          isNull(userSchema.deletedAt),
+        ),
+      )
       .leftJoin(
         questionVoteSchema,
-        eq(questionSchema.id, questionVoteSchema.questionId),
+        eq(questionVoteSchema.questionId, questionSchema.id),
       )
       .where(
         and(

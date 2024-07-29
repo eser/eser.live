@@ -120,15 +120,24 @@ export class EventRepository {
       .from(eventSchema)
       .leftJoin(
         eventSeriesSchema,
-        eq(eventSeriesSchema.id, eventSchema.seriesId),
+        and(
+          eq(eventSeriesSchema.id, eventSchema.seriesId),
+          isNull(eventSeriesSchema.deletedAt),
+        ),
       )
       .leftJoin(
         eventAttendanceSchema,
-        eq(eventSchema.id, eventAttendanceSchema.eventId),
+        and(
+          eq(eventAttendanceSchema.eventId, eventSchema.id),
+          isNull(eventAttendanceSchema.deletedAt),
+        ),
       )
       .leftJoin(
         profileSchema,
-        eq(eventAttendanceSchema.profileId, profileSchema.id),
+        and(
+          eq(profileSchema.id, eventAttendanceSchema.profileId),
+          isNull(profileSchema.deletedAt),
+        ),
       )
       .where(
         and(

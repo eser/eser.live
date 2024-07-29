@@ -10,6 +10,7 @@ import * as $_server_api_questions_id_ from "./routes/(server)/api/questions/[id
 import * as $_server_api_questions_hide from "./routes/(server)/api/questions/hide.ts";
 import * as $_server_api_questions_index from "./routes/(server)/api/questions/index.ts";
 import * as $_server_api_questions_vote from "./routes/(server)/api/questions/vote.ts";
+import * as $_server_api_stories_index from "./routes/(server)/api/stories/index.ts";
 import * as $_server_api_users_id_index from "./routes/(server)/api/users/[id]/index.ts";
 import * as $_server_api_users_id_questions from "./routes/(server)/api/users/[id]/questions.ts";
 import * as $_server_api_users_index from "./routes/(server)/api/users/index.ts";
@@ -50,6 +51,7 @@ const manifest = {
     "./routes/(server)/api/questions/hide.ts": $_server_api_questions_hide,
     "./routes/(server)/api/questions/index.ts": $_server_api_questions_index,
     "./routes/(server)/api/questions/vote.ts": $_server_api_questions_vote,
+    "./routes/(server)/api/stories/index.ts": $_server_api_stories_index,
     "./routes/(server)/api/users/[id]/index.ts": $_server_api_users_id_index,
     "./routes/(server)/api/users/[id]/questions.ts":
       $_server_api_users_id_questions,

@@ -33,6 +33,11 @@ const MenuItems = () => {
         </a>
       </li>
       <li>
+        <a href="/stories" class="include-ancestors">
+          Haberler
+        </a>
+      </li>
+      <li>
         <a href="/qa" class="include-ancestors">
           Soru / Yanıt
         </a>

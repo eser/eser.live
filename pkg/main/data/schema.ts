@@ -17,6 +17,9 @@ export * from "./models/question.relations.ts";
 export * from "./models/question-vote.ts";
 export * from "./models/question-vote.relations.ts";
 
+export * from "./models/story.ts";
+export * from "./models/story.relations.ts";
+
 export * from "./models/event.ts";
 export * from "./models/event.relations.ts";
 
