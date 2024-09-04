@@ -20,6 +20,7 @@ import * as $_layout from "./routes/_layout.tsx";
 import * as $blog_slug_ from "./routes/blog/[slug].tsx";
 import * as $blog_feed from "./routes/blog/feed.ts";
 import * as $blog_index from "./routes/blog/index.tsx";
+import * as $blog_page_page_ from "./routes/blog/page/[page].tsx";
 import * as $community_index from "./routes/community/index.tsx";
 import * as $cookbook_index from "./routes/cookbook/index.tsx";
 import * as $dash_index from "./routes/dash/index.tsx";
@@ -31,6 +32,7 @@ import * as $projects_index from "./routes/projects/index.tsx";
 import * as $qa_ask from "./routes/qa/ask.tsx";
 import * as $qa_index from "./routes/qa/index.tsx";
 import * as $setup_index from "./routes/setup/index.tsx";
+import * as $SearchForm from "./islands/SearchForm.tsx";
 import * as $_common_islands_event_list from "./routes/(common)/(_islands)/event-list.tsx";
 import * as $_common_islands_questions_list from "./routes/(common)/(_islands)/questions-list.tsx";
 import * as $_common_islands_share from "./routes/(common)/(_islands)/share.tsx";
@@ -61,6 +63,7 @@ const manifest = {
     "./routes/blog/[slug].tsx": $blog_slug_,
     "./routes/blog/feed.ts": $blog_feed,
     "./routes/blog/index.tsx": $blog_index,
+    "./routes/blog/page/[page].tsx": $blog_page_page_,
     "./routes/community/index.tsx": $community_index,
     "./routes/cookbook/index.tsx": $cookbook_index,
     "./routes/dash/index.tsx": $dash_index,
@@ -74,6 +77,7 @@ const manifest = {
     "./routes/setup/index.tsx": $setup_index,
   },
   islands: {
+    "./islands/SearchForm.tsx": $SearchForm,
     "./routes/(common)/(_islands)/event-list.tsx": $_common_islands_event_list,
     "./routes/(common)/(_islands)/questions-list.tsx":
       $_common_islands_questions_list,

@@ -1,6 +1,7 @@
 // Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
 import * as frontmatterYaml from "@std/front-matter/yaml";
 import * as path from "@std/path/join";
+import { asciify } from "@/pkg/main/utils/stringUtils.ts";
 
 /**
  * This code is based on the
@@ -13,7 +14,7 @@ export interface Post {
   title: string;
   publishedAt: Date;
   content: string;
-  summary: string;
+  summary?: string; // Make summary optional if it's not always present
 }
 
 /**
@@ -71,12 +72,36 @@ export const getPost = async (slug: string): Promise<Post | null> => {
  * posts[0].content; // Returns '# Heading 1\n\nHello, world!\n\n```javascript\nconsole.log("Hello World");\n```\n'
  * ```
  */
-export const getPosts = async (): Promise<Post[]> => {
-  const posts = await Array.fromAsync(
+export const getPosts = async (
+  page: number = 1,
+  perPage: number = 10,
+  searchTerm: string = "",
+): Promise<{ posts: Post[]; totalPages: number }> => {
+  const allPosts = await Array.fromAsync(
     Deno.readDir("./content/posts"),
     async (file) => await getPost(file.name.replace(".md", "")),
   ) as Post[];
-  return posts.toSorted((a, b) =>
+
+  const asciifiedSearchTerm = asciify(searchTerm);
+
+  const filteredPosts = searchTerm
+    ? allPosts.filter((post) =>
+      asciify(post.title).includes(asciifiedSearchTerm) ||
+      asciify(post.content).includes(asciifiedSearchTerm) ||
+      (post.summary && asciify(post.summary).includes(asciifiedSearchTerm))
+    )
+    : allPosts;
+
+  const sortedPosts = filteredPosts.toSorted((a, b) =>
     b.publishedAt.getTime() - a.publishedAt.getTime()
   );
+
+  const totalPages = Math.ceil(sortedPosts.length / perPage);
+  const start = (page - 1) * perPage;
+  const end = start + perPage;
+
+  return {
+    posts: sortedPosts.slice(start, end),
+    totalPages,
+  };
 };

@@ -53,15 +53,16 @@
     "drizzle-orm": "npm:drizzle-orm@0.32.1",
     "feed": "npm:/feed@4.2.2",
     "fresh_charts/": "https://deno.land/x/fresh_charts@0.3.1/",
+    "oauth2-client": "https://deno.land/x/oauth2_client@v1.0.2/mod.ts",
     "postgres": "https://deno.land/x/postgresjs@v3.4.4/mod.js",
     "preact": "https://esm.sh/preact@10.22.0",
     "preact-render-to-string": "https://esm.sh/*preact-render-to-string@6.5.5",
     "preact/": "https://esm.sh/preact@10.22.0/",
-    "oauth2-client": "https://deno.land/x/oauth2_client@v1.0.2/mod.ts",
     "tabler_icons_tsx/": "https://deno.land/x/tabler_icons_tsx@0.0.6/tsx/",
     "tailwindcss": "npm:tailwindcss@3.4.4",
     "tailwindcss/": "npm:/tailwindcss@3.4.4/",
-    "tailwindcss/plugin": "npm:/tailwindcss@3.4.4/plugin.js"
+    "tailwindcss/plugin": "npm:/tailwindcss@3.4.4/plugin.js",
+    "unidecode": "npm:unidecode@^1.1.0"
   },
   "exclude": [
     "**/node_modules/*",
