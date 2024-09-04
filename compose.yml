@@ -1,6 +1,5 @@
 services:
   app:
-    container_name: app
     build: .
     restart: always
     tty: true
@@ -16,7 +15,6 @@ services:
       - "8000:8000"
 
   postgres:
-    container_name: postgres
     image: postgres:16-bookworm
     restart: unless-stopped
     environment:
@@ -24,11 +22,11 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: s3cr3t
       POSTGRES_DB: postgres
-    healthcheck:
-      test: ["CMD-SHELL", "psql -U 'postgres' -c '\\q'"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
+    # healthcheck:
+    #   test: ["CMD-SHELL", "psql -U 'postgres' -c '\\q'"]
+    #   interval: 10s
+    #   timeout: 5s
+    #   retries: 10
     # volumes:
     #   - ./deployments/db-seeds/dumps/:/tmp/dumps/
     #   - ./deployments/db-seeds/init.sh:/docker-entrypoint-initdb.d/init.sh

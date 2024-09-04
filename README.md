@@ -49,6 +49,11 @@ To get started:
    GITHUB_CLIENT_ID=
    GITHUB_CLIENT_SECRET=
    ```
+1. Boostrap the database:
+   ```bash
+   deno task db:start
+   deno task db:migrate
+   ```
 1. Navigate to GitHub's
    [**New OAuth Application** page](https://github.com/settings/applications/new).
 1. Set **Application name** to your desired application name. E.g. `ACME, Inc`.
@@ -74,6 +79,7 @@ To get started:
 
 Use the following commands to work with your local database:
 
+- `deno task db:start` - Starts local postgres instance for development purposes.
 - `deno task db:migrate` - Populate the database with data.
 - `deno task db:reset` - Reset the database. This is not recoverable.
 

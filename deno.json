@@ -1,11 +1,12 @@
 {
   "lock": false,
-  "nodeModulesDir": true,
+  "nodeModulesDir": "auto",
   "unstable": [
     "cron",
     "temporal"
   ],
   "tasks": {
+    "db:start": "docker compose up postgres -d",
     "db:studio": "deno run --allow-env --allow-sys --allow-read --allow-write --allow-run --allow-net npm:drizzle-kit studio",
     "db:generate": "deno run --allow-env --allow-sys --allow-read --allow-write --allow-run npm:drizzle-kit generate",
     "db:migrate": "deno run --allow-env --allow-read --allow-net ./pkg/tasks/db-migrate.ts",

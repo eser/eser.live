@@ -7,14 +7,14 @@ EXPOSE 8000
 
 WORKDIR /app
 
-USER deno
+# USER deno
 
-COPY deps.ts .
-RUN deno cache deps.ts
+# COPY deps.ts .
+# RUN deno cache deps.ts
 
 ADD . ./
 
-RUN deno cache main.ts
+# RUN deno cache main.ts
 
 ENTRYPOINT []
 CMD ["deno", "task", "start"]
