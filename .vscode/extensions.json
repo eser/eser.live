@@ -5,7 +5,6 @@
     "denoland.vscode-deno",
     "EditorConfig.EditorConfig",
     "github.vscode-github-actions",
-    "ronilaukkarinen.vscode-stylefmt",
     "ryanluker.vscode-coverage-gutters"
   ]
 }

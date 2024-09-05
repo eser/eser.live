@@ -28,13 +28,8 @@ const MenuItems = () => {
         </a>
       </li>
       <li>
-        <a href="/blog" class="include-ancestors">
-          Blog
-        </a>
-      </li>
-      <li>
         <a href="/stories" class="include-ancestors">
-          Haberler
+          Yazılar
         </a>
       </li>
       <li>

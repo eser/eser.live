@@ -9,13 +9,10 @@ const PAGE_SIZE = 10;
 export const handler: Handlers<undefined, LoggedInState> = {
   async GET(req, _ctx) {
     const cursor = getCursor(req.url, PAGE_SIZE);
-    const items = await storyRepository.findAllWithDetails(
+    const result = await storyRepository.findAllWithDetails(
       cursor,
     );
 
-    return Response.json({
-      items: items,
-      cursor: items.at(-1)?.id ?? null,
-    });
+    return Response.json(result);
   },
 };

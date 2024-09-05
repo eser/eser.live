@@ -7,38 +7,40 @@ import {
 } from "@/pkg/main/constants.ts";
 import { type State } from "@/pkg/main/plugins/session.ts";
 import { defineRoute } from "$fresh/server.ts";
-import { getPosts } from "@/pkg/main/services/posts.ts";
+import { storyRepository } from "@/pkg/main/data/repositories/stories.ts";
+import { getCursor } from "@/pkg/main/library/data/cursors.ts";
 
 const copyright = `Copyright ${new Date().getFullYear()} ${SITE_NAME}`;
 
 // Use https://validator.w3.org/feed/ to validate RSS feed syntax.
-export default defineRoute<State>(async (_req, ctx) => {
+export default defineRoute<State>(async (req, ctx) => {
   const { origin } = ctx.url;
   const feed = new Feed({
     title: SITE_NAME,
     description: SITE_DESCRIPTION,
-    id: `${origin}/blog`,
-    link: `${origin}/blog`,
+    id: `${origin}/stories`,
+    link: `${origin}/stories`,
     language: SITE_LANG,
     favicon: `${origin}/favicon.ico`,
     copyright,
     generator: "cool",
     feedLinks: {
-      atom: `${origin}/blog/feed`,
+      atom: `${origin}/stories/feed`,
     },
   });
 
-  const posts = await getPosts();
-  for (const post of posts) {
+  const cursor = getCursor(req.url, 10);
+  const result = await storyRepository.findAllByKindAndStatus("article", "published", cursor);
+  for (const story of result.items) {
     feed.addItem({
-      id: `${origin}/blog/${post.slug}`,
-      title: post.title,
-      description: post.summary,
-      date: post.publishedAt,
-      link: `${origin}/blog/${post.slug}`,
+      id: `${origin}/stories/${story.slug}`,
+      title: story.title,
+      description: story.description,
+      date: story.publishedAt ?? new Date(),
+      link: `${origin}/stories/${story.slug}`,
       // author: [{ name: "The Deno Authors" }],
       // copyright,
-      published: new Date(post.publishedAt),
+      published: story.publishedAt !== null ? new Date(story.publishedAt) : undefined,
     });
   }
 

@@ -5,6 +5,26 @@ export type Cursor = {
   pageSize: number;
 };
 
+/*
+  Returns the given items with the cursor.
+
+  @example
+  ```ts
+  import { withCursor } from "@/pkg/main/library/data/cursors.ts";
+
+  const items = [1, 2, 3, 4, 5];
+  const cursor = items[items.length - 1];
+  const result = withCursor(items, cursor);
+  console.log(result); // { items: [1, 2, 3, 4, 5], cursor: 5 }
+  ```
+*/
+export function withCursor<T1>(items: T1, cursor: T2): [T1, T2] {
+  return {
+    items,
+    cursor,
+  };
+}
+
 /**
  * Returns the `cursor` URL parameter value of the given URL object.
  *
@@ -16,7 +36,10 @@ export type Cursor = {
  * getCursorFromUrl(new URL("http://example.com")); // Returns { offset: "" }
  * ```
  */
-export const getCursorFromUrl = (url: URL, defaultPageSize: number): Cursor => {
+export const getCursorFromUrl = (
+  url: URL,
+  defaultPageSize: number,
+): Cursor => {
   const offset = url.searchParams.get("cursor") ?? "";
 
   return {
@@ -36,6 +59,9 @@ export const getCursorFromUrl = (url: URL, defaultPageSize: number): Cursor => {
  * getCursor("http://example.com"); // Returns { offset: "" }
  * ```
  */
-export const getCursor = (url: string, defaultPageSize: number): Cursor => {
+export const getCursor = (
+  url: string,
+  defaultPageSize: number,
+): Cursor => {
   return getCursorFromUrl(new URL(url), defaultPageSize);
 };

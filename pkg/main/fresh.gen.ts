@@ -18,9 +18,6 @@ import * as $_404 from "./routes/_404.tsx";
 import * as $_500 from "./routes/_500.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $_layout from "./routes/_layout.tsx";
-import * as $blog_slug_ from "./routes/blog/[slug].tsx";
-import * as $blog_feed from "./routes/blog/feed.ts";
-import * as $blog_index from "./routes/blog/index.tsx";
 import * as $community_index from "./routes/community/index.tsx";
 import * as $cookbook_index from "./routes/cookbook/index.tsx";
 import * as $dash_index from "./routes/dash/index.tsx";
@@ -32,10 +29,14 @@ import * as $projects_index from "./routes/projects/index.tsx";
 import * as $qa_ask from "./routes/qa/ask.tsx";
 import * as $qa_index from "./routes/qa/index.tsx";
 import * as $setup_index from "./routes/setup/index.tsx";
+import * as $stories_slug_ from "./routes/stories/[slug].tsx";
+import * as $stories_feed from "./routes/stories/feed.ts";
+import * as $stories_index from "./routes/stories/index.tsx";
 import * as $_common_islands_event_list from "./routes/(common)/(_islands)/event-list.tsx";
 import * as $_common_islands_questions_list from "./routes/(common)/(_islands)/questions-list.tsx";
 import * as $_common_islands_share from "./routes/(common)/(_islands)/share.tsx";
 import * as $_common_islands_shortcuts from "./routes/(common)/(_islands)/shortcuts.tsx";
+import * as $_common_islands_stories_list from "./routes/(common)/(_islands)/stories-list.tsx";
 import * as $_common_islands_users_table from "./routes/(common)/(_islands)/users-table.tsx";
 import * as $dash_islands_chart from "./routes/dash/(_islands)/chart.tsx";
 import { type Manifest } from "$fresh/server.ts";
@@ -60,9 +61,6 @@ const manifest = {
     "./routes/_500.tsx": $_500,
     "./routes/_app.tsx": $_app,
     "./routes/_layout.tsx": $_layout,
-    "./routes/blog/[slug].tsx": $blog_slug_,
-    "./routes/blog/feed.ts": $blog_feed,
-    "./routes/blog/index.tsx": $blog_index,
     "./routes/community/index.tsx": $community_index,
     "./routes/cookbook/index.tsx": $cookbook_index,
     "./routes/dash/index.tsx": $dash_index,
@@ -74,6 +72,9 @@ const manifest = {
     "./routes/qa/ask.tsx": $qa_ask,
     "./routes/qa/index.tsx": $qa_index,
     "./routes/setup/index.tsx": $setup_index,
+    "./routes/stories/[slug].tsx": $stories_slug_,
+    "./routes/stories/feed.ts": $stories_feed,
+    "./routes/stories/index.tsx": $stories_index,
   },
   islands: {
     "./routes/(common)/(_islands)/event-list.tsx": $_common_islands_event_list,
@@ -81,6 +82,8 @@ const manifest = {
       $_common_islands_questions_list,
     "./routes/(common)/(_islands)/share.tsx": $_common_islands_share,
     "./routes/(common)/(_islands)/shortcuts.tsx": $_common_islands_shortcuts,
+    "./routes/(common)/(_islands)/stories-list.tsx":
+      $_common_islands_stories_list,
     "./routes/(common)/(_islands)/users-table.tsx":
       $_common_islands_users_table,
     "./routes/dash/(_islands)/chart.tsx": $dash_islands_chart,

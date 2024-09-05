@@ -85,41 +85,6 @@ The [./pkg/main/constants.ts](./pkg/main/constants.ts) file includes global
 values used across various aspects of the codebase. Update these values
 according to your needs.
 
-### Create a Blog Post
-
-1. Create a `.md` file in the [./content/posts](./content/posts) with the
-   filename as the slug of the blog post URL. E.g. a file with path
-   `/content/posts/20240620-hello-there.md` will have path
-   `/blog/20240620-hello-there`.
-1. Write the
-   [Front Matter](https://daily-dev-tips.com/posts/what-exactly-is-frontmatter/)
-   then [Markdown](https://www.markdownguide.org/cheat-sheet/) text to define
-   the properties and content of the blog post.
-
-   ````md
-   ---
-   title: This is my first blog post!
-   publishedAt: 2024-06-20T15:00:00.000Z
-   summary: This is an excerpt of my first blog post.
-   ---
-
-   # Heading 1
-
-   Hello, world!
-
-   ```javascript
-   console.log("Hello World");
-   ```
-   ````
-1. Start the server:
-   ```bash
-   deno task start
-   ```
-1. Navigate to the URL of the newly created blog post. E.g.
-   `http://localhost:8000/blog/20240620-hello-there`.
-
-See other examples of blog post files in [./content/posts](./content/posts).
-
 ### Stylesheets
 
 You can create and customize styles within the capabilities of

@@ -19,6 +19,7 @@ export const storySchema = pgTable(
     description: text("description").notNull(),
 
     authorProfileId: char("author_profile_id", { length: 26 }),
+    summary: text("summary"),
     content: text("content"),
     publishedAt: timestamp("published_at", { withTimezone: true }),
 
@@ -34,3 +35,6 @@ export const storySchema = pgTable(
 
 export type Story = typeof storySchema.$inferSelect;
 export type StoryPartial = typeof storySchema.$inferInsert;
+
+export type StoryKind = Story["kind"];
+export type StoryStatus = Story["status"];
