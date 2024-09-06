@@ -39,7 +39,7 @@ import * as $_common_islands_shortcuts from "./routes/(common)/(_islands)/shortc
 import * as $_common_islands_stories_list from "./routes/(common)/(_islands)/stories-list.tsx";
 import * as $_common_islands_users_table from "./routes/(common)/(_islands)/users-table.tsx";
 import * as $dash_islands_chart from "./routes/dash/(_islands)/chart.tsx";
-import { type Manifest } from "$fresh/server.ts";
+import type { Manifest } from "$fresh/server.ts";
 
 const manifest = {
   routes: {

@@ -28,7 +28,7 @@ Thumbs.db
 # /test/cov_profile.lcov
 
 # package managers
-node_modules/*
+node_modules/
 package-lock.json
 
 # temporary files

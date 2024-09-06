@@ -4,4 +4,6 @@
 import dev from "$fresh/dev.ts";
 import config from "@/pkg/main/fresh.config.ts";
 
+import "@std/dotenv/load";
+
 await dev(import.meta.url, "./main.ts", config);
