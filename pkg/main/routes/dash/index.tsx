@@ -6,6 +6,7 @@ import { Head } from "@/pkg/main/routes/(common)/(_components)/head.tsx";
 import { TabsBar } from "@/pkg/main/routes/(common)/(_components)/tabs-bar.tsx";
 import { UserProfilePicture } from "@/pkg/main/routes/(common)/(_components)/user-profile-picture.tsx";
 
+// this endpoint is executed after ensureLoggedIn middleware has allowed it to pass
 export default defineRoute<LoggedInState>((_req, ctx) => {
   return (
     <>
@@ -37,6 +38,7 @@ export default defineRoute<LoggedInState>((_req, ctx) => {
             <div>
               <UserProfilePicture
                 user={ctx.state.sessionUser}
+                isAnonymous={false}
                 size={240}
                 class="mx-auto"
               />

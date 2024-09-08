@@ -1,8 +1,8 @@
-import { Story } from "@/pkg/main/data/models/story.ts";
 import { SITE_LOCALE } from "@/pkg/main/constants.ts";
+import { type StoryWithDetails } from "@/pkg/main/data/story/types.ts";
 
 export interface StoryCardProps {
-  item: Story;
+  item: StoryWithDetails;
 }
 
 export function StoryCard(props: StoryCardProps) {

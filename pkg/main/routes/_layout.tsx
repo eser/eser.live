@@ -11,7 +11,7 @@ export default defineLayout<State>((_req, ctx) => {
       <Shortcuts />
       <Header
         url={ctx.url}
-        sessionUser={ctx.state?.sessionUser}
+        sessionUser={ctx.state.sessionUser}
       />
       <ctx.Component />
       <Footer />

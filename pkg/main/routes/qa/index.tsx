@@ -5,7 +5,7 @@ import { Head } from "@/pkg/main/routes/(common)/(_components)/head.tsx";
 import { QuestionsList } from "@/pkg/main/routes/(common)/(_islands)/questions-list.tsx";
 
 export default defineRoute<State>((_req, ctx) => {
-  const isLoggedIn = ctx.state.sessionUser !== undefined;
+  const isLoggedIn = ctx.state.sessionUser !== null;
   const isEditor = ctx.state.isEditor;
   const endpoint = "/api/questions";
 

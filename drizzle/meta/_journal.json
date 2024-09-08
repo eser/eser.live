@@ -71,6 +71,13 @@
       "when": 1725488670768,
       "tag": "0009_motionless_prism",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1725808435278,
+      "tag": "0010_fancy_microbe",
+      "breakpoints": true
     }
   ]
 }

@@ -1,7 +1,7 @@
 // Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
 import { useSignal } from "@preact/signals";
 import { useEffect } from "preact/hooks";
-import { type User } from "@/pkg/main/data/models/user.ts";
+import { type User } from "@/pkg/main/data/user/types.ts";
 import { UserProfilePicture } from "@/pkg/main/routes/(common)/(_components)/user-profile-picture.tsx";
 
 const TH_STYLES = "p-4 text-left";
@@ -15,7 +15,7 @@ const UserTableRow = (props: UserTableRowProps) => {
   return (
     <tr class="hover:bg-gray-50 hover:dark:bg-gray-900 border-b border-gray-200">
       <td scope="col" class={TD_STYLES}>
-        <UserProfilePicture user={props.user ?? undefined} size={32} />
+        <UserProfilePicture user={props.user} isAnonymous={false} size={32} />
         <a
           class="hover:underline ml-4 align-middle"
           href={`/dash/users/${props.user.id}`}

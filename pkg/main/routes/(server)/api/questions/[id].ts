@@ -1,13 +1,13 @@
 // Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
 import { type Handlers } from "$fresh/server.ts";
-import { type LoggedInState } from "@/pkg/main/plugins/session.ts";
-import { questionRepository } from "@/pkg/main/data/repositories/questions.ts";
+import { type State } from "@/pkg/main/plugins/session.ts";
+import { questionRepository } from "@/pkg/main/data/question/repository.ts";
 
 type QuestionItem = Exclude<
   Awaited<
     ReturnType<typeof questionRepository.findById>
   >,
-  undefined
+  null
 >;
 
 const anonymize = (question: QuestionItem) => {
@@ -18,11 +18,11 @@ const anonymize = (question: QuestionItem) => {
   return question;
 };
 
-export const handler: Handlers<undefined, LoggedInState> = {
+export const handler: Handlers<undefined, State> = {
   async GET(_req, ctx) {
     const item = await questionRepository.findById(ctx.params.id);
 
-    if (item === undefined) {
+    if (item === null) {
       throw new Deno.errors.NotFound("Question not found");
     }
 

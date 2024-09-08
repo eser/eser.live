@@ -1,21 +1,23 @@
 // Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
 import { type FreshContext, Plugin } from "$fresh/server.ts";
-import { type User } from "@/pkg/main/data/models/user.ts";
-import * as sessions from "@/pkg/main/data/repositories/sessions.ts";
+import { type User } from "@/pkg/main/data/user/types.ts";
+import { sessionRepository } from "@/pkg/main/data/session/repository.ts";
 import { UnauthorizedError } from "@/pkg/main/library/http/unauthorized-error.ts";
 import { oauthClient } from "./oauth.ts";
 
-export interface State {
-  sessionUser?: User;
-  isEditor?: boolean;
-  lang?: string;
-  [K: string]: unknown;
-}
+export type State = {
+  sessionUser: User | null;
+  isEditor: boolean;
+  theme: string;
+  lang: string;
+};
 
-export type LoggedInState = Required<State>;
+export type LoggedInState = State & {
+  sessionUser: User;
+};
 
 export const stateDefaults: State = {
-  sessionUser: undefined,
+  sessionUser: null,
   isEditor: false,
   theme: "default",
   lang: "tr",
@@ -37,19 +39,19 @@ export const getEnv = (key: string, defaultValue?: string): string => {
 
 export const assertLoggedIn: (
   ctx: { state: State },
-) => asserts ctx is { state: LoggedInState } = (
+) => asserts ctx is { state: State & { sessionUser: User } } = (
   ctx: { state: State },
-): asserts ctx is { state: LoggedInState } => {
-  if (ctx.state.sessionUser === undefined) {
+) => {
+  if (ctx.state.sessionUser === null) {
     throw new UnauthorizedError("User must be logged in");
   }
 };
 
 export const assertIsEditor: (
   ctx: { state: State },
-) => asserts ctx is { state: LoggedInState } = (
+) => asserts ctx is { state: State & { isEditor: true } } = (
   ctx: { state: State },
-): asserts ctx is { state: LoggedInState } => {
+) => {
   if (ctx.state.isEditor !== true) {
     throw new UnauthorizedError("User must be an editor");
   }
@@ -64,21 +66,19 @@ const setSessionState = async (
   }
 
   // Initial state
-  for (const [key, value] of Object.entries(stateDefaults)) {
-    ctx.state[key] = value;
-  }
+  Object.assign(ctx.state, stateDefaults);
 
-  const sessionId = oauthClient.getSessionId(req);
-  if (sessionId === undefined) {
+  const { sessionId } = oauthClient.getSession(req);
+  if (sessionId === null) {
     return await ctx.next();
   }
 
-  const session = await sessions.sessionRepository.findById(sessionId);
+  const session = await sessionRepository.findById(sessionId);
   if (session === null) {
     return await ctx.next();
   }
 
-  ctx.state.sessionUser = session?.user ?? undefined;
+  ctx.state.sessionUser = session.user;
   const kind = ctx.state.sessionUser?.kind ?? "none";
 
   if (["editor", "admin"].includes(kind)) {
@@ -111,7 +111,7 @@ const ensureIsEditor = async (
  * before proceeding. The {@linkcode ensureLoggedIn} middleware throws an error
  * equivalent to the
  * {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401|HTTP 401 Unauthorized}
- * error if `ctx.state.sessionUser` is `undefined`.
+ * error if `ctx.state.sessionUser` is `null`.
  *
  * The thrown error is then handled by {@linkcode handleWebPageErrors}, or
  * {@linkcode handleRestApiErrors}, if the request is made to a REST API
@@ -133,6 +133,14 @@ export const sessionPlugin: Plugin<State> = {
     },
     {
       path: "/api/me",
+      middleware: { handler: ensureLoggedIn },
+    },
+    {
+      path: "/api/me/question-votes",
+      middleware: { handler: ensureLoggedIn },
+    },
+    {
+      path: "/api/me/questions",
       middleware: { handler: ensureLoggedIn },
     },
     {

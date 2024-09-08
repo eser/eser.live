@@ -7,8 +7,8 @@ import {
 } from "@/pkg/main/constants.ts";
 import { type State } from "@/pkg/main/plugins/session.ts";
 import { defineRoute } from "$fresh/server.ts";
-import { storyRepository } from "@/pkg/main/data/repositories/stories.ts";
 import { getCursor } from "@/pkg/main/library/data/cursors.ts";
+import { storyRepository } from "@/pkg/main/data/story/repository.ts";
 
 const copyright = `Copyright ${new Date().getFullYear()} ${SITE_NAME}`;
 
@@ -30,7 +30,11 @@ export default defineRoute<State>(async (req, ctx) => {
   });
 
   const cursor = getCursor(req.url, 10);
-  const result = await storyRepository.findAllByKindAndStatus("article", "published", cursor);
+  const result = await storyRepository.findAllByKindAndStatus(
+    "article",
+    "published",
+    cursor,
+  );
   for (const story of result.items) {
     feed.addItem({
       id: `${origin}/stories/${story.slug}`,
@@ -40,7 +44,9 @@ export default defineRoute<State>(async (req, ctx) => {
       link: `${origin}/stories/${story.slug}`,
       // author: [{ name: "The Deno Authors" }],
       // copyright,
-      published: story.publishedAt !== null ? new Date(story.publishedAt) : undefined,
+      published: story.publishedAt !== null
+        ? new Date(story.publishedAt)
+        : undefined,
     });
   }
 

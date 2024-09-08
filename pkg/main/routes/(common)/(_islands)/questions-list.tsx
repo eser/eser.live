@@ -6,12 +6,12 @@ import IconInfo from "tabler_icons_tsx/info-circle.tsx";
 import IconMessageCircleQuestion from "tabler_icons_tsx/message-circle-question.tsx";
 import { UserProfilePicture } from "@/pkg/main/routes/(common)/(_components)/user-profile-picture.tsx";
 import { UserProfileLink } from "@/pkg/main/routes/(common)/(_components)/user-profile-link.tsx";
-import { questionRepository } from "@/pkg/main/data/repositories/questions.ts";
+import { questionRepository } from "@/pkg/main/data/question/repository.ts";
 import { timeDiff } from "@/pkg/main/library/display/time-diff.ts";
 
 type Question = Awaited<
   ReturnType<typeof questionRepository.findAllWithScores>
->[0];
+>["items"][number];
 
 const fetchVotedQuestions = async () => {
   const url = "/api/me/question-votes";
@@ -138,7 +138,7 @@ interface QuestionSummaryProps {
   /** Whether the user is logged-in */
   isLoggedIn: boolean;
   /** Whether the user is an editor */
-  isEditor?: boolean;
+  isEditor: boolean;
 }
 
 const QuestionSummary = (props: QuestionSummaryProps) => {
@@ -173,12 +173,12 @@ const QuestionSummary = (props: QuestionSummaryProps) => {
         </p>
         <p class="text-secondary-content flex items-center gap-2">
           <UserProfilePicture
-            user={props.question.user ?? undefined}
+            user={props.question.user}
             isAnonymous={props.question.isAnonymous}
             size={24}
           />
           <UserProfileLink
-            user={props.question.user ?? undefined}
+            user={props.question.user}
             isAnonymous={props.question.isAnonymous}
           />
           <span>-</span>
@@ -235,13 +235,13 @@ export interface QuestionsListProps {
   /** Whether the user is logged-in */
   isLoggedIn: boolean;
   /** Whether the user is an editor */
-  isEditor?: boolean;
+  isEditor: boolean;
 }
 
 export const QuestionsList = (props: QuestionsListProps) => {
   const questionsSig = useSignal<Question[]>([]);
   const votedQuestionsIdsSig = useSignal<string[]>([]);
-  const isLoadingSig = useSignal<boolean | undefined>(undefined);
+  const isLoadingSig = useSignal<boolean>(false);
   const questionsAreVotedSig = useComputed(() =>
     questionsSig.value.map((question) =>
       votedQuestionsIdsSig.value.includes(question.id)

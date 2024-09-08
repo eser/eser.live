@@ -2,14 +2,11 @@
 import * as ulid from "@std/ulid";
 import * as httpStatus from "@std/http/status";
 import { type Handlers } from "$fresh/server.ts";
-import {
-  assertLoggedIn,
-  type LoggedInState,
-} from "@/pkg/main/plugins/session.ts";
-import { questionRepository } from "@/pkg/main/data/repositories/questions.ts";
 import { BadRequestError } from "@/pkg/main/library/http/bad-request-error.ts";
+import { assertLoggedIn, type State } from "@/pkg/main/plugins/session.ts";
+import { questionRepository } from "@/pkg/main/data/question/repository.ts";
 
-export const handler: Handlers<undefined, LoggedInState> = {
+export const handler: Handlers<undefined, State> = {
   async POST(req, ctx) {
     assertLoggedIn(ctx);
 

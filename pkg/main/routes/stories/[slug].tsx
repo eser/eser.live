@@ -1,16 +1,16 @@
 // Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
 import { defineRoute } from "$fresh/server.ts";
 import { CSS, render } from "@deno/gfm";
+import { SITE_LOCALE } from "@/pkg/main/constants.ts";
 import { type State } from "@/pkg/main/plugins/session.ts";
 import { Head } from "@/pkg/main/routes/(common)/(_components)/head.tsx";
 import { Share } from "@/pkg/main/routes/(common)/(_islands)/share.tsx";
-import { SITE_LOCALE } from "@/pkg/main/constants.ts";
-import { storyRepository } from "@/pkg/main/data/repositories/stories.ts";
+import { storyRepository } from "@/pkg/main/data/story/repository.ts";
 
 export default defineRoute<State>(async (_req, ctx) => {
   const story = await storyRepository.findBySlug(ctx.params.slug);
 
-  if (story === undefined) {
+  if (story === null) {
     return await ctx.renderNotFound();
   }
 
@@ -32,7 +32,12 @@ export default defineRoute<State>(async (_req, ctx) => {
               })}
             </time>
           )}
-          <Share url={ctx.url.href} title={story.title} />
+          <Share
+            url={ctx.url.href}
+            title={story.title}
+            content={story.content}
+            publishedAt={story.publishedAt}
+          />
           <div
             class="mt-8 markdown-body !bg-transparent !dark:text-white"
             data-color-mode="auto"

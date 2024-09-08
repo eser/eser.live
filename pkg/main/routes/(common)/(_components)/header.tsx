@@ -3,7 +3,7 @@
 // import {
 //   SITE_NAME,
 // } from "@/pkg/main/constants.ts";
-import { type User } from "@/pkg/main/data/models/user.ts";
+import { type User } from "@/pkg/main/data/user/types.ts";
 // import IconSearch from "tabler_icons_tsx/search.tsx";
 import IconBrandYouTube from "tabler_icons_tsx/brand-youtube-filled.tsx";
 // import IconMenu from "tabler_icons_tsx/menu-2.tsx";
@@ -11,7 +11,7 @@ import IconBrandYouTube from "tabler_icons_tsx/brand-youtube-filled.tsx";
 
 export interface HeaderProps {
   /** Currently logged-in user */
-  sessionUser?: User;
+  sessionUser: User | null;
   /**
    * URL of the current page. This is used for highlighting the currently
    * active page in navigation.
@@ -154,7 +154,7 @@ export const Header = (props: HeaderProps) => {
             <IconBrandYouTube class="h-6 w-6" />
             Canlı Yayın
           </a>
-          {props.sessionUser !== undefined
+          {props.sessionUser !== null
             ? (
               <div class="dropdown dropdown-end">
                 <div

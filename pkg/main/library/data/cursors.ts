@@ -5,6 +5,11 @@ export type Cursor = {
   pageSize: number;
 };
 
+export type CursorResult<T1, T2> = {
+  items: Array<T1>;
+  nextCursor: T2 | null;
+};
+
 /*
   Returns the given items with the cursor.
 
@@ -18,10 +23,13 @@ export type Cursor = {
   console.log(result); // { items: [1, 2, 3, 4, 5], cursor: 5 }
   ```
 */
-export function withCursor<T1>(items: T1, cursor: T2): [T1, T2] {
+export function withCursor<T1, T2>(
+  items: Array<T1>,
+  nextCursor: T2,
+): CursorResult<T1, T2> {
   return {
     items,
-    cursor,
+    nextCursor,
   };
 }
 

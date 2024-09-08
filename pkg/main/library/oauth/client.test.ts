@@ -466,18 +466,18 @@
 // });
 
 // Deno.test({
-//   name: "Client.getSessionId() returns undefined when cookie is not defined",
+//   name: "Client.getSession() returns sessionId=null when cookie is not defined",
 //   fn: async () => {
 //     const { testClient } = createTestClient();
 
 //     const request = new Request("http://example.com");
 
-//     assert.assertEquals(await testClient.getSessionId(request), undefined);
+//     assert.assertEquals((await testClient.getSession(request)).sessionId, null);
 //   },
 // });
 
 // Deno.test({
-//   name: "Client.getSessionId() returns valid session ID",
+//   name: "Client.getSession() returns valid session id",
 //   fn: async () => {
 //     const { testClient } = createTestClient();
 
@@ -489,13 +489,13 @@
 //       },
 //     });
 
-//     assert.assertEquals(await testClient.getSessionId(request), sessionId);
+//     assert.assertEquals((await testClient.getSession(request)).sessionId, sessionId);
 //   },
 // });
 
 // Deno.test({
 //   name:
-//     "Client.getSessionId() returns valid session ID when cookie name is defined",
+//     "Client.getSession() returns valid session id when cookie name is defined",
 //   fn: async () => {
 //     const { testClient } = createTestClient();
 
@@ -516,7 +516,7 @@
 //     });
 
 //     assert.assertEquals(
-//       await newTestClient.getSessionId(request),
+//       (await newTestClient.getSession(request)).sessionId,
 //       sessionId,
 //     );
 //   },

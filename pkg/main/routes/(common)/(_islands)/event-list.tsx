@@ -3,12 +3,8 @@ import * as datetime from "@std/datetime";
 import { useSignal } from "@preact/signals";
 import { useEffect } from "preact/hooks";
 // import IconInfo from "tabler_icons_tsx/info-circle.tsx";
-import { eventRepository } from "@/pkg/main/data/repositories/events.ts";
 import { timeDiff } from "@/pkg/main/library/display/time-diff.ts";
-
-type Event = Awaited<
-  ReturnType<typeof eventRepository.findAllWithStats>
->[0];
+import { type EventWithStats } from "@/pkg/main/data/event/types.ts";
 
 // const fetchMarkedEvents = async () => {
 //   const url = "/api/me/event-attendances";
@@ -18,7 +14,7 @@ type Event = Awaited<
 //     throw new Error(`Request failed: GET ${url}`);
 //   }
 
-//   return await resp.json() as { items: Event[]; cursor: string };
+//   return await resp.json() as { items: EventWithStats[]; cursor: string };
 // };
 
 const EventsListEmpty = () => {
@@ -39,7 +35,7 @@ const EventsListEmpty = () => {
 };
 
 // interface MarkButtonProps {
-//   event: Event;
+//   event: EventWithStats;
 //   statSig: Signal<number>;
 //   isLoggedIn: boolean;
 //   isMarkedSig: Signal<boolean>;
@@ -52,7 +48,7 @@ const EventsListEmpty = () => {
 //     }
 
 //     const resp = await fetch(
-//       `/api/events/mark?eventId=${props.event.id}`,
+//       `/events/mark?eventId=${props.event.id}`,
 //       {
 //         method: "POST",
 //       },
@@ -99,7 +95,7 @@ const EventsListEmpty = () => {
 // };
 
 // interface HideLinkProps {
-//   event: Event;
+//   event: EventWithStats;
 //   isHiddenSig: Signal<boolean>;
 // }
 
@@ -112,7 +108,7 @@ const EventsListEmpty = () => {
 //     }
 
 //     const resp = await fetch(
-//       `/api/events/hide?eventId=${props.event.id}`,
+//       `/events/hide?eventId=${props.event.id}`,
 //       {
 //         method: "POST",
 //       },
@@ -137,13 +133,13 @@ const EventsListEmpty = () => {
 // };
 
 interface EventSummaryProps {
-  event: Event;
+  event: EventWithStats;
   /** Whether the event has been marked by the logged-in user */
   isMarked: boolean;
   /** Whether the user is logged-in */
   isLoggedIn: boolean;
   /** Whether the user is an editor */
-  isEditor?: boolean;
+  isEditor: boolean;
   align: "left" | "right";
 }
 
@@ -216,13 +212,13 @@ export interface EventsListProps {
   /** Whether the user is logged-in */
   isLoggedIn: boolean;
   /** Whether the user is an editor */
-  isEditor?: boolean;
+  isEditor: boolean;
 }
 
 export const EventsList = (props: EventsListProps) => {
-  const eventsSig = useSignal<Event[]>([]);
+  const eventsSig = useSignal<EventWithStats[]>([]);
   // const markedEventsIdsSig = useSignal<string[]>([]);
-  const isLoadingSig = useSignal<boolean | undefined>(undefined);
+  const isLoadingSig = useSignal<boolean>(false);
   // const eventsAreMarkedSig = useComputed(() =>
   //   eventsSig.value.map((event) => markedEventsIdsSig.value.includes(event.id))
   // );
@@ -235,7 +231,11 @@ export const EventsList = (props: EventsListProps) => {
     isLoadingSig.value = true;
 
     try {
-      const resp = await fetch(props.endpoint);
+      const resp = await fetch(props.endpoint, {
+        headers: {
+          "Accept": "application/json",
+        },
+      });
       if (!resp.ok) {
         throw new Error(`Request failed: GET ${props.endpoint}`);
       }

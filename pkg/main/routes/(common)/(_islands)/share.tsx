@@ -5,6 +5,14 @@ import IconBrandTelegram from "tabler_icons_tsx/brand-telegram.tsx";
 import IconBrandLinkedin from "tabler_icons_tsx/brand-linkedin.tsx";
 import IconBrandReddit from "tabler_icons_tsx/brand-reddit.tsx";
 import IconBrandX from "tabler_icons_tsx/brand-x.tsx";
+import IconDownload from "tabler_icons_tsx/download.tsx";
+
+export type ShareProps = {
+  url: string;
+  title: string;
+  content: string;
+  publishedAt: Date | null;
+};
 
 /**
  * Dynamically generates links for sharing the current content on the major
@@ -12,7 +20,7 @@ import IconBrandX from "tabler_icons_tsx/brand-x.tsx";
  *
  * @see {@link https://schier.co/blog/pure-html-share-buttons}
  */
-export const Share = (props: { url: string; title: string }) => {
+export const Share = (props: ShareProps) => {
   const handleClick = (e: MouseEvent) => {
     e.preventDefault();
 
@@ -79,6 +87,15 @@ export const Share = (props: { url: string; title: string }) => {
         aria-label={`X'de ${props.title} paylaş`}
       >
         <IconBrandX />
+      </a>
+      <a
+        href={`data:text/markdown;charset=utf-8,${
+          encodeURIComponent(props.content)
+        }`}
+        download={`${props.title.replace(/\s+/g, "_")}.md`}
+        aria-label={`${props.title} içeriğini Markdown olarak indir`}
+      >
+        <IconDownload />
       </a>
     </div>
   );

@@ -1,14 +1,16 @@
-import { useSignal, useComputed } from "@preact/signals";
+import { useComputed, useSignal } from "@preact/signals";
 import { useEffect } from "preact/hooks";
-import { Story } from "@/pkg/main/data/models/story.ts";
+import { type StoryWithDetails } from "@/pkg/main/data/story/types.ts";
 import { StoryCard } from "@/pkg/main/routes/(common)/(_components)/story-card.tsx";
 
 interface StoriesListProps {
-  initialStories: Story[];
-  initialNextCursor: string | null;
+  initialStories: Array<StoryWithDetails>;
+  initialNextCursor: number | null;
 }
 
-export function StoriesList({ initialStories, initialNextCursor }: StoriesListProps) {
+export function StoriesList(
+  { initialStories, initialNextCursor }: StoriesListProps,
+) {
   const stories = useSignal(initialStories);
   const nextCursor = useSignal(initialNextCursor);
   const loading = useSignal(false);
@@ -21,14 +23,19 @@ export function StoriesList({ initialStories, initialNextCursor }: StoriesListPr
     }
 
     loading.value = true;
-    const url = new URL("/api/stories", globalThis.location.href);
-    url.searchParams.set("cursor", nextCursor.value!);
+    const url = new URL("/stories/", globalThis.location.href);
+    url.searchParams.set("cursor", String(nextCursor.value!));
 
     try {
-      const response = await fetch(url.toString());
+      const response = await fetch(url.toString(), {
+        headers: {
+          Accept: "application/json",
+        },
+      });
       const data = await response.json();
+      console.log("data", data);
       stories.value = [...stories.value, ...data.items];
-      nextCursor.value = data.cursor;
+      nextCursor.value = data.nextCursor;
     } catch (error) {
       console.error("Error loading more stories:", error);
     } finally {
@@ -38,7 +45,10 @@ export function StoriesList({ initialStories, initialNextCursor }: StoriesListPr
 
   useEffect(() => {
     const handleScroll = () => {
-      if (globalThis.innerHeight + globalThis.scrollY >= document.body.offsetHeight - 500) {
+      if (
+        globalThis.innerHeight + globalThis.scrollY >=
+          document.body.offsetHeight - 500
+      ) {
         loadMoreStories();
       }
     };

@@ -1,17 +1,17 @@
 // Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
 import { defineRoute } from "$fresh/src/server/defines.ts";
-import { type User } from "@/pkg/main/data/models/user.ts";
+import { type User } from "@/pkg/main/data/user/types.ts";
 import { type State } from "@/pkg/main/plugins/session.ts";
 import { Head } from "@/pkg/main/routes/(common)/(_components)/head.tsx";
 import { EventsList } from "@/pkg/main/routes/(common)/(_islands)/event-list.tsx";
 
 interface WelcomeStripProps {
   /** Currently logged-in user */
-  sessionUser?: User;
+  sessionUser: User | null;
 }
 
 export const WelcomeStrip = (props: WelcomeStripProps) => {
-  const isAuthenticated = props.sessionUser !== undefined;
+  const isAuthenticated = props.sessionUser !== null;
 
   return (
     <div class="content-area">
@@ -99,11 +99,11 @@ interface EventsProps {
   /** Whether the user is logged-in */
   isLoggedIn: boolean;
   /** Whether the user is an editor */
-  isEditor?: boolean;
+  isEditor: boolean;
 }
 
 export const Events = (props: EventsProps) => {
-  const endpoint = "/api/events";
+  const endpoint = "/events/upcoming/";
 
   return (
     <div class="content-area mt-12">
@@ -119,14 +119,14 @@ export const Events = (props: EventsProps) => {
 };
 
 export default defineRoute<State>((_req, ctx) => {
-  const isLoggedIn = ctx.state.sessionUser !== undefined;
+  const isLoggedIn = ctx.state.sessionUser !== null;
   const isEditor = ctx.state.isEditor;
 
   return (
     <>
       <Head href={ctx.url.href} />
       <main>
-        <WelcomeStrip sessionUser={ctx.state?.sessionUser} />
+        <WelcomeStrip sessionUser={ctx.state.sessionUser} />
 
         <Playlists />
         <Events isLoggedIn={isLoggedIn} isEditor={isEditor} />

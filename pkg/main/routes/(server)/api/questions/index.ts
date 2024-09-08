@@ -1,14 +1,14 @@
 // Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
 import { type Handlers } from "$fresh/server.ts";
 import { getCursor } from "@/pkg/main/library/data/cursors.ts";
-import { type LoggedInState } from "@/pkg/main/plugins/session.ts";
-import { questionRepository } from "@/pkg/main/data/repositories/questions.ts";
+import { type State } from "@/pkg/main/plugins/session.ts";
+import { questionRepository } from "@/pkg/main/data/question/repository.ts";
 
 const PAGE_SIZE = 10;
 
 type QuestionItem = Awaited<
   ReturnType<typeof questionRepository.findAllWithScores>
->[0];
+>["items"][number];
 
 const anonymize = (question: QuestionItem) => {
   if (question.isAnonymous) {
@@ -18,17 +18,16 @@ const anonymize = (question: QuestionItem) => {
   return question;
 };
 
-export const handler: Handlers<undefined, LoggedInState> = {
+export const handler: Handlers<undefined, State> = {
   async GET(req, ctx) {
     const cursor = getCursor(req.url, PAGE_SIZE);
-    const items = await questionRepository.findAllWithScores(
+    const result = await questionRepository.findAllWithScores(
       cursor,
-      ctx.state.sessionUser?.id,
+      ctx.state.sessionUser?.id ?? null,
     );
 
-    return Response.json({
-      items: items.map((x) => anonymize(x)),
-      cursor: items.at(-1)?.id ?? null,
-    });
+    result.items.forEach((x) => anonymize(x));
+
+    return Response.json(result);
   },
 };

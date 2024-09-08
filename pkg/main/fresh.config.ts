@@ -4,15 +4,15 @@ import { oAuthPlugin } from "@/pkg/main/plugins/oauth.ts";
 import { sessionPlugin } from "@/pkg/main/plugins/session.ts";
 import { errorHandlingPlugin } from "@/pkg/main/plugins/error-handling.ts";
 import { securityHeadersPlugin } from "@/pkg/main/plugins/security-headers.ts";
-import { defineConfig } from "$fresh/server.ts";
+import { defineConfig, type Plugin } from "$fresh/server.ts";
 
 export default defineConfig(
   {
     plugins: [
       oAuthPlugin,
-      sessionPlugin,
+      sessionPlugin as Plugin,
       tailwindPlugin(),
-      errorHandlingPlugin,
+      errorHandlingPlugin as Plugin,
       securityHeadersPlugin,
     ],
     router: {

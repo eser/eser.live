@@ -2,7 +2,6 @@
 // This file SHOULD be checked into source version control.
 // This file is automatically updated during development when running `dev.ts`.
 
-import * as $_server_api_events_index from "./routes/(server)/api/events/index.ts";
 import * as $_server_api_me_index from "./routes/(server)/api/me/index.ts";
 import * as $_server_api_me_question_votes from "./routes/(server)/api/me/question-votes.ts";
 import * as $_server_api_me_questions from "./routes/(server)/api/me/questions.ts";
@@ -10,7 +9,6 @@ import * as $_server_api_questions_id_ from "./routes/(server)/api/questions/[id
 import * as $_server_api_questions_hide from "./routes/(server)/api/questions/hide.ts";
 import * as $_server_api_questions_index from "./routes/(server)/api/questions/index.ts";
 import * as $_server_api_questions_vote from "./routes/(server)/api/questions/vote.ts";
-import * as $_server_api_stories_index from "./routes/(server)/api/stories/index.ts";
 import * as $_server_api_users_id_index from "./routes/(server)/api/users/[id]/index.ts";
 import * as $_server_api_users_id_questions from "./routes/(server)/api/users/[id]/questions.ts";
 import * as $_server_api_users_index from "./routes/(server)/api/users/index.ts";
@@ -24,6 +22,8 @@ import * as $dash_index from "./routes/dash/index.tsx";
 import * as $dash_stats from "./routes/dash/stats.tsx";
 import * as $dash_users_id_ from "./routes/dash/users/[id].tsx";
 import * as $dash_users_index from "./routes/dash/users/index.tsx";
+import * as $events_index from "./routes/events/index.ts";
+import * as $events_upcoming from "./routes/events/upcoming.ts";
 import * as $index from "./routes/index.tsx";
 import * as $projects_index from "./routes/projects/index.tsx";
 import * as $qa_ask from "./routes/qa/ask.tsx";
@@ -43,7 +43,6 @@ import type { Manifest } from "$fresh/server.ts";
 
 const manifest = {
   routes: {
-    "./routes/(server)/api/events/index.ts": $_server_api_events_index,
     "./routes/(server)/api/me/index.ts": $_server_api_me_index,
     "./routes/(server)/api/me/question-votes.ts":
       $_server_api_me_question_votes,
@@ -52,7 +51,6 @@ const manifest = {
     "./routes/(server)/api/questions/hide.ts": $_server_api_questions_hide,
     "./routes/(server)/api/questions/index.ts": $_server_api_questions_index,
     "./routes/(server)/api/questions/vote.ts": $_server_api_questions_vote,
-    "./routes/(server)/api/stories/index.ts": $_server_api_stories_index,
     "./routes/(server)/api/users/[id]/index.ts": $_server_api_users_id_index,
     "./routes/(server)/api/users/[id]/questions.ts":
       $_server_api_users_id_questions,
@@ -67,6 +65,8 @@ const manifest = {
     "./routes/dash/stats.tsx": $dash_stats,
     "./routes/dash/users/[id].tsx": $dash_users_id_,
     "./routes/dash/users/index.tsx": $dash_users_index,
+    "./routes/events/index.ts": $events_index,
+    "./routes/events/upcoming.ts": $events_upcoming,
     "./routes/index.tsx": $index,
     "./routes/projects/index.tsx": $projects_index,
     "./routes/qa/ask.tsx": $qa_ask,

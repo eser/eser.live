@@ -2,17 +2,18 @@
 import * as ulid from "@std/ulid";
 import { type Plugin } from "$fresh/server.ts";
 import * as oauth from "@/pkg/main/library/oauth/mod.ts";
-import * as users from "@/pkg/main/data/repositories/users.ts";
-import * as sessions from "@/pkg/main/data/repositories/sessions.ts";
+import { userRepository } from "@/pkg/main/data/user/repository.ts";
+import { sessionRepository } from "@/pkg/main/data/session/repository.ts";
+import { type SessionPartial } from "@/pkg/main/data/session/types.ts";
 import * as github from "@/pkg/main/services/github.ts";
 
 export const getSession = async (
   id: string,
-): Promise<oauth.Session | undefined> => {
-  const session = await sessions.sessionRepository.findById(id);
+): Promise<oauth.Session | null> => {
+  const session = await sessionRepository.findById(id);
 
-  if (session === undefined) {
-    return undefined;
+  if (session === null) {
+    return null;
   }
 
   return {
@@ -21,16 +22,16 @@ export const getSession = async (
 
     state: session.oauthRequestState,
     codeVerifier: session.oauthRequestCodeVerifier,
-    redirectUri: session.oauthRedirectUri ?? undefined,
+    redirectUri: session.oauthRedirectUri,
 
-    loggedInUserId: session.loggedInUserId ?? undefined,
-    loggedInAt: session.loggedInAt ?? undefined,
-    expiresAt: session.expiresAt ?? undefined,
+    loggedInUserId: session.loggedInUserId,
+    loggedInAt: session.loggedInAt,
+    expiresAt: session.expiresAt,
   };
 };
 
 export const onLoginRequested = async (session: oauth.Session) => {
-  const sessionEntity: sessions.SessionPartial = {
+  const sessionEntity: SessionPartial = {
     id: session.id,
     status: session.status,
 
@@ -43,7 +44,7 @@ export const onLoginRequested = async (session: oauth.Session) => {
     expiresAt: session.expiresAt ?? null,
   };
 
-  await sessions.sessionRepository.create(sessionEntity);
+  await sessionRepository.create(sessionEntity);
 };
 
 export const onLoginCallback = async (
@@ -52,10 +53,10 @@ export const onLoginCallback = async (
   tokens: oauth.Tokens,
 ) => {
   const githubUser = await github.getGitHubUser(tokens.accessToken);
-  let user = await users.userRepository.findByGitHubRemoteId(githubUser.id);
+  let user = await userRepository.findByGitHubRemoteId(githubUser.id);
 
-  if (user === undefined) {
-    user = await users.userRepository.upsertByGithubRemoteId({
+  if (user === null) {
+    user = await userRepository.upsertByGithubRemoteId({
       id: ulid.ulid(),
       kind: "regular",
 
@@ -66,9 +67,14 @@ export const onLoginCallback = async (
       githubHandle: githubUser.login,
       xHandle: githubUser.twitter_username,
     });
+
+    if (user === null) {
+      // TODO(@eser): a custom error type would be nice here
+      throw new Error("Failed to create user");
+    }
   }
 
-  const sessionEntity: Partial<sessions.SessionPartial> = {
+  const sessionEntity: Partial<SessionPartial> = {
     status: "active",
 
     loggedInUserId: user.id,
@@ -76,18 +82,18 @@ export const onLoginCallback = async (
     expiresAt: expiresAt,
   };
 
-  await sessions.sessionRepository.update(id, sessionEntity);
+  await sessionRepository.update(id, sessionEntity);
 };
 
 export const onLogout = async (
   id: string,
 ) => {
-  const sessionEntity: Partial<sessions.SessionPartial> = {
+  const sessionEntity: Partial<SessionPartial> = {
     status: "logged_out",
     expiresAt: null,
   };
 
-  await sessions.sessionRepository.update(id, sessionEntity);
+  await sessionRepository.update(id, sessionEntity);
 };
 
 export const oauthClient = oauth.createClient({

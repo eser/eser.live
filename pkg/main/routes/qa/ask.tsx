@@ -6,15 +6,11 @@ import IconMailForward from "tabler_icons_tsx/mail-forward.tsx";
 import IconInfo from "tabler_icons_tsx/info-circle.tsx";
 import { defineRoute, Handlers } from "$fresh/server.ts";
 import { Head } from "@/pkg/main/routes/(common)/(_components)/head.tsx";
-import {
-  assertLoggedIn,
-  type LoggedInState,
-  type State,
-} from "@/pkg/main/plugins/session.ts";
-import { questionRepository } from "@/pkg/main/data/repositories/questions.ts";
 import { redirect } from "@/pkg/main/library/http/redirect.ts";
+import { assertLoggedIn, type State } from "@/pkg/main/plugins/session.ts";
+import { questionRepository } from "@/pkg/main/data/question/repository.ts";
 
-export const handler: Handlers<undefined, LoggedInState> = {
+export const handler: Handlers<undefined, State> = {
   async POST(req, ctx) {
     assertLoggedIn(ctx);
 
@@ -104,10 +100,10 @@ export default defineRoute<State>((_req, ctx) => {
                 rows={6}
                 name="question_content"
                 required={true}
-                placeholder={ctx.state.sessionUser === undefined
+                placeholder={ctx.state.sessionUser === null
                   ? "Soru sorabilmek için giriş yapmış olman gerekiyor"
                   : "Soru içeriğini buraya girebilirsin"}
-                disabled={ctx.state.sessionUser === undefined}
+                disabled={ctx.state.sessionUser === null}
               >
               </textarea>
             </div>
@@ -121,7 +117,7 @@ export default defineRoute<State>((_req, ctx) => {
                     type="checkbox"
                     checked={false}
                     value="true"
-                    disabled={ctx.state.sessionUser === undefined}
+                    disabled={ctx.state.sessionUser === null}
                   />
                   <span class="label-text">Anonim olarak sor</span>
                 </label>

@@ -1,9 +1,9 @@
 // Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
-import { type User } from "@/pkg/main/data/models/user.ts";
+import { type User } from "@/pkg/main/data/user/types.ts";
 
 export interface UserProfilePictureProps {
-  user: Pick<User, "githubHandle"> | undefined;
-  isAnonymous?: boolean;
+  user: Pick<User, "githubHandle"> | null;
+  isAnonymous: boolean;
   size: number;
   class?: string;
 }

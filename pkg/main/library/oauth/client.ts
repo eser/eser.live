@@ -20,11 +20,11 @@ export interface Session {
 
   state: string;
   codeVerifier: string;
-  redirectUri?: string;
+  redirectUri: string | null;
 
-  loggedInUserId?: string;
-  loggedInAt?: Date;
-  expiresAt?: Date;
+  loggedInUserId: string | null;
+  loggedInAt: Date | null;
+  expiresAt: Date | null;
 }
 
 /**
@@ -71,7 +71,7 @@ export type ClientOptions = {
   oauth: OAuth2ClientConfig;
   cookie?: Partial<httpCookie.Cookie>;
   hooks: {
-    getSession: (id: string) => Promise<Session | undefined>;
+    getSession: (id: string) => Promise<Session | null>;
     onLoginRequested: (session: Session) => Promise<void>;
     onLoginCallback: (
       id: string,
@@ -127,7 +127,7 @@ export const createClientState = (options: ClientOptions): ClientState => {
  *     case "/oauth/signout":
  *       return await client.signOut(request);
  *     case "/protected-route":
- *       return await client.getSessionId(request) === undefined
+ *       return (await client.getSession(request)).sessionId === null
  *         ? new Response("Unauthorized", { status: 401 })
  *         : new Response("You are allowed");
  *     default:
@@ -138,22 +138,22 @@ export const createClientState = (options: ClientOptions): ClientState => {
  * Deno.serve(handler);
  * ```
  */
-export const Client = class {
+export class Client {
   readonly state: ClientState;
 
   constructor(state: ClientState) {
     this.state = state;
   }
 
-  getSessionCookie(
+  getSession(
     request: Request,
     defaultCookieName?: string,
-  ): { cookieName: string; sessionId: string | undefined } {
+  ): { cookieName: string; sessionId: string | null } {
     const cookies = httpCookie.getCookies(request.headers);
     const cookieName = defaultCookieName ?? this.state.options.cookie?.name ??
       getCookieName(SITE_COOKIE_NAME, isHttps(request.url));
 
-    const sessionId = cookies[cookieName];
+    const sessionId = cookies[cookieName] ?? null;
 
     return {
       cookieName,
@@ -207,6 +207,8 @@ export const Client = class {
       codeVerifier: codeVerifier,
       redirectUri: getSuccessUri(request),
 
+      loggedInUserId: null,
+      loggedInAt: null,
       expiresAt: expiresAt,
     };
 
@@ -219,16 +221,16 @@ export const Client = class {
   }
 
   async handleCallback(request: Request): Promise<Response> {
-    const { cookieName, sessionId } = this.getSessionCookie(request);
+    const { cookieName, sessionId } = this.getSession(request);
 
-    if (sessionId === undefined) {
+    if (sessionId === null) {
       throw new Error("OAuth cookie not found");
     }
 
     const session = await this.state.options.hooks
       .getSession(sessionId);
 
-    if (session === undefined) {
+    if (session === null) {
       throw new Deno.errors.NotFound("OAuth session not found");
     }
 
@@ -267,9 +269,9 @@ export const Client = class {
     const successUri = getSuccessUri(request);
     const response = redirect(successUri, httpStatus.STATUS_CODE.Found);
 
-    const { cookieName, sessionId } = this.getSessionCookie(request);
+    const { cookieName, sessionId } = this.getSession(request);
 
-    if (sessionId === undefined) {
+    if (sessionId === null) {
       return response;
     }
 
@@ -282,17 +284,7 @@ export const Client = class {
 
     return response;
   }
-
-  getSessionId(request: Request): string | undefined {
-    const { sessionId } = this.getSessionCookie(request);
-
-    if (sessionId === undefined) {
-      return undefined;
-    }
-
-    return sessionId;
-  }
-};
+}
 
 export const createClient = (options: ClientOptions) => {
   return new Client(createClientState(options));

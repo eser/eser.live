@@ -1,11 +1,9 @@
 // Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
 import IconBrandGithub from "tabler_icons_tsx/brand-github-filled.tsx";
 import { defineRoute } from "$fresh/server.ts";
-import {
-  type User,
-  userRepository,
-} from "@/pkg/main/data/repositories/users.ts";
 import { type State } from "@/pkg/main/plugins/session.ts";
+import { userRepository } from "@/pkg/main/data/user/repository.ts";
+import { type User } from "@/pkg/main/data/user/types.ts";
 import { Head } from "@/pkg/main/routes/(common)/(_components)/head.tsx";
 import { UserProfilePicture } from "@/pkg/main/routes/(common)/(_components)/user-profile-picture.tsx";
 import { QuestionsList } from "@/pkg/main/routes/(common)/(_islands)/questions-list.tsx";
@@ -17,7 +15,7 @@ interface UserProfileProps {
 const UserProfile = (props: UserProfileProps) => {
   return (
     <div class="flex flex-col items-center w-[16rem]">
-      <UserProfilePicture user={props.user} size={200} />
+      <UserProfilePicture user={props.user} isAnonymous={false} size={200} />
       <div class="flex gap-x-2 px-4 mt-4 items-center">
         <div class="font-semibold text-xl">
           {props.user.name}
@@ -40,11 +38,12 @@ export default defineRoute<State>(
     const id = ctx.params.id;
     const user = await userRepository.findById(id);
 
-    if (user === undefined) {
+    if (user === null) {
       return await ctx.renderNotFound();
     }
 
-    const isLoggedIn = ctx.state.sessionUser !== undefined;
+    const isLoggedIn = ctx.state.sessionUser !== null;
+    const isEditor = ctx.state.isEditor;
     const endpoint = `/api/users/${id}/questions`;
 
     return (
@@ -73,6 +72,7 @@ export default defineRoute<State>(
             <QuestionsList
               endpoint={endpoint}
               isLoggedIn={isLoggedIn}
+              isEditor={isEditor}
             />
           </div>
         </main>
