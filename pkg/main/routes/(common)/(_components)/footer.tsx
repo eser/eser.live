@@ -1,5 +1,6 @@
 // Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
 import IconBrandDiscord from "tabler_icons_tsx/brand-discord-filled.tsx";
+import IconBrandTelegram from "tabler_icons_tsx/brand-telegram.tsx";
 import IconBrandX from "tabler_icons_tsx/brand-x.tsx";
 import { SITE_NAME } from "@/pkg/main/constants.ts";
 import { MadeWithCool } from "./made-with-cool.tsx";
@@ -18,11 +19,18 @@ export const Footer = () => {
       </aside>
       <nav class="grid-flow-col gap-4 pr-4 md:place-self-center md:justify-self-end">
         <a
-          href="https://discord.gg/ckS4huSvEk"
+          href="https://discord.eser.live/"
           target="_blank"
           aria-label="Discord'da eser.live"
         >
           <IconBrandDiscord class="h-6 w-6" />
+        </a>
+        <a
+          href="https://t.me/eserlive"
+          target="_blank"
+          aria-label="Telegram'da eser.live"
+        >
+          <IconBrandTelegram class="h-6 w-6" />
         </a>
         <a
           href="https://x.com/eserozvataf"

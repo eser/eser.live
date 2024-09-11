@@ -293,7 +293,7 @@ the [LICENSE](LICENSE) file.
 [Visit my GitHub Sponsors profile at github.com/sponsors/eser](https://github.com/sponsors/eser)
 
 [discord-image]: https://img.shields.io/discord/684898665143206084?logo=discord&style=social
-[discord-url]: https://discord.gg/ckS4huSvEk
+[discord-url]: https://discord.eser.live/
 [build-image]: https://github.com/eser/eser.live/actions/workflows/ci-cd.yml/badge.svg
 [build-url]: https://github.com/eser/eser.live/actions/workflows/ci-cd.yml
 [coverage-image]: https://codecov.io/gh/eser/eser.live/branch/main/graph/badge.svg?token=77F8TYTP13

@@ -22,13 +22,7 @@ const EventsListEmpty = () => {
     <>
       {/* <IconInfo class="w-10 h-10 text-slate-400 dark:text-slate-600" /> */}
       <p>
-        Şu anda planlanmış etkinlik bulunmamaktadır. Anlık yayın ve etkinlik
-        bildirimleri için Telegram üzerinden{" "}
-        <em>
-          <a href="https://t.me/eserlive">
-            eser.live ve yazılımcı ağı telegram duyuru kanalı
-          </a>
-        </em>nı takip edebilirsiniz.
+        Şu anda planlanmış etkinlik bulunmamaktadır.
       </p>
     </>
   );

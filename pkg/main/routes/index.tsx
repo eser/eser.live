@@ -24,23 +24,33 @@ export const WelcomeStrip = (props: WelcomeStripProps) => {
               👋🏻
             </h1>
 
-            {!isAuthenticated
-              ? (
-                <p>
-                  Bu site Eser Özvataf tarafından{"  "}
-                  <span class="highlight">
-                    eser.live
-                  </span>{" "}
-                  ismi altında üretilen içeriklerin paylaşıldığı bir platform
-                  olarak tasarlanmıştır. Dilediğinde{" "}
-                  <span class="highlight">
-                    GitHub
-                  </span>{" "}
-                  hesabınla giriş yapabilir, ve site üzerinden katılım
-                  gerçekleştirebilirsin.
-                </p>
-              )
-              : null}
+            <p>
+              <span class="highlight">
+                eser.live
+              </span>{" "}
+              ismiyle içerik ve proje geliştirmeye yönelik bir platform
+              oluşturduk. Geçmişte{" "}
+              <a href="https://acikkaynak.github.io/">
+                Açık Kaynak İnisiyatifi
+              </a>nde edindiğimiz bilgi birikimini artık yeni nesil medya
+              mecralarına taşıyoruz. Sen de{" "}
+              <span class="highlight">
+                GitHub
+              </span>{" "}
+              hesabınla giriş yapabilir, ve site üzerinden katılım
+              gerçekleştirebilirsin.
+            </p>
+            <p>
+              Topluluk için{" "}
+              <a href="https://discord.eser.live/">Discord'da</a>, anlık yayın
+              ve etkinlik duyuruları için{" "}
+              <a href="https://t.me/eserlive">Telegram kanalımızda</a> ve{" "}
+              <a href="https://x.com/eserozvataf">Twitter hesabımızda</a>,
+              direkt yayınlar ve yayın bildirimleri içinse{" "}
+              <a href="https://youtube.com/@eserlive">YouTube kanalımızda</a>
+              {" "}
+              bize katılabilirsin.
+            </p>
           </div>
         </div>
       </div>
