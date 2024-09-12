@@ -40,7 +40,7 @@ export function VideosList(
   useEffect(() => {
     const handleScroll = () => {
       if (
-        window.innerHeight + document.documentElement.scrollTop ===
+        globalThis.innerHeight + document.documentElement.scrollTop ===
           document.documentElement.offsetHeight &&
         !loading.value &&
         nextPageToken.value
@@ -49,8 +49,8 @@ export function VideosList(
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    globalThis.addEventListener("scroll", handleScroll);
+    return () => globalThis.removeEventListener("scroll", handleScroll);
   }, []);
 
   const loadMoreVideos = async () => {

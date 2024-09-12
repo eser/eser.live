@@ -1,11 +1,38 @@
 import { useComputed, useSignal } from "@preact/signals";
 import { useEffect } from "preact/hooks";
 import { type StoryWithDetails } from "@/pkg/main/data/story/types.ts";
-import { StoryCard } from "@/pkg/main/routes/(common)/(_components)/story-card.tsx";
+import { SITE_LOCALE } from "@/pkg/main/constants.ts";
 
 interface StoriesListProps {
   initialStories: Array<StoryWithDetails>;
   initialNextCursor: number | null;
+}
+
+function StoryItem({ story }: { story: StoryWithDetails }) {
+  return (
+    <div class="mb-8 flex">
+      <a href={`/stories/${story.slug}`} class="w-1/3 mr-4 no-underline">
+        {story.coverImageUrl ? (
+          <img src={story.coverImageUrl} alt={story.title} class="w-full" />
+        ) : (
+          <div class="w-full h-full bg-neutral text-neutral-content flex items-center justify-center">
+          </div>
+        )}
+      </a>
+      <div class="flex-1">
+        <a href={`/stories/${story.slug}`} class="no-underline hover:underline">
+          <h2 class="text-xl font-bold">{story.title}</h2>
+        </a>
+        <p class="text-gray-600">{story.summary}</p>
+        <p class="text-sm text-gray-500 mt-1">
+          Yayın Tarihi:{" "}
+          {new Date(story.publishedAt).toLocaleDateString(SITE_LOCALE, {
+            dateStyle: "long",
+          })}
+        </p>
+      </div>
+    </div>
+  );
 }
 
 export function StoriesList(
@@ -17,10 +44,24 @@ export function StoriesList(
 
   const hasMore = useComputed(() => nextCursor.value !== null);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        globalThis.innerHeight + document.documentElement.scrollTop ===
+          document.documentElement.offsetHeight &&
+        !loading.value &&
+        hasMore.value
+      ) {
+        loadMoreStories();
+      }
+    };
+
+    globalThis.addEventListener("scroll", handleScroll);
+    return () => globalThis.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const loadMoreStories = async () => {
-    if (loading.value || !hasMore.value) {
-      return;
-    }
+    if (loading.value || !hasMore.value) return;
 
     loading.value = true;
     const url = new URL("/stories/", globalThis.location.href);
@@ -33,7 +74,6 @@ export function StoriesList(
         },
       });
       const data = await response.json();
-      console.log("data", data);
       stories.value = [...stories.value, ...data.items];
       nextCursor.value = data.nextCursor;
     } catch (error) {
@@ -43,35 +83,10 @@ export function StoriesList(
     }
   };
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (
-        globalThis.innerHeight + globalThis.scrollY >=
-          document.body.offsetHeight - 500
-      ) {
-        loadMoreStories();
-      }
-    };
-
-    globalThis.addEventListener("scroll", handleScroll);
-    return () => globalThis.removeEventListener("scroll", handleScroll);
-  }, []);
-
   return (
-    <div class="divide-y">
-      {stories.value.map((story) => <StoryCard key={story.id} item={story} />)}
-      {loading.value && (
-        <div class="text-center py-4">
-          <div class="loading loading-spinner loading-lg"></div>
-        </div>
-      )}
-      {!loading.value && !hasMore.value && stories.value.length > 0 && (
-        <div class="card bg-base-200 p-6">
-          <div class="card-body items-center text-center">
-            <p class="text-lg">~~ EOF ~~</p>
-          </div>
-        </div>
-      )}
+    <div>
+      {stories.value.map((story) => <StoryItem key={story.id} story={story} />)}
+      {loading.value && <p>Loading more stories...</p>}
     </div>
   );
 }
