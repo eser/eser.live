@@ -33,6 +33,11 @@ const MenuItems = () => {
         </a>
       </li>
       <li>
+        <a href="/videos" class="include-ancestors">
+          Videolar
+        </a>
+      </li>
+      <li>
         <a href="/qa" class="include-ancestors">
           Soru / Yanıt
         </a>

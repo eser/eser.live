@@ -3,3 +3,4 @@ export const SITE_NAME = "eser.live";
 export const SITE_DESCRIPTION = "Eser Özvataf'ın kişisel YouTube kanalı";
 export const SITE_LANG = "tr";
 export const SITE_LOCALE = "tr";
+export const YOUTUBE_CHANNEL_ID = "UCS3eVZDirUNTFrteoJsLP4g";

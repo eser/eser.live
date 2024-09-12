@@ -10,7 +10,7 @@
     "db:generate": "deno run --allow-env --allow-sys --allow-read --allow-write --allow-run npm:drizzle-kit generate",
     "db:migrate": "deno run --allow-env --allow-read --allow-net ./pkg/tasks/db-migrate.ts",
     "start": "DENO_FUTURE=1 deno run --allow-all --watch=./pkg/main/static/,./pkg/main/routes/ ./pkg/main/dev.ts",
-    "test": "GITHUB_CLIENT_ID=xxx GITHUB_CLIENT_SECRET=xxx deno test --allow-all --parallel --coverage=./test/coverage/",
+    "test": "GITHUB_CLIENT_ID=xxx GITHUB_CLIENT_SECRET=xxx YOUTUBE_API_KEY=xxx deno test --allow-all --parallel --coverage=./test/coverage/",
     "check": "deno fmt --check && deno lint && deno check **/*.ts && deno check **/*.tsx",
     "cli": "echo \"import '\\$fresh/src/dev/cli.ts'\" | deno run --allow-all -",
     "manifest": "deno task cli manifest $(pwd)/pkg/main/",

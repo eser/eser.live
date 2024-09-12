@@ -48,6 +48,7 @@ To get started:
    POSTGRES_CONNSTR=postgres://postgres:s3cr3t@0.0.0.0:5432/postgres
    GITHUB_CLIENT_ID=
    GITHUB_CLIENT_SECRET=
+   YOUTUBE_API_KEY=
    ```
 1. Navigate to GitHub's
    [**New OAuth Application** page](https://github.com/settings/applications/new).

@@ -32,11 +32,13 @@ import * as $setup_index from "./routes/setup/index.tsx";
 import * as $stories_slug_ from "./routes/stories/[slug].tsx";
 import * as $stories_feed from "./routes/stories/feed.ts";
 import * as $stories_index from "./routes/stories/index.tsx";
+import * as $videos_index from "./routes/videos/index.tsx";
 import * as $_common_islands_questions_list from "./routes/(common)/(_islands)/questions-list.tsx";
 import * as $_common_islands_share from "./routes/(common)/(_islands)/share.tsx";
 import * as $_common_islands_shortcuts from "./routes/(common)/(_islands)/shortcuts.tsx";
 import * as $_common_islands_stories_list from "./routes/(common)/(_islands)/stories-list.tsx";
 import * as $_common_islands_users_table from "./routes/(common)/(_islands)/users-table.tsx";
+import * as $_common_islands_videos_list from "./routes/(common)/(_islands)/videos-list.tsx";
 import * as $dash_islands_chart from "./routes/dash/(_islands)/chart.tsx";
 import type { Manifest } from "$fresh/server.ts";
 
@@ -74,6 +76,7 @@ const manifest = {
     "./routes/stories/[slug].tsx": $stories_slug_,
     "./routes/stories/feed.ts": $stories_feed,
     "./routes/stories/index.tsx": $stories_index,
+    "./routes/videos/index.tsx": $videos_index,
   },
   islands: {
     "./routes/(common)/(_islands)/questions-list.tsx":
@@ -84,6 +87,8 @@ const manifest = {
       $_common_islands_stories_list,
     "./routes/(common)/(_islands)/users-table.tsx":
       $_common_islands_users_table,
+    "./routes/(common)/(_islands)/videos-list.tsx":
+      $_common_islands_videos_list,
     "./routes/dash/(_islands)/chart.tsx": $dash_islands_chart,
   },
   baseUrl: import.meta.url,
