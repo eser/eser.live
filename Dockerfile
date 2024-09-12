@@ -7,14 +7,11 @@ EXPOSE 8000
 
 WORKDIR /app
 
-USER deno
+# USER deno
 
-COPY deps.ts .
-RUN deno cache deps.ts
+COPY . .
 
-ADD . ./
-
-RUN deno cache main.ts
+RUN deno install --entrypoint pkg/main/main.ts
 
 ENTRYPOINT []
 CMD ["deno", "task", "start"]

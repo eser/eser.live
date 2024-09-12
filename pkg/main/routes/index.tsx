@@ -1,9 +1,51 @@
 // Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
+import { type Handlers, type PageProps } from "$fresh/server.ts";
 import { defineRoute } from "$fresh/src/server/defines.ts";
+import { accepts } from "@std/http/negotiation";
+import { getCursor } from "@/pkg/main/library/data/cursors.ts";
+import { InvalidContentTypeError } from "@/pkg/main/library/http/invalid-content-type.ts";
 import { type User } from "@/pkg/main/data/user/types.ts";
+import { type EventWithStats } from "@/pkg/main/data/event/types.ts";
+import { eventRepository } from "@/pkg/main/data/event/repository.ts";
 import { type State } from "@/pkg/main/plugins/session.ts";
 import { Head } from "@/pkg/main/routes/(common)/(_components)/head.tsx";
-import { EventsList } from "@/pkg/main/routes/(common)/(_islands)/event-list.tsx";
+import { EventsList } from "./(common)/(_components)/event-list.tsx";
+
+type HandlerResult = {
+  events: Awaited<ReturnType<typeof eventRepository.findAllWithStats>>
+};
+
+const EVENTS_PAGE_SIZE = 10;
+
+export const handler: Handlers<HandlerResult, State> = {
+  async GET(req, ctx) {
+    const mediaTypes = accepts(req);
+
+    const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000);
+
+    const eventsCursor = getCursor(req.url, EVENTS_PAGE_SIZE);
+    const events = await eventRepository.findAllWithStats(
+      eventsCursor,
+      twoHoursAgo,
+      ctx.state.sessionUser?.id ?? null,
+    );
+
+    const result = {
+      events,
+    };
+
+    if (mediaTypes.includes("application/json")) {
+      return Response.json(result);
+    }
+
+    if (mediaTypes.includes("text/html")) {
+      return ctx.render(result);
+    }
+
+    throw new InvalidContentTypeError(["application/json", "text/html"]);
+  },
+};
+
 
 interface WelcomeStripProps {
   /** Currently logged-in user */
@@ -106,41 +148,31 @@ export const Playlists = () => {
 };
 
 interface EventsProps {
-  /** Whether the user is logged-in */
-  isLoggedIn: boolean;
-  /** Whether the user is an editor */
-  isEditor: boolean;
+  items: EventWithStats[];
 }
 
 export const Events = (props: EventsProps) => {
-  const endpoint = "/events/upcoming/";
-
   return (
     <div class="content-area mt-12">
       <h2>Planlı Etkinlik Takvimi</h2>
 
       <EventsList
-        endpoint={endpoint}
-        isLoggedIn={props.isLoggedIn}
-        isEditor={props.isEditor}
+        items={props.items}
       />
     </div>
   );
 };
 
-export default defineRoute<State>((_req, ctx) => {
-  const isLoggedIn = ctx.state.sessionUser !== null;
-  const isEditor = ctx.state.isEditor;
-
+export default function (props: PageProps<HandlerResult, State>) {
   return (
     <>
-      <Head href={ctx.url.href} />
+      <Head href={props.url.href} />
       <main>
-        <WelcomeStrip sessionUser={ctx.state.sessionUser} />
+        <WelcomeStrip sessionUser={props.state.sessionUser} />
 
         <Playlists />
-        <Events isLoggedIn={isLoggedIn} isEditor={isEditor} />
+        <Events items={props.data.events.items} />
       </main>
     </>
   );
-});
+};
