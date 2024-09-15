@@ -3,9 +3,14 @@ import * as httpStatus from "@std/http/status";
 import * as ulid from "@std/ulid";
 import type { Handlers } from "$fresh/server.ts";
 import { questionRepository } from "@/pkg/main/data/question/repository.ts";
-import { ensureMediaTypes, ensureParameterIsSpecified, type State } from "@/pkg/main/plugins/session.ts";
+import {
+  assertLoggedIn,
+  ensureMediaTypes,
+  ensureParameterIsSpecified,
+  type LoggedInState,
+} from "@/pkg/main/plugins/session.ts";
 
-export const handler: Handlers<undefined, State> = {
+export const handler: Handlers<undefined, LoggedInState> = {
   async POST(req, ctx) {
     ensureMediaTypes(req, ["application/json"]);
     const questionId = ensureParameterIsSpecified("questionId", ctx.params.id);

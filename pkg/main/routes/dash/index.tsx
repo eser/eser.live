@@ -1,13 +1,14 @@
 // Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
 import { Partial } from "$fresh/runtime.ts";
 import { defineRoute } from "$fresh/server.ts";
-import type { LoggedInState } from "@/pkg/main/plugins/session.ts";
+import { assertLoggedIn, type LoggedInState } from "@/pkg/main/plugins/session.ts";
 import { Head } from "@/pkg/main/routes/(common)/(_components)/head.tsx";
 import { TabsBar } from "@/pkg/main/routes/(common)/(_components)/tabs-bar.tsx";
 import { UserProfilePicture } from "@/pkg/main/routes/(common)/(_components)/user-profile-picture.tsx";
 
-// this endpoint is executed after ensureLoggedIn middleware has allowed it to pass
 export default defineRoute<LoggedInState>((_req, ctx) => {
+  assertLoggedIn(ctx);
+
   return (
     <>
       <Head title="Hesap" href={ctx.url.href} />

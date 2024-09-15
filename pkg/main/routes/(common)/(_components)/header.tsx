@@ -9,16 +9,6 @@ import IconBrandYouTube from "tabler_icons_tsx/brand-youtube-filled.tsx";
 // import IconMenu from "tabler_icons_tsx/menu-2.tsx";
 // import IconX from "tabler_icons_tsx/x.tsx";
 
-export interface HeaderProps {
-  /** Currently logged-in user */
-  sessionUser: User | null;
-  /**
-   * URL of the current page. This is used for highlighting the currently
-   * active page in navigation.
-   */
-  url: URL;
-}
-
 const MenuItems = () => {
   return (
     <>
@@ -75,6 +65,16 @@ const MenuItems = () => {
       }
     </>
   );
+};
+
+export type HeaderProps = {
+  /** Currently logged-in user */
+  sessionUser: User | null;
+  /**
+   * URL of the current page. This is used for highlighting the currently
+   * active page in navigation.
+   */
+  url: URL;
 };
 
 export const Header = (props: HeaderProps) => {

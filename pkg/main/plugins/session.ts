@@ -77,7 +77,7 @@ export const ensureParameterIsSpecified = (name: string, value: string | undefin
 };
 
 const setSessionState = async (req: Request, ctx: FreshContext<State>) => {
-  if (ctx.destination !== "route") {
+  if (ctx.destination === "static") { // if (ctx.destination !== "route") {
     return await ctx.next();
   }
 
@@ -110,12 +110,6 @@ const ensureLoggedIn = async (_req: Request, ctx: FreshContext<State>) => {
   return await ctx.next();
 };
 
-const ensureIsEditor = async (_req: Request, ctx: FreshContext<State>) => {
-  assertIsEditor(ctx);
-
-  return await ctx.next();
-};
-
 /**
  * Adds middleware to the defined routes that ensures the client is logged-in
  * before proceeding. The {@linkcode ensureLoggedIn} middleware throws an error
@@ -138,28 +132,8 @@ export const sessionPlugin: Plugin<State> = {
       middleware: { handler: setSessionState },
     },
     {
-      path: "/dash",
+      path: "/dash/",
       middleware: { handler: ensureLoggedIn },
-    },
-    {
-      path: "/api/me",
-      middleware: { handler: ensureLoggedIn },
-    },
-    {
-      path: "/api/me/question-votes",
-      middleware: { handler: ensureLoggedIn },
-    },
-    {
-      path: "/api/me/questions",
-      middleware: { handler: ensureLoggedIn },
-    },
-    {
-      path: "/qa/vote",
-      middleware: { handler: ensureLoggedIn },
-    },
-    {
-      path: "/qa/hide",
-      middleware: { handler: ensureIsEditor },
     },
   ],
 };

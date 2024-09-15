@@ -19,8 +19,10 @@ const ROOT = new URL("../../", import.meta.url);
 const CHECK = Deno.args.includes("--check");
 const BASE_YEAR = "2023";
 // const CURRENT_YEAR = new Date().getFullYear();
-const RX_COPYRIGHT = /\/\/ Copyright ([0-9]{4})-present Eser Ozvataf and other contributors\. All rights reserved\. Apache-2.0 license\.\n/;
-const COPYRIGHT = `// Copyright ${BASE_YEAR}-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.`;
+const RX_COPYRIGHT =
+  /\/\/ Copyright ([0-9]{4})-present Eser Ozvataf and other contributors\. All rights reserved\. Apache-2.0 license\.\n/;
+const COPYRIGHT =
+  `// Copyright ${BASE_YEAR}-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.`;
 
 let failed = false;
 

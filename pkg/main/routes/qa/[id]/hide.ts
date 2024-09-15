@@ -6,10 +6,10 @@ import {
   assertIsEditor,
   ensureMediaTypes,
   ensureParameterIsSpecified,
-  type State,
+  type LoggedInState,
 } from "@/pkg/main/plugins/session.ts";
 
-export const handler: Handlers<undefined, State> = {
+export const handler: Handlers<undefined, LoggedInState> = {
   async POST(req, ctx) {
     ensureMediaTypes(req, ["application/json"]);
     const questionId = ensureParameterIsSpecified("questionId", ctx.params.id);
