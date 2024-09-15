@@ -52,12 +52,12 @@ export class QuestionRepository {
       ? eq(questionVoteSchema.userId, userId)
       : and(gt(questionVoteSchema.id, cursor.offset), eq(questionVoteSchema.userId, userId));
 
-    const query = await db.query.questionSchema.findMany({
+    const query = await db.query.questionVoteSchema.findMany({
       where: filterConditions,
       limit: cursor.pageSize,
     });
 
-    const result: Question[] = await query;
+    const result: QuestionVote[] = await query;
 
     const nextCursor = result.length === cursor.pageSize ? result[result.length - 1].id ?? null : null;
 

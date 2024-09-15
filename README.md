@@ -138,7 +138,7 @@ git rev-parse HEAD
 
 ## REST API Reference
 
-### `GET /api/questions`
+### `GET /qa/`
 
 Get all questions in chronological order. Add `?cursor=<cursor>` URL parameter for pagination. Limited to 10 questions
 per page.
@@ -146,7 +146,7 @@ per page.
 Example 1:
 
 ```jsonc
-// https://eser.live/api/questions
+// https://eser.live/qa/
 {
   "items": [
     // 9 more items...
@@ -165,7 +165,7 @@ Example 1:
 Example 2 (using `cursor` field from page 1):
 
 ```jsonc
-// https://eser.live/api/questions?cursor=01HRRK8DNTDEX83265MX9G2MHD
+// https://eser.live/qa/?cursor=01HRRK8DNTDEX83265MX9G2MHD
 {
   "items": [
     // 7 more items...
@@ -191,7 +191,7 @@ Example:
 }
 ```
 
-### `GET /api/users`
+### `GET /users/`
 
 Get all users in alphabetical order by GitHub login. Add `?cursor=<cursor>` URL parameter for pagination. Limited to 10
 users per page.
@@ -199,7 +199,7 @@ users per page.
 Example:
 
 ```jsonc
-// https://eser.live/api/users
+// https://eser.live/users/
 {
   "items": [
     {
@@ -211,14 +211,14 @@ Example:
 }
 ```
 
-### `GET /api/users/:login`
+### `GET /users/:login/`
 
 Get the user with the given GitHub login.
 
 Example:
 
 ```jsonc
-// https://eser.live/api/users/eser
+// https://eser.live/users/eser/
 {
   "login": "eser",
   "sessionId": "1b10cfe8-25c4-4d77-b999-0602fa1760cc"

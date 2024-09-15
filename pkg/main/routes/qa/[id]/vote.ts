@@ -6,14 +6,14 @@ import { questionRepository } from "@/pkg/main/data/question/repository.ts";
 import {
   assertLoggedIn,
   ensureMediaTypes,
-  ensureParameterIsSpecified,
+  ensurePathParameter,
   type LoggedInState,
 } from "@/pkg/main/plugins/session.ts";
 
 export const handler: Handlers<undefined, LoggedInState> = {
   async POST(req, ctx) {
     ensureMediaTypes(req, ["application/json"]);
-    const questionId = ensureParameterIsSpecified("questionId", ctx.params.id);
+    const questionId = ensurePathParameter("questionId", ctx.params.id);
     assertLoggedIn(ctx);
 
     await questionRepository.upsertVote({

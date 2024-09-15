@@ -10,6 +10,8 @@ import { HideLink } from "../(_islands)/listitem-hide.tsx";
 
 export type QuestionListItemProps = {
   question: QuestionWithScores;
+  isLoggedIn: boolean;
+  isEditor: boolean;
 };
 
 export function QuestionListItem(props: QuestionListItemProps) {

@@ -15,11 +15,11 @@ export const VoteButton = (props: VoteButtonProps) => {
       return;
     }
 
-    const resp = await fetch(`/qa/${props.question.id}/vote`, {
+    const resp = await fetch(`/qa/${props.question.id}/vote/`, {
       method: "POST",
       credentials: "include",
       headers: {
-        "content-type": "application/json; charset=utf-8",
+        accept: "application/json",
       },
     });
 
@@ -41,7 +41,7 @@ export const VoteButton = (props: VoteButtonProps) => {
 
   if (props.isVotedSig.value) {
     return (
-      <button title="vote up" class="border-0 btn btn-sm btn-primary">
+      <button title="vote up" class="border-0 btn btn-sm btn-accent">
         ▲
       </button>
     );

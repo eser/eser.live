@@ -338,12 +338,12 @@
 //   assertXml(resp);
 // });
 
-// Deno.test("[e2e] GET /api/questions", async () => {
+// Deno.test("[e2e] GET /qa/", async () => {
 //   const question1 = randomQuestion();
 //   const question2 = randomQuestion();
 //   await createQuestion(question1);
 //   await createQuestion(question2);
-//   const req = new Request("http://localhost/api/questions");
+//   const req = new Request("http://localhost/qa/");
 //   const resp = await handler(req);
 //   const { items } = await resp.json();
 
@@ -353,12 +353,12 @@
 // });
 
 // Deno.test("[e2e] POST /qa/ask", async (test) => {
-//   const url = "http://localhost/qa/ask";
+//   const url = "http://localhost/qa/ask/";
 
 //   const user = randomUser();
 //   await createUser(user);
 
-//   await test.step("redirects to `/qa/ask?error` if question is missing", async () => {
+//   await test.step("redirects to `/qa/ask/?error` if question is missing", async () => {
 //     const body = new FormData();
 //     const resp = await handler(
 //       new Request(url, {
@@ -368,10 +368,10 @@
 //       }),
 //     );
 
-//     assertRedirect(resp, "/qa/ask?error");
+//     assertRedirect(resp, "/qa/ask/?error");
 //   });
 
-//   await test.step("redirects to `/qa/ask?error` if question is missing input", async () => {
+//   await test.step("redirects to `/qa/ask/?error` if question is missing input", async () => {
 //     const body = new FormData();
 //     body.set("question", "");
 
@@ -383,7 +383,7 @@
 //       }),
 //     );
 
-//     assertRedirect(resp, "/qa/ask?error");
+//     assertRedirect(resp, "/qa/ask/?error");
 //   });
 
 //   await test.step("creates an question and redirects to the home page", async () => {
@@ -426,13 +426,13 @@
 //   });
 // });
 
-// Deno.test("[e2e] GET /api/users", async () => {
+// Deno.test("[e2e] GET /users/", async () => {
 //   const user1 = randomUser();
 //   const user2 = randomUser();
 //   await createUser(user1);
 //   await createUser(user2);
 
-//   const req = new Request("http://localhost/api/users");
+//   const req = new Request("http://localhost/users/");
 //   const resp = await handler(req);
 
 //   const { items } = await resp.json();
@@ -442,9 +442,9 @@
 //   assert.assertArrayIncludes(items, [user1, user2]);
 // });
 
-// Deno.test("[e2e] GET /api/users/[login]", async (test) => {
+// Deno.test("[e2e] GET /users/[login]/", async (test) => {
 //   const user = randomUser();
-//   const req = new Request("http://localhost/api/users/" + user.login);
+//   const req = new Request("http://localhost/users/" + user.login);
 
 //   await test.step("serves not found response if user not found", async () => {
 //     const resp = await handler(req);
@@ -464,13 +464,13 @@
 //   });
 // });
 
-// Deno.test("[e2e] GET /api/users/[login]/questions", async (test) => {
+// Deno.test("[e2e] GET /users/[login]/questions/", async (test) => {
 //   const user = randomUser();
 //   const question: Question = {
 //     ...randomQuestion(),
 //     userLogin: user.login,
 //   };
-//   const req = new Request(`http://localhost/api/users/${user.login}/questions`);
+//   const req = new Request(`http://localhost/users/${user.login}/questions/`);
 
 //   await test.step("serves not found response if user not found", async () => {
 //     const resp = await handler(req);
@@ -492,12 +492,12 @@
 //   });
 // });
 
-// Deno.test("[e2e] POST /qa/[id]/vote", async (test) => {
+// Deno.test("[e2e] POST /qa/[id]/vote/", async (test) => {
 //   const question = randomQuestion();
 //   const user = randomUser();
 //   await createQuestion(question);
 //   await createUser(user);
-//   const url = `http://localhost/qa/${question.id}/vote`;
+//   const url = `http://localhost/qa/${question.id}/vote/`;
 
 //   await test.step("serves unauthorized response if the session user is not logged in", async () => {
 //     const resp = await handler(new Request(url, { method: "POST" }));
@@ -509,7 +509,7 @@
 
 //   await test.step("serves not found response if the question is not found", async () => {
 //     const resp = await handler(
-//       new Request("http://localhost/qa/bob-ross/vote", {
+//       new Request("http://localhost/qa/bob-ross/vote/", {
 //         method: "POST",
 //         headers: { cookie: "site-session=" + user.sessionId },
 //       }),
@@ -535,7 +535,7 @@
 
 //   await test.step("serves an error response if the `questionId` URL parameter is missing", async () => {
 //     const resp = await handler(
-//       new Request("http://localhost/qa/-/vote", {
+//       new Request("http://localhost/qa/-/vote/", {
 //         method: "POST",
 //         headers: { cookie: "site-session=" + user.sessionId },
 //       }),
@@ -549,13 +549,13 @@
 //   });
 // });
 
-// Deno.test("[e2e] GET /dash", async (test) => {
-//   const url = "http://localhost/dash";
+// Deno.test("[e2e] GET /dash/", async (test) => {
+//   const url = "http://localhost/dash/";
 
 //   await test.step("redirects to sign-in page if the session user is not logged in", async () => {
 //     const resp = await handler(new Request(url));
 
-//     assertRedirect(resp, "/auth/login");
+//     assertRedirect(resp, "/auth/login/");
 //   });
 
 //   await test.step("serves a web page for logged-in user", async () => {
@@ -573,7 +573,7 @@
 //   });
 // });
 
-// Deno.test("[e2e] GET /api/me/question-votes", async () => {
+// Deno.test("[e2e] GET /qa/user-votes/", async () => {
 //   const user = randomUser();
 //   await createUser(user);
 //   const question1 = randomQuestion();
@@ -589,7 +589,7 @@
 //     questionId: question2.id,
 //   });
 //   const resp = await handler(
-//     new Request("http://localhost/api/me/question-votes", {
+//     new Request("http://localhost/qa/user-votes/", {
 //       headers: { cookie: "site-session=" + user.sessionId },
 //     }),
 //   );

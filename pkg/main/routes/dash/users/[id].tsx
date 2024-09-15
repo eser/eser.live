@@ -2,7 +2,7 @@
 import { defineRoute } from "$fresh/server.ts";
 import { userRepository } from "@/pkg/main/data/user/repository.ts";
 import type { User } from "@/pkg/main/data/user/types.ts";
-import { ensureParameterIsSpecified, type State } from "@/pkg/main/plugins/session.ts";
+import { ensurePathParameter, type State } from "@/pkg/main/plugins/session.ts";
 import { Head } from "@/pkg/main/routes/(common)/(_components)/head.tsx";
 import { UserProfilePicture } from "@/pkg/main/routes/(common)/(_components)/user-profile-picture.tsx";
 // import { QuestionsList } from "@/pkg/main/routes/(common)/(_islands)/questions-list.tsx";
@@ -33,7 +33,7 @@ const UserProfile = (props: UserProfileProps) => {
 };
 
 export default defineRoute<State>(async (_req, ctx) => {
-  const userId = ensureParameterIsSpecified("userId", ctx.params.id);
+  const userId = ensurePathParameter("userId", ctx.params.id);
   const user = await userRepository.findById(userId);
 
   if (user === null) {
@@ -42,13 +42,13 @@ export default defineRoute<State>(async (_req, ctx) => {
 
   const isLoggedIn = ctx.state.sessionUser !== null;
   // const isEditor = ctx.state.isEditor;
-  const endpoint = `/api/users/${userId}/questions`;
+  // const endpoint = `/qa/?user=${userId}`;
 
   return (
     <>
       <Head title={`Kullanıcı: ${user!.name}`} href={ctx.url.href}>
-        <link as="fetch" crossOrigin="anonymous" href={endpoint} rel="preload" />
-        {isLoggedIn && <link as="fetch" crossOrigin="anonymous" href="/api/me/question-votes" rel="preload" />}
+        {/* <link as="fetch" crossOrigin="anonymous" href={endpoint} rel="preload" /> */}
+        {isLoggedIn && <link as="fetch" crossOrigin="anonymous" href="/qa/user-votes" rel="preload" />}
       </Head>
       <main>
         <div class="content-area">

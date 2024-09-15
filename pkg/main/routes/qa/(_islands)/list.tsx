@@ -18,7 +18,7 @@ export function QuestionList<TItem, TCursor>(props: QuestionListProps<TItem, TCu
   // );
 
   // useEffect(() => {
-  //   fetchVotedQuestions() //   const url = "/api/me/question-votes";
+  //   fetchVotedQuestions() //   const url = "/qa/user-votes";
   //     .then((votedQuestions) => {
   //       votedQuestionsIdsSig.value = votedQuestions.items.map(({ id }) => id);
   //     });
@@ -33,7 +33,6 @@ export function QuestionList<TItem, TCursor>(props: QuestionListProps<TItem, TCu
         <QuestionListItem
           key={item.id}
           question={item}
-          isVoted={false}
           isLoggedIn={props.isLoggedIn}
           isEditor={props.isEditor}
         />

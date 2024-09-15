@@ -7,20 +7,16 @@ import { TabsBar } from "@/pkg/main/routes/(common)/(_components)/tabs-bar.tsx";
 // import { UsersTable } from "@/pkg/main/routes/(common)/(_islands)/users-table.tsx";
 
 export default defineRoute<State>((_req, ctx) => {
-  const endpoint = "/api/users";
-
   return (
     <>
-      <Head title="Kullanıcılar" href={ctx.url.href}>
-        <link as="fetch" crossOrigin="anonymous" href={endpoint} rel="preload" />
-      </Head>
+      <Head title="Kullanıcılar" href={ctx.url.href} />
       <main>
         <div class="content-area">
           <h1>Panel</h1>
           <TabsBar
             links={[
               {
-                path: "/dash",
+                path: "/dash/",
                 innerText: "Hesabım",
                 isVisible: true,
               },

@@ -3,13 +3,13 @@ import type { Handlers } from "$fresh/server.ts";
 import { questionRepository } from "@/pkg/main/data/question/repository.ts";
 import { userRepository } from "@/pkg/main/data/user/repository.ts";
 import { getCursor } from "@/pkg/main/library/data/cursors.ts";
-import { ensureParameterIsSpecified, type State } from "@/pkg/main/plugins/session.ts";
+import { ensurePathParameter, type State } from "@/pkg/main/plugins/session.ts";
 
 const PAGE_SIZE = 10;
 
 export const handler: Handlers<undefined, State> = {
   async GET(req, ctx) {
-    const userId = ensureParameterIsSpecified("userId", ctx.params.id);
+    const userId = ensurePathParameter("userId", ctx.params.id);
     const user = await userRepository.findById(userId);
 
     if (user === null) {

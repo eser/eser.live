@@ -6,12 +6,6 @@ import * as $_404 from "./routes/_404.tsx";
 import * as $_500 from "./routes/_500.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $_layout from "./routes/_layout.tsx";
-import * as $api_me_index from "./routes/api/me/index.ts";
-import * as $api_me_question_votes from "./routes/api/me/question-votes.ts";
-import * as $api_me_questions from "./routes/api/me/questions.ts";
-import * as $api_users_id_index from "./routes/api/users/[id]/index.ts";
-import * as $api_users_id_questions from "./routes/api/users/[id]/questions.ts";
-import * as $api_users_index from "./routes/api/users/index.ts";
 import * as $community_index from "./routes/community/index.tsx";
 import * as $cookbook_index from "./routes/cookbook/index.tsx";
 import * as $dash_index from "./routes/dash/index.tsx";
@@ -27,10 +21,15 @@ import * as $qa_id_index from "./routes/qa/[id]/index.ts";
 import * as $qa_id_vote from "./routes/qa/[id]/vote.ts";
 import * as $qa_ask from "./routes/qa/ask.tsx";
 import * as $qa_index from "./routes/qa/index.tsx";
+import * as $qa_user_votes from "./routes/qa/user-votes.ts";
 import * as $setup_index from "./routes/setup/index.tsx";
 import * as $stories_slug_ from "./routes/stories/[slug].tsx";
 import * as $stories_feed from "./routes/stories/feed.ts";
 import * as $stories_index from "./routes/stories/index.tsx";
+import * as $users_id_index from "./routes/users/[id]/index.ts";
+import * as $users_id_questions from "./routes/users/[id]/questions.ts";
+import * as $users_index from "./routes/users/index.ts";
+import * as $users_me from "./routes/users/me.ts";
 import * as $videos_index from "./routes/videos/index.tsx";
 import * as $_common_islands_infinite_scroller_list from "./routes/(common)/(_islands)/infinite-scroller-list.tsx";
 import * as $_common_islands_share from "./routes/(common)/(_islands)/share.tsx";
@@ -49,12 +48,6 @@ const manifest = {
     "./routes/_500.tsx": $_500,
     "./routes/_app.tsx": $_app,
     "./routes/_layout.tsx": $_layout,
-    "./routes/api/me/index.ts": $api_me_index,
-    "./routes/api/me/question-votes.ts": $api_me_question_votes,
-    "./routes/api/me/questions.ts": $api_me_questions,
-    "./routes/api/users/[id]/index.ts": $api_users_id_index,
-    "./routes/api/users/[id]/questions.ts": $api_users_id_questions,
-    "./routes/api/users/index.ts": $api_users_index,
     "./routes/community/index.tsx": $community_index,
     "./routes/cookbook/index.tsx": $cookbook_index,
     "./routes/dash/index.tsx": $dash_index,
@@ -70,10 +63,15 @@ const manifest = {
     "./routes/qa/[id]/vote.ts": $qa_id_vote,
     "./routes/qa/ask.tsx": $qa_ask,
     "./routes/qa/index.tsx": $qa_index,
+    "./routes/qa/user-votes.ts": $qa_user_votes,
     "./routes/setup/index.tsx": $setup_index,
     "./routes/stories/[slug].tsx": $stories_slug_,
     "./routes/stories/feed.ts": $stories_feed,
     "./routes/stories/index.tsx": $stories_index,
+    "./routes/users/[id]/index.ts": $users_id_index,
+    "./routes/users/[id]/questions.ts": $users_id_questions,
+    "./routes/users/index.ts": $users_index,
+    "./routes/users/me.ts": $users_me,
     "./routes/videos/index.tsx": $videos_index,
   },
   islands: {

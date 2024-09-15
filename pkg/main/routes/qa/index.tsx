@@ -3,7 +3,7 @@ import type { Handlers, PageProps } from "$fresh/server.ts";
 import IconMessageCircleQuestion from "tabler_icons_tsx/message-circle-question.tsx";
 import { questionRepository } from "@/pkg/main/data/question/repository.ts";
 import { getCursor } from "@/pkg/main/library/data/cursors.ts";
-import { ensureMediaTypes, type State } from "@/pkg/main/plugins/session.ts";
+import { ensureMediaTypes, getQueryParameter, type State } from "@/pkg/main/plugins/session.ts";
 import { Head } from "@/pkg/main/routes/(common)/(_components)/head.tsx";
 import { QuestionList } from "./(_islands)/list.tsx";
 
@@ -27,8 +27,12 @@ export const handler: Handlers<HandlerResult, State> = {
   async GET(req, ctx) {
     const mediaTypes = ensureMediaTypes(req, ["application/json", "text/html"]);
 
+    const userId = getQueryParameter(req, "user");
+
     const cursor = getCursor(req.url, PAGE_SIZE);
-    const questions = await questionRepository.findAllWithScores(cursor, ctx.state.sessionUser?.id ?? null);
+    const questions = (userId === null)
+      ? await questionRepository.findAllWithScores(cursor, ctx.state.sessionUser?.id ?? null)
+      : await questionRepository.findAllByUserIdWithScores(cursor, userId, ctx.state.sessionUser?.id ?? null);
 
     questions.items.forEach((x) => anonymize(x));
 

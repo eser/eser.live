@@ -68,7 +68,24 @@ export const ensureMediaTypes = (req: Request, acceptableMediaTypes: string[]) =
   return result;
 };
 
-export const ensureParameterIsSpecified = (name: string, value: string | undefined) => {
+export const ensurePathParameter = (name: string, value: string | undefined) => {
+  if (value === undefined || value === null) {
+    throw new BadRequestError(`"${name}" parameter must be specified`);
+  }
+
+  return value;
+};
+
+export const getQueryParameter = (req: Request, name: string) => {
+  const url = new URL(req.url);
+  const value = url.searchParams.get(name);
+
+  return value;
+};
+
+export const ensureQueryParameter = (req: Request, name: string) => {
+  const value = getQueryParameter(req, name);
+
   if (value === undefined || value === null) {
     throw new BadRequestError(`"${name}" parameter must be specified`);
   }
