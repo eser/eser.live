@@ -1,8 +1,8 @@
 // Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
 import { Head as HeadFresh } from "$fresh/runtime.ts";
-import Meta, { type MetaProps } from "./meta.tsx";
 import { SITE_DESCRIPTION, SITE_NAME } from "@/pkg/main/constants.ts";
-import { type ComponentChildren } from "preact";
+import type { ComponentChildren } from "preact";
+import Meta, { type MetaProps } from "./meta.tsx";
 
 export type HeadProps =
   & Partial<Omit<MetaProps, "href">>

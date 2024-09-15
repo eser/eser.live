@@ -15,7 +15,7 @@
  * const time = readingTime(content); // Returns the estimated reading time in seconds
  * ```
  */
-export const readingTime = (content: string, wordsPerSecond: number = 3.33) => {
+export const readingTime = (content: string, wordsPerSecond = 3.33) => {
   const wordCount = content.trim().split(/\s+/).length;
   const readingTimeSeconds = Math.ceil(wordCount / wordsPerSecond);
 

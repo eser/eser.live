@@ -17,8 +17,7 @@ export const profileSchema = pgTable(
     showStories: boolean("show_stories").default(false).notNull(),
     showMembers: boolean("show_projects").default(false).notNull(),
 
-    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow()
-      .notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
     updatedAt: timestamp("updated_at", { withTimezone: true }),
     deletedAt: timestamp("deleted_at", { withTimezone: true }),
   },

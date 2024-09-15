@@ -1,42 +1,87 @@
 // Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
-import { defineRoute } from "$fresh/server.ts";
-import { type State } from "@/pkg/main/plugins/session.ts";
+import type { Handlers, PageProps } from "$fresh/server.ts";
+import { accepts } from "@std/http/negotiation";
+import IconMessageCircleQuestion from "tabler_icons_tsx/message-circle-question.tsx";
+import { questionRepository } from "@/pkg/main/data/question/repository.ts";
+import { getCursor } from "@/pkg/main/library/data/cursors.ts";
+import { InvalidContentTypeError } from "@/pkg/main/library/http/invalid-content-type.ts";
+import type { State } from "@/pkg/main/plugins/session.ts";
 import { Head } from "@/pkg/main/routes/(common)/(_components)/head.tsx";
-import { QuestionsList } from "@/pkg/main/routes/(common)/(_islands)/questions-list.tsx";
+import { QuestionList } from "./(_islands)/list.tsx";
 
-export default defineRoute<State>((_req, ctx) => {
-  const isLoggedIn = ctx.state.sessionUser !== null;
-  const isEditor = ctx.state.isEditor;
-  const endpoint = "/api/questions";
+type HandlerResult = {
+  payload: Awaited<ReturnType<typeof questionRepository.findAllWithScores>>;
+};
+
+type QuestionItem = HandlerResult["payload"]["items"][number];
+
+const PAGE_SIZE = 10;
+
+const anonymize = (question: QuestionItem) => {
+  if (question.isAnonymous) {
+    return { ...question, user: null };
+  }
+
+  return question;
+};
+
+export const handler: Handlers<HandlerResult, State> = {
+  async GET(req, ctx) {
+    const mediaTypes = accepts(req);
+
+    const cursor = getCursor(req.url, PAGE_SIZE);
+    const questions = await questionRepository.findAllWithScores(cursor, ctx.state.sessionUser?.id ?? null);
+
+    questions.items.forEach((x) => anonymize(x));
+
+    const result: HandlerResult = {
+      payload: questions,
+    };
+
+    if (mediaTypes.includes("application/json")) {
+      return Response.json(result.payload);
+    }
+
+    if (mediaTypes.includes("text/html")) {
+      return ctx.render(result);
+    }
+
+    throw new InvalidContentTypeError(["application/json", "text/html"]);
+  },
+};
+
+const AskQuestionButton = () => {
+  return (
+    <div class="my-10 flex flex-row gap-6 justify-center">
+      <a href="/qa/ask" class="btn btn-wide btn-primary">
+        <IconMessageCircleQuestion class="h-6 w-6" />
+        Soru sor &#8250;
+      </a>
+    </div>
+  );
+};
+
+export default function (props: PageProps<HandlerResult, State>) {
+  const isLoggedIn = props.state.sessionUser !== null;
+  const isEditor = props.state.isEditor;
 
   return (
     <>
-      <Head title="Soru / Yanıt" href={ctx.url.href}>
-        <link
-          as="fetch"
-          crossOrigin="anonymous"
-          href={endpoint}
-          rel="preload"
-        />
-        {isLoggedIn && (
-          <link
-            as="fetch"
-            crossOrigin="anonymous"
-            href="/api/me/question-votes"
-            rel="preload"
-          />
-        )}
-      </Head>
+      <Head title="Soru / Yanıt" href={props.url.href} />
       <main>
         <div class="content-area">
           <h1>Soru / Yanıt</h1>
-          <QuestionsList
-            endpoint={endpoint}
+          <QuestionList
+            initialItems={props.data.payload.items}
+            initialNextCursor={props.data.payload.nextCursor}
+            baseUri={props.url.href}
             isLoggedIn={isLoggedIn}
             isEditor={isEditor}
           />
+
+          <AskQuestionButton />
         </div>
       </main>
     </>
   );
-});
+}

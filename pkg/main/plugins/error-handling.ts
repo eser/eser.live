@@ -1,13 +1,11 @@
 // Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
-import * as httpStatus from "@std/http/status";
-import * as httpNegotiation from "@std/http/negotiation";
-import { type Plugin } from "$fresh/server.ts";
-import { type State } from "@/pkg/main/plugins/session.ts";
-import { redirect } from "@/pkg/main/library/http/redirect.ts";
+import type { Plugin } from "$fresh/server.ts";
 import { HttpError } from "@/pkg/main/library/http/http-error.ts";
-import {
-  UnauthorizedError,
-} from "@/pkg/main/library/http/unauthorized-error.ts";
+import { redirect } from "@/pkg/main/library/http/redirect.ts";
+import { UnauthorizedError } from "@/pkg/main/library/http/unauthorized-error.ts";
+import type { State } from "@/pkg/main/plugins/session.ts";
+import * as httpNegotiation from "@std/http/negotiation";
+import * as httpStatus from "@std/http/status";
 
 /**
  * Returns the HTTP status code corresponding to a given runtime error. By
@@ -35,15 +33,18 @@ export const toErrorStatus = (error: Error) => {
 const jsonResponse = (error: Error) => {
   const status = toErrorStatus(error);
 
-  return Response.json({
-    error: error.message,
-  }, {
-    statusText: httpStatus.STATUS_TEXT[status],
-    status,
-    headers: {
-      "Content-Type": "application/json; charset=utf-8",
+  return Response.json(
+    {
+      error: error.message,
     },
-  });
+    {
+      statusText: httpStatus.STATUS_TEXT[status],
+      status,
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+    },
+  );
 };
 
 const textResponse = (error: Error) => {

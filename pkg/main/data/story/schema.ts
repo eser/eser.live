@@ -23,8 +23,7 @@ export const storySchema = pgTable(
     content: text("content").notNull(),
     publishedAt: timestamp("published_at", { withTimezone: true }),
 
-    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow()
-      .notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
     updatedAt: timestamp("updated_at", { withTimezone: true }),
     deletedAt: timestamp("deleted_at", { withTimezone: true }),
   },

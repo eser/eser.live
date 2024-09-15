@@ -1,0 +1,5 @@
+if all members of a type definition are methods, use types instead of interfaces.
+
+use signals for reactive data.
+
+in functional components, don't destructure props in the parameter list. always use props object and never destructure it in the body of the function.

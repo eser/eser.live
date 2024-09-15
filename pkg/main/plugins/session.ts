@@ -1,7 +1,7 @@
 // Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
-import { type FreshContext, Plugin } from "$fresh/server.ts";
-import { type User } from "@/pkg/main/data/user/types.ts";
+import type { FreshContext, Plugin } from "$fresh/server.ts";
 import { sessionRepository } from "@/pkg/main/data/session/repository.ts";
+import type { User } from "@/pkg/main/data/user/types.ts";
 import { UnauthorizedError } from "@/pkg/main/library/http/unauthorized-error.ts";
 import { oauthClient } from "./oauth.ts";
 
@@ -37,30 +37,23 @@ export const getEnv = (key: string, defaultValue?: string): string => {
   return value;
 };
 
-export const assertLoggedIn: (
-  ctx: { state: State },
-) => asserts ctx is { state: State & { sessionUser: User } } = (
-  ctx: { state: State },
-) => {
+export const assertLoggedIn: (ctx: { state: State }) => asserts ctx is {
+  state: State & { sessionUser: User };
+} = (ctx: { state: State }) => {
   if (ctx.state.sessionUser === null) {
     throw new UnauthorizedError("User must be logged in");
   }
 };
 
-export const assertIsEditor: (
-  ctx: { state: State },
-) => asserts ctx is { state: State & { isEditor: true } } = (
-  ctx: { state: State },
-) => {
+export const assertIsEditor: (ctx: { state: State }) => asserts ctx is {
+  state: State & { isEditor: true };
+} = (ctx: { state: State }) => {
   if (ctx.state.isEditor !== true) {
     throw new UnauthorizedError("User must be an editor");
   }
 };
 
-const setSessionState = async (
-  req: Request,
-  ctx: FreshContext<State>,
-) => {
+const setSessionState = async (req: Request, ctx: FreshContext<State>) => {
   if (ctx.destination !== "route") {
     return await ctx.next();
   }
@@ -88,19 +81,13 @@ const setSessionState = async (
   return await ctx.next();
 };
 
-const ensureLoggedIn = async (
-  _req: Request,
-  ctx: FreshContext<State>,
-) => {
+const ensureLoggedIn = async (_req: Request, ctx: FreshContext<State>) => {
   assertLoggedIn(ctx);
 
   return await ctx.next();
 };
 
-const ensureIsEditor = async (
-  _req: Request,
-  ctx: FreshContext<State>,
-) => {
+const ensureIsEditor = async (_req: Request, ctx: FreshContext<State>) => {
   assertIsEditor(ctx);
 
   return await ctx.next();

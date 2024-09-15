@@ -4,16 +4,13 @@ import { questionSchema } from "../question/schema.ts";
 import { userSchema } from "../user/schema.ts";
 import { questionVoteSchema } from "./schema.ts";
 
-export const questionVoteRelations = relations(
-  questionVoteSchema,
-  ({ one }) => ({
-    question: one(questionSchema, {
-      fields: [questionVoteSchema.questionId],
-      references: [questionSchema.id],
-    }),
-    user: one(userSchema, {
-      fields: [questionVoteSchema.userId],
-      references: [userSchema.id],
-    }),
+export const questionVoteRelations = relations(questionVoteSchema, ({ one }) => ({
+  question: one(questionSchema, {
+    fields: [questionVoteSchema.questionId],
+    references: [questionSchema.id],
   }),
-);
+  user: one(userSchema, {
+    fields: [questionVoteSchema.userId],
+    references: [userSchema.id],
+  }),
+}));

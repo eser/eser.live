@@ -1,15 +1,11 @@
 // Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
+import { isHttps } from "@/pkg/main/library/http/is-http.ts";
+import { redirect } from "@/pkg/main/library/http/redirect.ts";
 import * as datetimeConstants from "@std/datetime/constants";
 import * as httpCookie from "@std/http/cookie";
 import * as httpStatus from "@std/http/status";
 import * as ulid from "@std/ulid";
-import {
-  OAuth2Client,
-  type OAuth2ClientConfig,
-  type Tokens,
-} from "oauth2-client";
-import { isHttps } from "@/pkg/main/library/http/is-http.ts";
-import { redirect } from "@/pkg/main/library/http/redirect.ts";
+import { OAuth2Client, type OAuth2ClientConfig, type Tokens } from "oauth2-client";
 
 export { type Tokens } from "oauth2-client";
 export const SITE_COOKIE_NAME = "site-session";
@@ -45,9 +41,7 @@ export const COOKIE_BASE = {
   // 90 days
   maxAge: 7776000,
   sameSite: "Lax",
-} as Required<
-  Pick<httpCookie.Cookie, "path" | "httpOnly" | "maxAge" | "sameSite">
->;
+} as Required<Pick<httpCookie.Cookie, "path" | "httpOnly" | "maxAge" | "sameSite">>;
 
 export const getSuccessUri = (request: Request): string => {
   const url = new URL(request.url);
@@ -58,7 +52,7 @@ export const getSuccessUri = (request: Request): string => {
   }
 
   const referrer = request.headers.get("referer");
-  if (referrer !== null && (new URL(referrer).origin === url.origin)) {
+  if (referrer !== null && new URL(referrer).origin === url.origin) {
     return referrer;
   }
 
@@ -73,11 +67,7 @@ export type ClientOptions = {
   hooks: {
     getSession: (id: string) => Promise<Session | null>;
     onLoginRequested: (session: Session) => Promise<void>;
-    onLoginCallback: (
-      id: string,
-      expiresAt: Date,
-      tokens: Tokens,
-    ) => Promise<void>;
+    onLoginCallback: (id: string, expiresAt: Date, tokens: Tokens) => Promise<void>;
     onLogout: (id: string) => Promise<void>;
   };
 };
@@ -145,10 +135,7 @@ export class Client {
     this.state = state;
   }
 
-  getSession(
-    request: Request,
-    defaultCookieName?: string,
-  ): { cookieName: string; sessionId: string | null } {
+  getSession(request: Request, defaultCookieName?: string): { cookieName: string; sessionId: string | null } {
     const cookies = httpCookie.getCookies(request.headers);
     const cookieName = defaultCookieName ?? this.state.options.cookie?.name ??
       getCookieName(SITE_COOKIE_NAME, isHttps(request.url));
@@ -161,10 +148,7 @@ export class Client {
     };
   }
 
-  async signIn(
-    request: Request,
-    urlParams?: Record<string, string>,
-  ): Promise<Response> {
+  async signIn(request: Request, urlParams?: Record<string, string>): Promise<Response> {
     const sessionId = ulid.ulid();
     const state = ulid.ulid();
 
@@ -195,9 +179,7 @@ export class Client {
     };
 
     const expiresAt = new Date();
-    expiresAt.setSeconds(
-      expiresAt.getSeconds() + (siteCookie.maxAge! * datetimeConstants.SECOND),
-    );
+    expiresAt.setSeconds(expiresAt.getSeconds() + siteCookie.maxAge! * datetimeConstants.SECOND);
 
     const session: Session = {
       id: sessionId,
@@ -227,8 +209,7 @@ export class Client {
       throw new Error("OAuth cookie not found");
     }
 
-    const session = await this.state.options.hooks
-      .getSession(sessionId);
+    const session = await this.state.options.hooks.getSession(sessionId);
 
     if (session === null) {
       throw new Deno.errors.NotFound("OAuth session not found");
@@ -246,20 +227,11 @@ export class Client {
     };
 
     const expiresAt = new Date();
-    expiresAt.setSeconds(
-      expiresAt.getSeconds() + (siteCookie.maxAge! * datetimeConstants.SECOND),
-    );
+    expiresAt.setSeconds(expiresAt.getSeconds() + siteCookie.maxAge! * datetimeConstants.SECOND);
 
-    await this.state.options.hooks.onLoginCallback(
-      sessionId,
-      expiresAt,
-      tokens,
-    );
+    await this.state.options.hooks.onLoginCallback(sessionId, expiresAt, tokens);
 
-    const response = redirect(
-      session.redirectUri ?? "/",
-      httpStatus.STATUS_CODE.Found,
-    );
+    const response = redirect(session.redirectUri ?? "/", httpStatus.STATUS_CODE.Found);
     httpCookie.setCookie(response.headers, siteCookie);
 
     return response;

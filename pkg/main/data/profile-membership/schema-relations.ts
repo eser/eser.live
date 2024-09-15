@@ -4,16 +4,13 @@ import { profileSchema } from "../profile/schema.ts";
 import { userSchema } from "../user/schema.ts";
 import { profileMembershipSchema } from "./schema.ts";
 
-export const profileMembershipRelations = relations(
-  profileMembershipSchema,
-  ({ one }) => ({
-    profile: one(profileSchema, {
-      fields: [profileMembershipSchema.profileId],
-      references: [profileSchema.id],
-    }),
-    user: one(userSchema, {
-      fields: [profileMembershipSchema.userId],
-      references: [userSchema.id],
-    }),
+export const profileMembershipRelations = relations(profileMembershipSchema, ({ one }) => ({
+  profile: one(profileSchema, {
+    fields: [profileMembershipSchema.profileId],
+    references: [profileSchema.id],
   }),
-);
+  user: one(userSchema, {
+    fields: [profileMembershipSchema.userId],
+    references: [userSchema.id],
+  }),
+}));

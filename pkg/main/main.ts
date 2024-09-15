@@ -13,7 +13,7 @@ if (Array.fromAsync === undefined) {
 import "@std/dotenv/load";
 
 import { start } from "$fresh/server.ts";
-import manifest from "@/pkg/main/fresh.gen.ts";
 import config from "@/pkg/main/fresh.config.ts";
+import manifest from "@/pkg/main/fresh.gen.ts";
 
 await start(manifest, config);

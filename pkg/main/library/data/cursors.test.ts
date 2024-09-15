@@ -3,12 +3,12 @@ import * as assert from "@std/assert";
 import { getCursor } from "./cursors.ts";
 
 Deno.test("[cursors] getCursor()", () => {
-  assert.assertObjectMatch(
-    getCursor("http://example.com", 10),
-    { offset: "", pageSize: 10 },
-  );
-  assert.assertObjectMatch(
-    getCursor("http://example.com?cursor=here", 15),
-    { offset: "here", pageSize: 15 },
-  );
+  assert.assertObjectMatch(getCursor("http://example.com", 10), {
+    offset: "",
+    pageSize: 10,
+  });
+  assert.assertObjectMatch(getCursor("http://example.com?cursor=here", 15), {
+    offset: "here",
+    pageSize: 15,
+  });
 });

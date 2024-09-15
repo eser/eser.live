@@ -2,12 +2,7 @@
 
 export const MadeWithCool = () => {
   return (
-    <svg
-      width="63"
-      height="37"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg width="63" height="37" fill="none" xmlns="http://www.w3.org/2000/svg">
       <title>Made with Cool</title>
       <path
         fill="#D0E94F"

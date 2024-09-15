@@ -1,15 +1,13 @@
 // Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
-import * as ulid from "@std/ulid";
-import { type Plugin } from "$fresh/server.ts";
-import * as oauth from "@/pkg/main/library/oauth/mod.ts";
-import { userRepository } from "@/pkg/main/data/user/repository.ts";
+import type { Plugin } from "$fresh/server.ts";
 import { sessionRepository } from "@/pkg/main/data/session/repository.ts";
-import { type SessionPartial } from "@/pkg/main/data/session/types.ts";
+import type { SessionPartial } from "@/pkg/main/data/session/types.ts";
+import { userRepository } from "@/pkg/main/data/user/repository.ts";
+import * as oauth from "@/pkg/main/library/oauth/mod.ts";
 import * as github from "@/pkg/main/services/github.ts";
+import * as ulid from "@std/ulid";
 
-export const getSession = async (
-  id: string,
-): Promise<oauth.Session | null> => {
+export const getSession = async (id: string): Promise<oauth.Session | null> => {
   const session = await sessionRepository.findById(id);
 
   if (session === null) {
@@ -47,11 +45,7 @@ export const onLoginRequested = async (session: oauth.Session) => {
   await sessionRepository.create(sessionEntity);
 };
 
-export const onLoginCallback = async (
-  id: string,
-  expiresAt: Date,
-  tokens: oauth.Tokens,
-) => {
+export const onLoginCallback = async (id: string, expiresAt: Date, tokens: oauth.Tokens) => {
   const githubUser = await github.getGitHubUser(tokens.accessToken);
   let user = await userRepository.findByGitHubRemoteId(githubUser.id);
 
@@ -85,9 +79,7 @@ export const onLoginCallback = async (
   await sessionRepository.update(id, sessionEntity);
 };
 
-export const onLogout = async (
-  id: string,
-) => {
+export const onLogout = async (id: string) => {
   const sessionEntity: Partial<SessionPartial> = {
     status: "logged_out",
     expiresAt: null,

@@ -39,13 +39,10 @@ export const getGitHubUser = async (accessToken: string) => {
     throw new BadRequestError(message);
   }
 
-  return await resp.json() as Promise<GitHubUser>;
+  return (await resp.json()) as Promise<GitHubUser>;
 };
 
-export const getGitHubUserByLogin = async (
-  accessToken: string,
-  login: string,
-) => {
+export const getGitHubUserByLogin = async (accessToken: string, login: string) => {
   const resp = await fetch(`https://api.github.com/users/${login}`, {
     headers: {
       authorization: `Bearer ${accessToken}`,
@@ -59,5 +56,5 @@ export const getGitHubUserByLogin = async (
     throw new BadRequestError(message);
   }
 
-  return await resp.json() as Promise<GitHubUser>;
+  return (await resp.json()) as Promise<GitHubUser>;
 };

@@ -6,28 +6,17 @@ export const profileMembershipSchema = pgTable(
   {
     id: char("id", { length: 26 }).primaryKey(),
     kind: text("kind", {
-      enum: [
-        "owner",
-        "lead",
-        "maintainer",
-        "contributor",
-        "sponsor",
-        "follower",
-      ],
+      enum: ["owner", "lead", "maintainer", "contributor", "sponsor", "follower"],
     }).notNull(),
 
     profileId: char("profile_id", { length: 26 }).notNull(),
     userId: char("user_id", { length: 26 }).notNull(),
 
-    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow()
-      .notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
     updatedAt: timestamp("updated_at", { withTimezone: true }),
     deletedAt: timestamp("deleted_at", { withTimezone: true }),
   },
   (table) => ({
-    roleUnq: unique().on(
-      table.profileId,
-      table.userId,
-    ),
+    roleUnq: unique().on(table.profileId, table.userId),
   }),
 );

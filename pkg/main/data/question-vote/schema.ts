@@ -11,14 +11,10 @@ export const questionVoteSchema = pgTable(
 
     score: integer("score").notNull(),
 
-    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow()
-      .notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
     // updatedAt: timestamp("updated_at", { withTimezone: true }),
   },
   (table) => ({
-    voteUnq: unique().on(
-      table.questionId,
-      table.userId,
-    ),
+    voteUnq: unique().on(table.questionId, table.userId),
   }),
 );

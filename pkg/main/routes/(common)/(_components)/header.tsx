@@ -3,7 +3,7 @@
 // import {
 //   SITE_NAME,
 // } from "@/pkg/main/constants.ts";
-import { type User } from "@/pkg/main/data/user/types.ts";
+import type { User } from "@/pkg/main/data/user/types.ts";
 // import IconSearch from "tabler_icons_tsx/search.tsx";
 import IconBrandYouTube from "tabler_icons_tsx/brand-youtube-filled.tsx";
 // import IconMenu from "tabler_icons_tsx/menu-2.tsx";
@@ -23,9 +23,7 @@ const MenuItems = () => {
   return (
     <>
       <li>
-        <a href="/">
-          ~/
-        </a>
+        <a href="/">~/</a>
       </li>
       <li>
         <a href="/stories" class="include-ancestors">
@@ -94,22 +92,16 @@ export const Header = (props: HeaderProps) => {
                 viewBox="0 0 24 24"
                 stroke="currentColor"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h8m-8 6h16"
-                />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" />
               </svg>
             </div>
-            <ul
-              tabIndex={0}
-              class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
-            >
+            <ul tabIndex={0} class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
               <MenuItems />
             </ul>
           </div>
-          <a href="/" class="btn btn-ghost title">eser.live</a>
+          <a href="/" class="btn btn-ghost title">
+            eser.live
+          </a>
           <ul class="menu menu-horizontal px-1 m-0 hidden lg:flex">
             <MenuItems />
           </ul>
@@ -151,22 +143,14 @@ export const Header = (props: HeaderProps) => {
             </div>
           </div> */
           }
-          <a
-            href="https://www.youtube.com/@eserlive/live"
-            class="btn btn-error"
-            target="_blank"
-          >
+          <a href="https://www.youtube.com/@eserlive/live" class="btn btn-error" target="_blank" rel="noreferrer">
             <IconBrandYouTube class="h-6 w-6" />
             Canlı Yayın
           </a>
           {props.sessionUser !== null
             ? (
               <div class="dropdown dropdown-end">
-                <div
-                  tabIndex={0}
-                  role="button"
-                  class="btn btn-ghost btn-circle avatar"
-                >
+                <div tabIndex={0} role="button" class="btn btn-ghost btn-circle avatar">
                   <div class="w-10 rounded-full">
                     <img
                       alt={`${props.sessionUser.name} profile picture`}
@@ -191,12 +175,7 @@ export const Header = (props: HeaderProps) => {
               </div>
             )
             : (
-              <a
-                href="/auth/login"
-                tabIndex={0}
-                role="button"
-                class="btn btn-neutral"
-              >
+              <a href="/auth/login" tabIndex={0} role="button" class="btn btn-neutral">
                 GitHub Login
               </a>
             )}

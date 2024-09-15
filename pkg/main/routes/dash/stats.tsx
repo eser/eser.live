@@ -1,25 +1,17 @@
 // Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
-import { Chart } from "./(_islands)/chart.tsx";
+import { Partial } from "$fresh/runtime.ts";
+import { defineRoute } from "$fresh/server.ts";
+import type { State } from "@/pkg/main/plugins/session.ts";
 import { Head } from "@/pkg/main/routes/(common)/(_components)/head.tsx";
 import { TabsBar } from "@/pkg/main/routes/(common)/(_components)/tabs-bar.tsx";
-import { type State } from "@/pkg/main/plugins/session.ts";
-import { defineRoute } from "$fresh/server.ts";
-import { Partial } from "$fresh/runtime.ts";
+import { Chart } from "./(_islands)/chart.tsx";
 
 const randomNumbers = (length: number, ceil: number) => {
   return Array.from({ length }, () => Math.floor(Math.random() * ceil));
 };
 
 export default defineRoute<State>((_req, ctx) => {
-  const labels = [
-    "Pazartesi",
-    "Salı",
-    "Çarşamba",
-    "Perşembe",
-    "Cuma",
-    "Cumartesi",
-    "Pazar",
-  ];
+  const labels = ["Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar"];
   const datasets = [
     {
       label: "Kullanıcı girişleri",
@@ -59,12 +51,12 @@ export default defineRoute<State>((_req, ctx) => {
               {
                 path: "/dash/stats/",
                 innerText: "İstatistikler",
-                isVisible: (ctx.state.isEditor === true),
+                isVisible: ctx.state.isEditor === true,
               },
               {
                 path: "/dash/users/",
                 innerText: "Kullanıcılar",
-                isVisible: (ctx.state.isEditor === true),
+                isVisible: ctx.state.isEditor === true,
               },
             ]}
             currentPath={ctx.url.pathname}

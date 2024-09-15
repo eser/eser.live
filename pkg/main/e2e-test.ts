@@ -405,9 +405,9 @@
 //   });
 // });
 
-// Deno.test("[e2e] GET /api/questions/[id]", async (test) => {
+// Deno.test("[e2e] GET /qa/[id]/", async (test) => {
 //   const question = randomQuestion();
-//   const req = new Request("http://localhost/api/questions/" + question.id);
+//   const req = new Request(`http://localhost/qa/${question.id}/`);
 
 //   await test.step("serves not found response if question not found", async () => {
 //     const resp = await handler(req);

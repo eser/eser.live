@@ -1,6 +1,6 @@
 // Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
-import { migrate } from "drizzle-orm/postgres-js/migrator";
 import { db, postgresClient } from "@/pkg/main/data/db.ts";
+import { migrate } from "drizzle-orm/postgres-js/migrator";
 import config from "../../drizzle.config.ts";
 
 /**

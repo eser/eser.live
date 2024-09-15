@@ -11,8 +11,7 @@ export const eventSeriesSchema = pgTable(
     title: text("title").notNull(),
     description: text("description").notNull(),
 
-    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow()
-      .notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
     updatedAt: timestamp("updated_at", { withTimezone: true }),
     deletedAt: timestamp("deleted_at", { withTimezone: true }),
   },

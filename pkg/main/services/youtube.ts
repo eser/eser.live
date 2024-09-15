@@ -1,3 +1,4 @@
+import type { Cursor } from "@/pkg/main/library/data/cursors.ts";
 import { YOUTUBE_CHANNEL_ID } from "../constants.ts";
 
 const BASE_URL = "https://www.googleapis.com/youtube/v3";
@@ -10,38 +11,33 @@ export interface YouTubeVideo {
   publishedAt: string;
 }
 
-export async function fetchVideos(
-  pageToken?: string,
-): Promise<{ items: YouTubeVideo[]; nextPageToken?: string }> {
+export async function fetchVideos(cursor: Cursor): Promise<{ items: YouTubeVideo[]; nextCursor: string | null }> {
   const params = new URLSearchParams({
     part: "snippet", // Remove 'statistics' from here
     channelId: YOUTUBE_CHANNEL_ID,
-    maxResults: "50",
+    maxResults: cursor.pageSize.toString(),
     key: Deno.env.get("YOUTUBE_API_KEY") ?? "",
     order: "date",
     type: "video",
   });
 
-  if (pageToken) {
-    params.append("pageToken", pageToken);
+  if (cursor !== null) {
+    params.append("pageToken", cursor.offset);
   }
 
   const url = `${BASE_URL}/search?${params.toString()}`;
-  console.log("Fetching URL:", url);
 
   const response = await fetch(url);
   const data = await response.json();
 
-  console.log("API Response:", JSON.stringify(data, null, 2));
-
   if (!data.items || !Array.isArray(data.items)) {
     console.error("Unexpected API response structure:", data);
-    return { items: [], nextPageToken: undefined };
+    return { items: [], nextCursor: null };
   }
 
   const videos: YouTubeVideo[] = data.items
-    .filter((item: any) => item.id && item.id.videoId)
-    .map((item: any) => ({
+    .filter((item) => item.id && item.id.videoId)
+    .map((item) => ({
       id: item.id.videoId,
       title: item.snippet.title,
       description: item.snippet.description,
@@ -51,6 +47,6 @@ export async function fetchVideos(
 
   return {
     items: videos,
-    nextPageToken: data.nextPageToken,
+    nextCursor: data.nextPageToken ?? null,
   };
 }

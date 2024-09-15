@@ -80,6 +80,7 @@
     }
   },
   "fmt": {
+    "lineWidth": 120,
     "exclude": [
       "test/coverage/",
       "drizzle/",

@@ -1,7 +1,8 @@
-import { fetchVideos, YouTubeVideo } from "@/pkg/main/services/youtube.ts";
+import type { Cursor } from "@/pkg/main/library/data/cursors.ts";
+import { fetchVideos } from "@/pkg/main/services/youtube.ts";
 
 export const videoRepository = {
-  async findAll(pageToken?: string) {
-    return await fetchVideos(pageToken);
+  async findAll(cursor: Cursor) {
+    return await fetchVideos(cursor);
   },
 };

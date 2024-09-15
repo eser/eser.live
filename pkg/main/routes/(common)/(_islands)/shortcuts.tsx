@@ -46,8 +46,7 @@ export const Shortcuts = () => {
   });
 
   useShortcut(["Meta", "2"], () => {
-    const isLight =
-      document.documentElement.classList.contains("theme-variant-light") ||
+    const isLight = document.documentElement.classList.contains("theme-variant-light") ||
       (!document.documentElement.classList.contains("theme-variant-dark") &&
         !globalThis.matchMedia?.("(prefers-color-scheme: dark)").matches);
 

@@ -19,8 +19,7 @@ export const questionSchema = pgTable(
     isAnonymous: boolean("is_anonymous").default(false).notNull(),
     isHidden: boolean("is_hidden").default(false).notNull(),
 
-    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow()
-      .notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
     updatedAt: timestamp("updated_at", { withTimezone: true }),
     deletedAt: timestamp("deleted_at", { withTimezone: true }),
   },

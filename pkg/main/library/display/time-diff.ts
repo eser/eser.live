@@ -21,15 +21,7 @@ export const timeDiff = (date: Date) => {
   const match = Object.entries(
     datetimeDifference.difference(now, date, {
       // These units make sense for a web UI
-      units: [
-        "seconds",
-        "minutes",
-        "hours",
-        "days",
-        "weeks",
-        "months",
-        "years",
-      ],
+      units: ["seconds", "minutes", "hours", "days", "weeks", "months", "years"],
     }),
   )
     .toReversed()
@@ -61,7 +53,5 @@ export const timeDiff = (date: Date) => {
     years: "yıl",
   };
 
-  return `${pluralize(amount, unitMapping[<datetimeDifference.Unit> unit])} ${
-    isPast ? "önce" : "sonra"
-  }`;
+  return `${pluralize(amount, unitMapping[<datetimeDifference.Unit> unit])} ${isPast ? "önce" : "sonra"}`;
 };

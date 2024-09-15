@@ -23,12 +23,7 @@ export const Logo = (props: LogoProps) => {
         fill="currentcolor"
       />
       <defs>
-        <pattern
-          id="pattern0"
-          patternContentUnits="objectBoundingBox"
-          width="1"
-          height="1"
-        >
+        <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
           <use xlink:href="#image0_102_4" transform="scale(0.00112867)" />
         </pattern>
         <image

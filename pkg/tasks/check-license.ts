@@ -19,11 +19,8 @@ const ROOT = new URL("../../", import.meta.url);
 const CHECK = Deno.args.includes("--check");
 const BASE_YEAR = "2024";
 // const CURRENT_YEAR = new Date().getFullYear();
-const RX_COPYRIGHT = new RegExp(
-  `// Copyright ([0-9]{4})-present the Deno authors\\. All rights reserved\\. MIT license\\.\n`,
-);
-const COPYRIGHT =
-  `// Copyright ${BASE_YEAR}-present the Deno authors. All rights reserved. MIT license.`;
+const RX_COPYRIGHT = /\/\/ Copyright ([0-9]{4})-present the Deno authors\. All rights reserved\. MIT license\.\n/;
+const COPYRIGHT = `// Copyright ${BASE_YEAR}-present the Deno authors. All rights reserved. MIT license.`;
 
 let failed = false;
 
@@ -53,8 +50,8 @@ for await (
     } else {
       const index = match.index ?? 0;
       const contentWithoutCopyright = content.replace(match[0], "");
-      const contentWithCopyright = contentWithoutCopyright.substring(0, index) +
-        COPYRIGHT + "\n" + contentWithoutCopyright.substring(index);
+      const contentWithCopyright = contentWithoutCopyright.substring(0, index) + COPYRIGHT + "\n" +
+        contentWithoutCopyright.substring(index);
       await Deno.writeTextFile(path, contentWithCopyright);
       console.log("Copyright header automatically updated in " + path);
     }

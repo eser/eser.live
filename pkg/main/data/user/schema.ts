@@ -17,15 +17,12 @@ export const userSchema = pgTable(
     xRemoteId: text("x_remote_id"),
     xHandle: text("x_handle"),
 
-    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow()
-      .notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
     updatedAt: timestamp("updated_at", { withTimezone: true }),
     deletedAt: timestamp("deleted_at", { withTimezone: true }),
   },
   (table) => ({
-    githubRemoteIdUnq: unique().on(
-      table.githubRemoteId,
-    ),
+    githubRemoteIdUnq: unique().on(table.githubRemoteId),
     // xRemoteIdUnq: unique().on(
     //   table.xRemoteId,
     // ),

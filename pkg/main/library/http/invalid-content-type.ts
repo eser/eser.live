@@ -6,10 +6,7 @@ export class InvalidContentTypeError extends HttpError {
   constructor(accepts: string[], message?: string) {
     super(
       httpStatus.STATUS_CODE.UnsupportedMediaType,
-      message ??
-        `Unable to serve content. Please use a client accepting one of: ${
-          accepts.join(", ")
-        }`,
+      message ?? `Unable to serve content. Please use a client accepting one of: ${accepts.join(", ")}`,
     );
     this.name = "InvalidContentTypeError";
   }

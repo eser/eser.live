@@ -25,8 +25,7 @@ export const eventSchema = pgTable(
     timeStart: timestamp("time_start", { withTimezone: true }).notNull(),
     timeEnd: timestamp("time_end", { withTimezone: true }).notNull(),
 
-    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow()
-      .notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
     updatedAt: timestamp("updated_at", { withTimezone: true }),
     deletedAt: timestamp("deleted_at", { withTimezone: true }),
   },

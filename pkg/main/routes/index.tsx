@@ -1,18 +1,19 @@
 // Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
-import { type Handlers, type PageProps } from "$fresh/server.ts";
-import { defineRoute } from "$fresh/src/server/defines.ts";
-import { accepts } from "@std/http/negotiation";
+import type { Handlers, PageProps } from "$fresh/server.ts";
+import { eventRepository } from "@/pkg/main/data/event/repository.ts";
+import type { EventWithStats } from "@/pkg/main/data/event/types.ts";
+import type { User } from "@/pkg/main/data/user/types.ts";
 import { getCursor } from "@/pkg/main/library/data/cursors.ts";
 import { InvalidContentTypeError } from "@/pkg/main/library/http/invalid-content-type.ts";
-import { type User } from "@/pkg/main/data/user/types.ts";
-import { type EventWithStats } from "@/pkg/main/data/event/types.ts";
-import { eventRepository } from "@/pkg/main/data/event/repository.ts";
-import { type State } from "@/pkg/main/plugins/session.ts";
+import type { State } from "@/pkg/main/plugins/session.ts";
 import { Head } from "@/pkg/main/routes/(common)/(_components)/head.tsx";
+import { accepts } from "@std/http/negotiation";
 import { EventsList } from "./(common)/(_components)/event-list.tsx";
 
 type HandlerResult = {
-  events: Awaited<ReturnType<typeof eventRepository.findAllWithStats>>
+  payload: {
+    events: Awaited<ReturnType<typeof eventRepository.findAllWithStats>>;
+  };
 };
 
 const EVENTS_PAGE_SIZE = 10;
@@ -24,18 +25,16 @@ export const handler: Handlers<HandlerResult, State> = {
     const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000);
 
     const eventsCursor = getCursor(req.url, EVENTS_PAGE_SIZE);
-    const events = await eventRepository.findAllWithStats(
-      eventsCursor,
-      twoHoursAgo,
-      ctx.state.sessionUser?.id ?? null,
-    );
+    const events = await eventRepository.findAllWithStats(eventsCursor, twoHoursAgo, ctx.state.sessionUser?.id ?? null);
 
-    const result = {
-      events,
+    const result: HandlerResult = {
+      payload: {
+        events,
+      },
     };
 
     if (mediaTypes.includes("application/json")) {
-      return Response.json(result);
+      return Response.json(result.payload);
     }
 
     if (mediaTypes.includes("text/html")) {
@@ -45,7 +44,6 @@ export const handler: Handlers<HandlerResult, State> = {
     throw new InvalidContentTypeError(["application/json", "text/html"]);
   },
 };
-
 
 interface WelcomeStripProps {
   /** Currently logged-in user */
@@ -60,38 +58,23 @@ export const WelcomeStrip = (props: WelcomeStripProps) => {
       <div class="hero justify-start">
         <div class="hero-content p-0">
           <div>
-            <h1>
-              Merhaba {isAuthenticated ? props.sessionUser!.name : "oradaki"}
-              {" "}
-              👋🏻
-            </h1>
+            <h1>Merhaba {isAuthenticated ? props.sessionUser!.name : "oradaki"} 👋🏻</h1>
 
             <p>
-              <span class="highlight">
-                eser.live
-              </span>{" "}
-              ismiyle içerik ve proje geliştirmeye yönelik bir platform
-              oluşturduk. Geçmişte{" "}
-              <a href="https://acikkaynak.github.io/">
-                Açık Kaynak İnisiyatifi
-              </a>nde edindiğimiz bilgi birikimini artık yeni nesil medya
-              mecralarına taşıyoruz. Sen de{" "}
-              <span class="highlight">
-                GitHub
-              </span>{" "}
-              hesabınla giriş yapabilir, ve site üzerinden katılım
-              gerçekleştirebilirsin.
+              <span class="highlight">eser.live</span>{" "}
+              ismiyle içerik ve proje geliştirmeye yönelik bir platform oluşturduk. Geçmişte{" "}
+              <a href="https://acikkaynak.github.io/">Açık Kaynak İnisiyatifi</a>
+              nde edindiğimiz bilgi birikimini artık yeni nesil medya mecralarına taşıyoruz. Sen de{" "}
+              <span class="highlight">GitHub</span>{" "}
+              hesabınla giriş yapabilir, ve site üzerinden katılım gerçekleştirebilirsin.
             </p>
             <p>
-              Topluluk için{" "}
-              <a href="https://discord.eser.live/">Discord'da</a>, anlık yayın
-              ve etkinlik duyuruları için{" "}
-              <a href="https://t.me/eserlive">Telegram kanalımızda</a> ve{" "}
-              <a href="https://x.com/eserozvataf">Twitter hesabımızda</a>,
-              direkt yayınlar ve yayın bildirimleri içinse{" "}
-              <a href="https://youtube.com/@eserlive">YouTube kanalımızda</a>
+              Topluluk için <a href="https://discord.eser.live/">Discord'da</a>, anlık yayın ve etkinlik duyuruları için
               {" "}
-              bize katılabilirsin.
+              <a href="https://t.me/eserlive">Telegram kanalımızda</a> ve{" "}
+              <a href="https://x.com/eserozvataf">Twitter hesabımızda</a>, direkt yayınlar ve yayın bildirimleri içinse
+              {" "}
+              <a href="https://youtube.com/@eserlive">YouTube kanalımızda</a> bize katılabilirsin.
             </p>
           </div>
         </div>
@@ -108,10 +91,7 @@ type PlaylistCardProps = {
 
 export const PlaylistCard = (props: PlaylistCardProps) => {
   return (
-    <a
-      href={`https://www.youtube.com/playlist?list=${props.id}`}
-      class="no-underline basis-[32%] flex"
-    >
+    <a href={`https://www.youtube.com/playlist?list=${props.id}`} class="no-underline basis-[32%] flex">
       <div class="card card-compact glass w-full h-full bg-base-300 text-base-content hover:bg-neutral hover:text-neutral-content">
         <div class="card-body">
           <h3 class="card-title m-0">{props.title}</h3>
@@ -156,9 +136,7 @@ export const Events = (props: EventsProps) => {
     <div class="content-area mt-12">
       <h2>Planlı Etkinlik Takvimi</h2>
 
-      <EventsList
-        items={props.items}
-      />
+      <EventsList items={props.items} />
     </div>
   );
 };
@@ -171,8 +149,8 @@ export default function (props: PageProps<HandlerResult, State>) {
         <WelcomeStrip sessionUser={props.state.sessionUser} />
 
         <Playlists />
-        <Events items={props.data.events.items} />
+        <Events items={props.data.payload.events.items} />
       </main>
     </>
   );
-};
+}

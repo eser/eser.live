@@ -23,10 +23,7 @@ export type CursorResult<T1, T2> = {
   console.log(result); // { items: [1, 2, 3, 4, 5], cursor: 5 }
   ```
 */
-export function withCursor<T1, T2>(
-  items: Array<T1>,
-  nextCursor: T2,
-): CursorResult<T1, T2> {
+export function withCursor<T1, T2>(items: Array<T1>, nextCursor: T2): CursorResult<T1, T2> {
   return {
     items,
     nextCursor,
@@ -44,10 +41,7 @@ export function withCursor<T1, T2>(
  * getCursorFromUrl(new URL("http://example.com")); // Returns { offset: "" }
  * ```
  */
-export const getCursorFromUrl = (
-  url: URL,
-  defaultPageSize: number,
-): Cursor => {
+export const getCursorFromUrl = (url: URL, defaultPageSize: number): Cursor => {
   const offset = url.searchParams.get("cursor") ?? "";
 
   return {
@@ -67,9 +61,6 @@ export const getCursorFromUrl = (
  * getCursor("http://example.com"); // Returns { offset: "" }
  * ```
  */
-export const getCursor = (
-  url: string,
-  defaultPageSize: number,
-): Cursor => {
+export const getCursor = (url: string, defaultPageSize: number): Cursor => {
   return getCursorFromUrl(new URL(url), defaultPageSize);
 };

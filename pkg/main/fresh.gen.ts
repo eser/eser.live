@@ -2,20 +2,19 @@
 // This file SHOULD be checked into source version control.
 // This file is automatically updated during development when running `dev.ts`.
 
-import * as $_server_api_me_index from "./routes/(server)/api/me/index.ts";
-import * as $_server_api_me_question_votes from "./routes/(server)/api/me/question-votes.ts";
-import * as $_server_api_me_questions from "./routes/(server)/api/me/questions.ts";
-import * as $_server_api_questions_id_ from "./routes/(server)/api/questions/[id].ts";
-import * as $_server_api_questions_hide from "./routes/(server)/api/questions/hide.ts";
-import * as $_server_api_questions_index from "./routes/(server)/api/questions/index.ts";
-import * as $_server_api_questions_vote from "./routes/(server)/api/questions/vote.ts";
-import * as $_server_api_users_id_index from "./routes/(server)/api/users/[id]/index.ts";
-import * as $_server_api_users_id_questions from "./routes/(server)/api/users/[id]/questions.ts";
-import * as $_server_api_users_index from "./routes/(server)/api/users/index.ts";
 import * as $_404 from "./routes/_404.tsx";
 import * as $_500 from "./routes/_500.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $_layout from "./routes/_layout.tsx";
+import * as $api_me_index from "./routes/api/me/index.ts";
+import * as $api_me_question_votes from "./routes/api/me/question-votes.ts";
+import * as $api_me_questions from "./routes/api/me/questions.ts";
+import * as $api_questions_hide from "./routes/api/questions/hide.ts";
+import * as $api_questions_index from "./routes/api/questions/index.ts";
+import * as $api_questions_vote from "./routes/api/questions/vote.ts";
+import * as $api_users_id_index from "./routes/api/users/[id]/index.ts";
+import * as $api_users_id_questions from "./routes/api/users/[id]/questions.ts";
+import * as $api_users_index from "./routes/api/users/index.ts";
 import * as $community_index from "./routes/community/index.tsx";
 import * as $cookbook_index from "./routes/cookbook/index.tsx";
 import * as $dash_index from "./routes/dash/index.tsx";
@@ -26,6 +25,7 @@ import * as $events_index from "./routes/events/index.ts";
 import * as $events_upcoming from "./routes/events/upcoming.ts";
 import * as $index from "./routes/index.tsx";
 import * as $projects_index from "./routes/projects/index.tsx";
+import * as $qa_id_index from "./routes/qa/[id]/index.ts";
 import * as $qa_ask from "./routes/qa/ask.tsx";
 import * as $qa_index from "./routes/qa/index.tsx";
 import * as $setup_index from "./routes/setup/index.tsx";
@@ -33,33 +33,33 @@ import * as $stories_slug_ from "./routes/stories/[slug].tsx";
 import * as $stories_feed from "./routes/stories/feed.ts";
 import * as $stories_index from "./routes/stories/index.tsx";
 import * as $videos_index from "./routes/videos/index.tsx";
-import * as $_common_islands_questions_list from "./routes/(common)/(_islands)/questions-list.tsx";
+import * as $_common_islands_infinite_scroller_list from "./routes/(common)/(_islands)/infinite-scroller-list.tsx";
 import * as $_common_islands_share from "./routes/(common)/(_islands)/share.tsx";
 import * as $_common_islands_shortcuts from "./routes/(common)/(_islands)/shortcuts.tsx";
-import * as $_common_islands_stories_list from "./routes/(common)/(_islands)/stories-list.tsx";
 import * as $_common_islands_users_table from "./routes/(common)/(_islands)/users-table.tsx";
-import * as $_common_islands_videos_list from "./routes/(common)/(_islands)/videos-list.tsx";
 import * as $dash_islands_chart from "./routes/dash/(_islands)/chart.tsx";
+import * as $qa_islands_list from "./routes/qa/(_islands)/list.tsx";
+import * as $qa_islands_listitem_hide from "./routes/qa/(_islands)/listitem-hide.tsx";
+import * as $qa_islands_listitem_vote from "./routes/qa/(_islands)/listitem-vote.tsx";
+import * as $stories_islands_list from "./routes/stories/(_islands)/list.tsx";
+import * as $videos_islands_list from "./routes/videos/(_islands)/list.tsx";
 import type { Manifest } from "$fresh/server.ts";
 
 const manifest = {
   routes: {
-    "./routes/(server)/api/me/index.ts": $_server_api_me_index,
-    "./routes/(server)/api/me/question-votes.ts":
-      $_server_api_me_question_votes,
-    "./routes/(server)/api/me/questions.ts": $_server_api_me_questions,
-    "./routes/(server)/api/questions/[id].ts": $_server_api_questions_id_,
-    "./routes/(server)/api/questions/hide.ts": $_server_api_questions_hide,
-    "./routes/(server)/api/questions/index.ts": $_server_api_questions_index,
-    "./routes/(server)/api/questions/vote.ts": $_server_api_questions_vote,
-    "./routes/(server)/api/users/[id]/index.ts": $_server_api_users_id_index,
-    "./routes/(server)/api/users/[id]/questions.ts":
-      $_server_api_users_id_questions,
-    "./routes/(server)/api/users/index.ts": $_server_api_users_index,
     "./routes/_404.tsx": $_404,
     "./routes/_500.tsx": $_500,
     "./routes/_app.tsx": $_app,
     "./routes/_layout.tsx": $_layout,
+    "./routes/api/me/index.ts": $api_me_index,
+    "./routes/api/me/question-votes.ts": $api_me_question_votes,
+    "./routes/api/me/questions.ts": $api_me_questions,
+    "./routes/api/questions/hide.ts": $api_questions_hide,
+    "./routes/api/questions/index.ts": $api_questions_index,
+    "./routes/api/questions/vote.ts": $api_questions_vote,
+    "./routes/api/users/[id]/index.ts": $api_users_id_index,
+    "./routes/api/users/[id]/questions.ts": $api_users_id_questions,
+    "./routes/api/users/index.ts": $api_users_index,
     "./routes/community/index.tsx": $community_index,
     "./routes/cookbook/index.tsx": $cookbook_index,
     "./routes/dash/index.tsx": $dash_index,
@@ -70,6 +70,7 @@ const manifest = {
     "./routes/events/upcoming.ts": $events_upcoming,
     "./routes/index.tsx": $index,
     "./routes/projects/index.tsx": $projects_index,
+    "./routes/qa/[id]/index.ts": $qa_id_index,
     "./routes/qa/ask.tsx": $qa_ask,
     "./routes/qa/index.tsx": $qa_index,
     "./routes/setup/index.tsx": $setup_index,
@@ -79,17 +80,16 @@ const manifest = {
     "./routes/videos/index.tsx": $videos_index,
   },
   islands: {
-    "./routes/(common)/(_islands)/questions-list.tsx":
-      $_common_islands_questions_list,
+    "./routes/(common)/(_islands)/infinite-scroller-list.tsx": $_common_islands_infinite_scroller_list,
     "./routes/(common)/(_islands)/share.tsx": $_common_islands_share,
     "./routes/(common)/(_islands)/shortcuts.tsx": $_common_islands_shortcuts,
-    "./routes/(common)/(_islands)/stories-list.tsx":
-      $_common_islands_stories_list,
-    "./routes/(common)/(_islands)/users-table.tsx":
-      $_common_islands_users_table,
-    "./routes/(common)/(_islands)/videos-list.tsx":
-      $_common_islands_videos_list,
+    "./routes/(common)/(_islands)/users-table.tsx": $_common_islands_users_table,
     "./routes/dash/(_islands)/chart.tsx": $dash_islands_chart,
+    "./routes/qa/(_islands)/list.tsx": $qa_islands_list,
+    "./routes/qa/(_islands)/listitem-hide.tsx": $qa_islands_listitem_hide,
+    "./routes/qa/(_islands)/listitem-vote.tsx": $qa_islands_listitem_vote,
+    "./routes/stories/(_islands)/list.tsx": $stories_islands_list,
+    "./routes/videos/(_islands)/list.tsx": $videos_islands_list,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest;

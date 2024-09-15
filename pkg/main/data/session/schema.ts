@@ -17,8 +17,7 @@ export const sessionSchema = pgTable(
     loggedInAt: timestamp("logged_in_at", { withTimezone: true }),
     expiresAt: timestamp("expires_at", { withTimezone: true }),
 
-    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow()
-      .notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
     updatedAt: timestamp("updated_at", { withTimezone: true }),
   },
   (table) => ({

@@ -21,8 +21,7 @@ export const toVal = (mix: MixTypes) => {
           continue;
         }
 
-        // deno-lint-ignore no-cond-assign
-        if (y = toVal(mix[k])) {
+        if ((y = toVal(mix[k]))) {
           str && (str += " ");
           str += y;
         }

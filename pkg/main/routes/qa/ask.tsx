@@ -1,14 +1,14 @@
 // Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
+import { defineRoute, type Handlers } from "$fresh/server.ts";
+import { questionRepository } from "@/pkg/main/data/question/repository.ts";
+import { redirect } from "@/pkg/main/library/http/redirect.ts";
+import { assertLoggedIn, type State } from "@/pkg/main/plugins/session.ts";
+import { Head } from "@/pkg/main/routes/(common)/(_components)/head.tsx";
 import * as ulid from "@std/ulid";
 import IconCheckCircle from "tabler_icons_tsx/circle-check.tsx";
 import IconCircleX from "tabler_icons_tsx/circle-x.tsx";
-import IconMailForward from "tabler_icons_tsx/mail-forward.tsx";
 import IconInfo from "tabler_icons_tsx/info-circle.tsx";
-import { defineRoute, Handlers } from "$fresh/server.ts";
-import { Head } from "@/pkg/main/routes/(common)/(_components)/head.tsx";
-import { redirect } from "@/pkg/main/library/http/redirect.ts";
-import { assertLoggedIn, type State } from "@/pkg/main/plugins/session.ts";
-import { questionRepository } from "@/pkg/main/data/question/repository.ts";
+import IconMailForward from "tabler_icons_tsx/mail-forward.tsx";
 
 export const handler: Handlers<undefined, State> = {
   async POST(req, ctx) {
@@ -19,7 +19,8 @@ export const handler: Handlers<undefined, State> = {
     const questionIsAnonymous = form.get("question_is_anonymous") === "true";
 
     if (
-      questionContent === null || questionContent === undefined ||
+      questionContent === null ||
+      questionContent === undefined ||
       questionContent.constructor !== String ||
       questionContent.length < 1
     ) {
@@ -51,16 +52,12 @@ export default defineRoute<State>((_req, ctx) => {
       <Head title="Soru / Yanıt: Sor" href={ctx.url.href} />
       <main class="flex-1 flex flex-col justify-center mx-auto w-full space-y-16 p-4 max-w-6xl">
         <section class="text-center">
-          <h1 class="text-3xl font-bold">
-            Soru sor
-          </h1>
+          <h1 class="text-3xl font-bold">Soru sor</h1>
           <p class="text-slate-500">
-            Yanıtlanması gerektiğini düşündüğün, merak ettiğin bir soru
-            sor.<br class="hidden sm:inline" /> Biz de{" "}
+            Yanıtlanması gerektiğini düşündüğün, merak ettiğin bir soru sor.
+            <br class="hidden sm:inline" /> Biz de{" "}
             <a href="https://www.youtube.com/@eserlive/live">
-              <span class="bg-green-100 dark:bg-gray-800 p-1 rounded">
-                eser.live
-              </span>
+              <span class="bg-green-100 dark:bg-gray-800 p-1 rounded">eser.live</span>
             </a>{" "}
             üzerinde onu yanıtlayalım.
           </p>
@@ -83,10 +80,7 @@ export default defineRoute<State>((_req, ctx) => {
               <strong>sor</strong>
             </div>
           </div>
-          <form
-            class="flex-1 flex flex-col justify-center"
-            method="post"
-          >
+          <form class="flex-1 flex flex-col justify-center" method="post">
             <div>
               <label
                 htmlFor="question_content"
