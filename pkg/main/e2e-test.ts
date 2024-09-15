@@ -492,12 +492,12 @@
 //   });
 // });
 
-// Deno.test("[e2e] POST /api/questions/vote", async (test) => {
+// Deno.test("[e2e] POST /qa/[id]/vote", async (test) => {
 //   const question = randomQuestion();
 //   const user = randomUser();
 //   await createQuestion(question);
 //   await createUser(user);
-//   const url = `http://localhost/api/questions/vote?questionId=${question.id}`;
+//   const url = `http://localhost/qa/${question.id}/vote`;
 
 //   await test.step("serves unauthorized response if the session user is not logged in", async () => {
 //     const resp = await handler(new Request(url, { method: "POST" }));
@@ -509,7 +509,7 @@
 
 //   await test.step("serves not found response if the question is not found", async () => {
 //     const resp = await handler(
-//       new Request("http://localhost/api/questions/vote?questionId=bob-ross", {
+//       new Request("http://localhost/qa/bob-ross/vote", {
 //         method: "POST",
 //         headers: { cookie: "site-session=" + user.sessionId },
 //       }),
@@ -535,7 +535,7 @@
 
 //   await test.step("serves an error response if the `questionId` URL parameter is missing", async () => {
 //     const resp = await handler(
-//       new Request("http://localhost/api/questions/vote", {
+//       new Request("http://localhost/qa/-/vote", {
 //         method: "POST",
 //         headers: { cookie: "site-session=" + user.sessionId },
 //       }),

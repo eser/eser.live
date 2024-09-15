@@ -3,18 +3,20 @@ import type { Handlers } from "$fresh/server.ts";
 import { questionRepository } from "@/pkg/main/data/question/repository.ts";
 import { userRepository } from "@/pkg/main/data/user/repository.ts";
 import { getCursor } from "@/pkg/main/library/data/cursors.ts";
-import type { State } from "@/pkg/main/plugins/session.ts";
+import { ensureParameterIsSpecified, type State } from "@/pkg/main/plugins/session.ts";
 
 const PAGE_SIZE = 10;
 
 export const handler: Handlers<undefined, State> = {
   async GET(req, ctx) {
-    const cursor = getCursor(req.url, PAGE_SIZE);
-    const user = await userRepository.findById(ctx.params.id);
+    const userId = ensureParameterIsSpecified("userId", ctx.params.id);
+    const user = await userRepository.findById(userId);
 
     if (user === null) {
       throw new Deno.errors.NotFound("User not found");
     }
+
+    const cursor = getCursor(req.url, PAGE_SIZE);
 
     const result = await questionRepository.findAllByUserIdWithScores(
       cursor,

@@ -15,8 +15,12 @@ export const HideLink = (props: HideLinkProps) => {
       return;
     }
 
-    const resp = await fetch(`/api/questions/hide?questionId=${props.question.id}`, {
+    const resp = await fetch(`/qa/${props.question.id}/hide`, {
       method: "POST",
+      credentials: "include",
+      headers: {
+        "content-type": "application/json; charset=utf-8",
+      },
     });
 
     if (!resp.ok) {

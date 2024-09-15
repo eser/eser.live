@@ -2,10 +2,8 @@
 import type { Handlers, PageProps } from "$fresh/server.ts";
 import { videoRepository } from "@/pkg/main/data/video/repository.ts";
 import { getCursor } from "@/pkg/main/library/data/cursors.ts";
-import { InvalidContentTypeError } from "@/pkg/main/library/http/invalid-content-type.ts";
-import type { State } from "@/pkg/main/plugins/session.ts";
+import { ensureMediaTypes, type State } from "@/pkg/main/plugins/session.ts";
 import { Head } from "@/pkg/main/routes/(common)/(_components)/head.tsx";
-import { accepts } from "@std/http/negotiation";
 import { VideoList } from "./(_islands)/list.tsx";
 
 type HandlerResult = {
@@ -16,7 +14,7 @@ const PAGE_SIZE = 20;
 
 export const handler: Handlers<HandlerResult, State> = {
   async GET(req, ctx) {
-    const mediaTypes = accepts(req);
+    const mediaTypes = ensureMediaTypes(req, ["application/json", "text/html"]);
 
     const cursor = getCursor(req.url, PAGE_SIZE);
     const videos = await videoRepository.findAll(cursor);
@@ -29,15 +27,11 @@ export const handler: Handlers<HandlerResult, State> = {
       return Response.json(result.payload);
     }
 
-    if (mediaTypes.includes("text/html")) {
-      return ctx.render(result);
-    }
-
-    throw new InvalidContentTypeError(["application/json", "text/html"]);
+    return ctx.render(result);
   },
 };
 
-export default function (props: PageProps<HandlerResult>) {
+export default function (props: PageProps<HandlerResult, State>) {
   return (
     <>
       <Head title="Videolar" href={props.url.href} />

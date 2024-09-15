@@ -2,9 +2,7 @@
 import type { Handlers } from "$fresh/server.ts";
 import { eventRepository } from "@/pkg/main/data/event/repository.ts";
 import { getCursor } from "@/pkg/main/library/data/cursors.ts";
-import { InvalidContentTypeError } from "@/pkg/main/library/http/invalid-content-type.ts";
-import type { State } from "@/pkg/main/plugins/session.ts";
-import { accepts } from "@std/http/negotiation";
+import { ensureMediaTypes, type State } from "@/pkg/main/plugins/session.ts";
 
 type HandlerResult = {
   payload: Awaited<ReturnType<typeof eventRepository.findAllWithStats>>;
@@ -14,10 +12,7 @@ const PAGE_SIZE = 10;
 
 export const handler: Handlers<HandlerResult, State> = {
   async GET(req, ctx) {
-    const mediaTypes = accepts(req);
-    if (!mediaTypes.includes("application/json")) {
-      throw new InvalidContentTypeError(["application/json"]);
-    }
+    ensureMediaTypes(req, ["application/json"]);
 
     const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000);
 

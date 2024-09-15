@@ -15,8 +15,12 @@ export const VoteButton = (props: VoteButtonProps) => {
       return;
     }
 
-    const resp = await fetch(`/api/questions/vote?questionId=${props.question.id}`, {
+    const resp = await fetch(`/qa/${props.question.id}/vote`, {
       method: "POST",
+      credentials: "include",
+      headers: {
+        "content-type": "application/json; charset=utf-8",
+      },
     });
 
     if (!resp.ok) {

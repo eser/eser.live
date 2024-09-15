@@ -41,7 +41,7 @@ const jsonResponse = (error: Error) => {
       statusText: httpStatus.STATUS_TEXT[status],
       status,
       headers: {
-        "Content-Type": "application/json; charset=utf-8",
+        "content-type": "application/json; charset=utf-8",
       },
     },
   );
@@ -54,7 +54,7 @@ const textResponse = (error: Error) => {
     statusText: httpStatus.STATUS_TEXT[status],
     status,
     headers: {
-      "Content-Type": "text/plain; charset=utf-8",
+      "content-type": "text/plain; charset=utf-8",
     },
   });
 };

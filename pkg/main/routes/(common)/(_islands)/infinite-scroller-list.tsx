@@ -24,8 +24,10 @@ export function InfiniteScrollerList<TItem, TCursor>(props: InfiniteScrollerList
 
     try {
       const response = await fetch(url.toString(), {
+        method: "GET",
+        credentials: "include",
         headers: {
-          Accept: "application/json",
+          accept: "application/json",
         },
       });
       const data = await response.json();

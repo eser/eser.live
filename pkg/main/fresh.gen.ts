@@ -9,9 +9,6 @@ import * as $_layout from "./routes/_layout.tsx";
 import * as $api_me_index from "./routes/api/me/index.ts";
 import * as $api_me_question_votes from "./routes/api/me/question-votes.ts";
 import * as $api_me_questions from "./routes/api/me/questions.ts";
-import * as $api_questions_hide from "./routes/api/questions/hide.ts";
-import * as $api_questions_index from "./routes/api/questions/index.ts";
-import * as $api_questions_vote from "./routes/api/questions/vote.ts";
 import * as $api_users_id_index from "./routes/api/users/[id]/index.ts";
 import * as $api_users_id_questions from "./routes/api/users/[id]/questions.ts";
 import * as $api_users_index from "./routes/api/users/index.ts";
@@ -25,7 +22,9 @@ import * as $events_index from "./routes/events/index.ts";
 import * as $events_upcoming from "./routes/events/upcoming.ts";
 import * as $index from "./routes/index.tsx";
 import * as $projects_index from "./routes/projects/index.tsx";
+import * as $qa_id_hide from "./routes/qa/[id]/hide.ts";
 import * as $qa_id_index from "./routes/qa/[id]/index.ts";
+import * as $qa_id_vote from "./routes/qa/[id]/vote.ts";
 import * as $qa_ask from "./routes/qa/ask.tsx";
 import * as $qa_index from "./routes/qa/index.tsx";
 import * as $setup_index from "./routes/setup/index.tsx";
@@ -36,7 +35,6 @@ import * as $videos_index from "./routes/videos/index.tsx";
 import * as $_common_islands_infinite_scroller_list from "./routes/(common)/(_islands)/infinite-scroller-list.tsx";
 import * as $_common_islands_share from "./routes/(common)/(_islands)/share.tsx";
 import * as $_common_islands_shortcuts from "./routes/(common)/(_islands)/shortcuts.tsx";
-import * as $_common_islands_users_table from "./routes/(common)/(_islands)/users-table.tsx";
 import * as $dash_islands_chart from "./routes/dash/(_islands)/chart.tsx";
 import * as $qa_islands_list from "./routes/qa/(_islands)/list.tsx";
 import * as $qa_islands_listitem_hide from "./routes/qa/(_islands)/listitem-hide.tsx";
@@ -54,9 +52,6 @@ const manifest = {
     "./routes/api/me/index.ts": $api_me_index,
     "./routes/api/me/question-votes.ts": $api_me_question_votes,
     "./routes/api/me/questions.ts": $api_me_questions,
-    "./routes/api/questions/hide.ts": $api_questions_hide,
-    "./routes/api/questions/index.ts": $api_questions_index,
-    "./routes/api/questions/vote.ts": $api_questions_vote,
     "./routes/api/users/[id]/index.ts": $api_users_id_index,
     "./routes/api/users/[id]/questions.ts": $api_users_id_questions,
     "./routes/api/users/index.ts": $api_users_index,
@@ -70,7 +65,9 @@ const manifest = {
     "./routes/events/upcoming.ts": $events_upcoming,
     "./routes/index.tsx": $index,
     "./routes/projects/index.tsx": $projects_index,
+    "./routes/qa/[id]/hide.ts": $qa_id_hide,
     "./routes/qa/[id]/index.ts": $qa_id_index,
+    "./routes/qa/[id]/vote.ts": $qa_id_vote,
     "./routes/qa/ask.tsx": $qa_ask,
     "./routes/qa/index.tsx": $qa_index,
     "./routes/setup/index.tsx": $setup_index,
@@ -83,7 +80,6 @@ const manifest = {
     "./routes/(common)/(_islands)/infinite-scroller-list.tsx": $_common_islands_infinite_scroller_list,
     "./routes/(common)/(_islands)/share.tsx": $_common_islands_share,
     "./routes/(common)/(_islands)/shortcuts.tsx": $_common_islands_shortcuts,
-    "./routes/(common)/(_islands)/users-table.tsx": $_common_islands_users_table,
     "./routes/dash/(_islands)/chart.tsx": $dash_islands_chart,
     "./routes/qa/(_islands)/list.tsx": $qa_islands_list,
     "./routes/qa/(_islands)/listitem-hide.tsx": $qa_islands_listitem_hide,

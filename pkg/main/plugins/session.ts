@@ -1,7 +1,10 @@
 // Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
+import { accepts } from "@std/http/negotiation";
 import type { FreshContext, Plugin } from "$fresh/server.ts";
 import { sessionRepository } from "@/pkg/main/data/session/repository.ts";
 import type { User } from "@/pkg/main/data/user/types.ts";
+import { InvalidContentTypeError } from "@/pkg/main/library/http/invalid-content-type.ts";
+import { BadRequestError } from "@/pkg/main/library/http/bad-request-error.ts";
 import { UnauthorizedError } from "@/pkg/main/library/http/unauthorized-error.ts";
 import { oauthClient } from "./oauth.ts";
 
@@ -51,6 +54,26 @@ export const assertIsEditor: (ctx: { state: State }) => asserts ctx is {
   if (ctx.state.isEditor !== true) {
     throw new UnauthorizedError("User must be an editor");
   }
+};
+
+export const ensureMediaTypes = (req: Request, acceptableMediaTypes: string[]) => {
+  const mediaTypes = accepts(req);
+
+  const result = mediaTypes.filter((mediaType) => acceptableMediaTypes.includes(mediaType));
+
+  if (result.length === 0) {
+    throw new InvalidContentTypeError(acceptableMediaTypes);
+  }
+
+  return result;
+};
+
+export const ensureParameterIsSpecified = (name: string, value: string | undefined) => {
+  if (value === undefined || value === null) {
+    throw new BadRequestError(`"${name}" parameter must be specified`);
+  }
+
+  return value;
 };
 
 const setSessionState = async (req: Request, ctx: FreshContext<State>) => {
@@ -131,11 +154,11 @@ export const sessionPlugin: Plugin<State> = {
       middleware: { handler: ensureLoggedIn },
     },
     {
-      path: "/api/questions/vote",
+      path: "/qa/vote",
       middleware: { handler: ensureLoggedIn },
     },
     {
-      path: "/api/questions/hide",
+      path: "/qa/hide",
       middleware: { handler: ensureIsEditor },
     },
   ],

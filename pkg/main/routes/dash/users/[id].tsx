@@ -2,7 +2,7 @@
 import { defineRoute } from "$fresh/server.ts";
 import { userRepository } from "@/pkg/main/data/user/repository.ts";
 import type { User } from "@/pkg/main/data/user/types.ts";
-import type { State } from "@/pkg/main/plugins/session.ts";
+import { ensureParameterIsSpecified, type State } from "@/pkg/main/plugins/session.ts";
 import { Head } from "@/pkg/main/routes/(common)/(_components)/head.tsx";
 import { UserProfilePicture } from "@/pkg/main/routes/(common)/(_components)/user-profile-picture.tsx";
 // import { QuestionsList } from "@/pkg/main/routes/(common)/(_islands)/questions-list.tsx";
@@ -33,8 +33,8 @@ const UserProfile = (props: UserProfileProps) => {
 };
 
 export default defineRoute<State>(async (_req, ctx) => {
-  const id = ctx.params.id;
-  const user = await userRepository.findById(id);
+  const userId = ensureParameterIsSpecified("userId", ctx.params.id);
+  const user = await userRepository.findById(userId);
 
   if (user === null) {
     return await ctx.renderNotFound();
@@ -42,7 +42,7 @@ export default defineRoute<State>(async (_req, ctx) => {
 
   const isLoggedIn = ctx.state.sessionUser !== null;
   // const isEditor = ctx.state.isEditor;
-  const endpoint = `/api/users/${id}/questions`;
+  const endpoint = `/api/users/${userId}/questions`;
 
   return (
     <>

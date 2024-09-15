@@ -4,10 +4,8 @@ import { eventRepository } from "@/pkg/main/data/event/repository.ts";
 import type { EventWithStats } from "@/pkg/main/data/event/types.ts";
 import type { User } from "@/pkg/main/data/user/types.ts";
 import { getCursor } from "@/pkg/main/library/data/cursors.ts";
-import { InvalidContentTypeError } from "@/pkg/main/library/http/invalid-content-type.ts";
-import type { State } from "@/pkg/main/plugins/session.ts";
+import { ensureMediaTypes, type State } from "@/pkg/main/plugins/session.ts";
 import { Head } from "@/pkg/main/routes/(common)/(_components)/head.tsx";
-import { accepts } from "@std/http/negotiation";
 import { EventsList } from "./(common)/(_components)/event-list.tsx";
 
 type HandlerResult = {
@@ -20,7 +18,7 @@ const EVENTS_PAGE_SIZE = 10;
 
 export const handler: Handlers<HandlerResult, State> = {
   async GET(req, ctx) {
-    const mediaTypes = accepts(req);
+    const mediaTypes = ensureMediaTypes(req, ["application/json", "text/html"]);
 
     const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000);
 
@@ -37,11 +35,7 @@ export const handler: Handlers<HandlerResult, State> = {
       return Response.json(result.payload);
     }
 
-    if (mediaTypes.includes("text/html")) {
-      return ctx.render(result);
-    }
-
-    throw new InvalidContentTypeError(["application/json", "text/html"]);
+    return ctx.render(result);
   },
 };
 
