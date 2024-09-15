@@ -145,7 +145,8 @@ export const Header = (props: HeaderProps) => {
           }
           <a href="https://www.youtube.com/@eserlive/live" class="btn btn-error" target="_blank" rel="noreferrer">
             <IconBrandYouTube class="h-6 w-6" />
-            Canlı Yayın
+            <span class="inline md:hidden">Canlı</span>
+            <span class="hidden md:inline">Canlı Yayın</span>
           </a>
           {props.sessionUser !== null
             ? (
@@ -176,7 +177,8 @@ export const Header = (props: HeaderProps) => {
             )
             : (
               <a href="/auth/login" tabIndex={0} role="button" class="btn btn-neutral">
-                GitHub Login
+                <span class="inline md:hidden">Giriş</span>
+                <span class="hidden md:inline">GitHub ile Giriş</span>
               </a>
             )}
         </div>

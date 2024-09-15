@@ -153,14 +153,6 @@ html.theme-default {
     @apply no-underline;
   }
 
-  main {
-    @apply flex-1;
-
-    & > .content-area {
-      @apply mx-auto max-w-5xl;
-    }
-  }
-
   header {
     .navbar {
       @apply p-0;
@@ -197,8 +189,16 @@ html.theme-default {
       }
 
       .navbar-right {
-        @apply flex-none justify-end pr-6 gap-4;
+        @apply flex-none justify-end pr-4 gap-2;
       }
+    }
+  }
+
+  main {
+    @apply flex-1;
+
+    & > .content-area {
+      @apply mx-auto px-4 max-w-5xl;
     }
   }
 }

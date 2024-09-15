@@ -12,7 +12,7 @@ export function StoryListItem(props: StoryListItemProps) {
       href={`/stories/${props.story.slug}`}
       class="no-underline flex items-center border-0 border-b border-neutral border-solid"
     >
-      <div class="w-1/6 text-primary-content">
+      <div class="w-1/5 text-primary-content">
         {new Date(props.story.publishedAt).toLocaleDateString(SITE_LOCALE, {
           dateStyle: "medium",
         })}

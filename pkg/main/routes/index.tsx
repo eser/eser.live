@@ -85,8 +85,8 @@ type PlaylistCardProps = {
 
 export const PlaylistCard = (props: PlaylistCardProps) => {
   return (
-    <a href={`https://www.youtube.com/playlist?list=${props.id}`} class="no-underline basis-[32%] flex">
-      <div class="card card-compact glass w-full h-full bg-base-300 text-base-content hover:bg-neutral hover:text-neutral-content">
+    <a href={`https://www.youtube.com/playlist?list=${props.id}`} class="no-underline">
+      <div class="card card-compact glass bg-base-300 text-base-content hover:bg-neutral hover:text-neutral-content">
         <div class="card-body">
           <h3 class="card-title m-0">{props.title}</h3>
           <p class="m-0">{props.description}</p>
@@ -100,7 +100,7 @@ export const Playlists = () => {
   return (
     <div class="content-area">
       <h2>Playlistler</h2>
-      <div class="flex flex-row flex-wrap gap-4">
+      <div class="grid grid-flow-row grid-cols-2 md:grid-cols-3 gap-4">
         <PlaylistCard
           id="PLWLiJPAYmgZAS3xwyNPEGPXZ9rE1ABJzZ"
           title="Yazılımcı Haberleri"
