@@ -35,6 +35,7 @@ import * as $_common_islands_infinite_scroller_list from "./routes/(common)/(_is
 import * as $_common_islands_share from "./routes/(common)/(_islands)/share.tsx";
 import * as $_common_islands_shortcuts from "./routes/(common)/(_islands)/shortcuts.tsx";
 import * as $dash_islands_chart from "./routes/dash/(_islands)/chart.tsx";
+import * as $projects_islands_list from "./routes/projects/(_islands)/list.tsx";
 import * as $qa_islands_list from "./routes/qa/(_islands)/list.tsx";
 import * as $qa_islands_listitem_hide from "./routes/qa/(_islands)/listitem-hide.tsx";
 import * as $qa_islands_listitem_vote from "./routes/qa/(_islands)/listitem-vote.tsx";
@@ -79,6 +80,7 @@ const manifest = {
     "./routes/(common)/(_islands)/share.tsx": $_common_islands_share,
     "./routes/(common)/(_islands)/shortcuts.tsx": $_common_islands_shortcuts,
     "./routes/dash/(_islands)/chart.tsx": $dash_islands_chart,
+    "./routes/projects/(_islands)/list.tsx": $projects_islands_list,
     "./routes/qa/(_islands)/list.tsx": $qa_islands_list,
     "./routes/qa/(_islands)/listitem-hide.tsx": $qa_islands_listitem_hide,
     "./routes/qa/(_islands)/listitem-vote.tsx": $qa_islands_listitem_vote,

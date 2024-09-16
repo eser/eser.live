@@ -71,7 +71,7 @@ export default defineRoute<State>((_req, ctx) => {
             </div>
             <div class="flex">
               <IconCircleX class="inline-block mr-2" />
-              Deneme veya boş soru gnderimi &nbsp;
+              Deneme veya boş soru gönderimi &nbsp;
               <strong>yapma</strong>
             </div>
             <div class="flex">

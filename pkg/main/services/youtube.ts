@@ -1,5 +1,5 @@
 // Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
-import type { Cursor } from "@/pkg/main/library/data/cursors.ts";
+import type { Cursor, CursorResult } from "@/pkg/main/library/data/cursors.ts";
 import { YOUTUBE_CHANNEL_ID } from "../constants.ts";
 
 const BASE_URL = "https://www.googleapis.com/youtube/v3";
@@ -12,7 +12,7 @@ export interface YouTubeVideo {
   publishedAt: string;
 }
 
-export async function fetchVideos(cursor: Cursor): Promise<{ items: YouTubeVideo[]; nextCursor: string | null }> {
+export async function fetchVideos(cursor: Cursor): Promise<CursorResult<YouTubeVideo, string>> {
   const params = new URLSearchParams({
     part: "snippet", // Remove 'statistics' from here
     channelId: YOUTUBE_CHANNEL_ID,
