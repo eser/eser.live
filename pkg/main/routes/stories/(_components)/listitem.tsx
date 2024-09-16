@@ -1,5 +1,4 @@
 // Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
-import { SITE_LOCALE } from "@/pkg/main/constants.ts";
 import { formatDateTime } from "@/pkg/main/library/display/format-datetime.ts";
 import type { StoryWithDetails } from "@/pkg/main/data/story/types.ts";
 
@@ -9,7 +8,7 @@ type DateProps = {
 
 function Date(props: DateProps) {
   if (props.date === null) {
-    return "-";
+    return <>{"-"}</>;
   }
 
   const [day, month, year, _] = formatDateTime(props.date);
@@ -32,7 +31,7 @@ export function StoryListItem(props: StoryListItemProps) {
   return (
     <a
       href={`/stories/${props.story.slug}`}
-      class="no-underline flex items-center border-0 border-b border-neutral border-solid"
+      class="no-underline flex items-center border-0 border-b border-neutral border-solid gap-2"
     >
       <div class="w-1/5 text-primary-content text-center md:text-left">
         <Date date={props.story.publishedAt} />
