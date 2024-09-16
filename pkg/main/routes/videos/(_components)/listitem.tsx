@@ -8,12 +8,12 @@ export type VideoListItemProps = {
 
 export function VideoListItem(props: VideoListItemProps) {
   return (
-    <div class="mb-8 flex items-center">
+    <div class="mb-8 flex flex-col sm:flex-row items-center border-0 border-b border-neutral border-solid sm:border-b-0">
       <a
         href={`https://www.youtube.com/watch?v=${props.video.id}`}
         target="_blank"
         rel="noopener noreferrer"
-        class="w-1/3 mr-4"
+        class="mr-4"
       >
         <img src={props.video.thumbnailUrl} alt={props.video.title} class="w-full aspect-video object-cover" />
       </a>
