@@ -3,18 +3,19 @@ import { formatDateTime } from "@/pkg/main/library/display/format-datetime.ts";
 import type { StoryWithDetails } from "@/pkg/main/data/story/types.ts";
 
 type DateProps = {
-  date: Date | null;
+  timestamp: string | null;
 };
 
-function Date(props: DateProps) {
-  if (props.date === null) {
+function DateLabel(props: DateProps) {
+  if (props.timestamp === null) {
     return <>{"-"}</>;
   }
 
-  const [day, month, year, _] = formatDateTime(props.date);
+  const targetDate: Date = new Date(props.timestamp);
+  const [day, month, year, _] = formatDateTime(targetDate);
 
   return (
-    <time datetime={props.date.toISOString()}>
+    <time datetime={targetDate.toISOString()}>
       {`${day} ${month}`}
       <br class="md:hidden" />
       <span class="hidden md:inline">{" "}</span>
@@ -34,7 +35,7 @@ export function StoryListItem(props: StoryListItemProps) {
       class="no-underline flex items-center border-0 border-b border-neutral border-solid gap-2"
     >
       <div class="w-1/5 text-primary-content text-center md:text-left">
-        <Date date={props.story.publishedAt} />
+        <DateLabel timestamp={props.story.publishedAt?.toString() ?? null} />
       </div>
       <div class="flex-1">
         <h2 class="text-xl font-bold no-underline hover:underline">{props.story.title}</h2>
