@@ -17,7 +17,7 @@ export type GitHubProject = {
   name: string;
   description: string | null;
   html_url: string;
-  topics: string[];
+  topics: string[] | undefined;
 };
 
 /**

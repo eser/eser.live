@@ -5,11 +5,6 @@
 /// <reference lib="dom.asynciterable" />
 /// <reference lib="deno.ns" />
 
-import fromAsync from "../polyfills/array-from-async.js";
-if (Array.fromAsync === undefined) {
-  Array.fromAsync = fromAsync;
-}
-
 import "@std/dotenv/load";
 
 import { start } from "$fresh/server.ts";

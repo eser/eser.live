@@ -98,9 +98,9 @@ export const PlaylistCard = (props: PlaylistCardProps) => {
 
 export const Playlists = () => {
   return (
-    <div class="content-area">
+    <div>
       <h2>Playlistler</h2>
-      <div class="grid grid-flow-row grid-cols-2 md:grid-cols-3 gap-4">
+      <div class="grid grid-flow-row grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-4">
         <PlaylistCard
           id="PLWLiJPAYmgZAS3xwyNPEGPXZ9rE1ABJzZ"
           title="Yazılımcı Haberleri"
@@ -127,7 +127,7 @@ interface EventsProps {
 
 export const Events = (props: EventsProps) => {
   return (
-    <div class="content-area mt-12">
+    <div class="mt-12">
       <h2>Planlı Etkinlik Takvimi</h2>
 
       <EventsList items={props.items} />
@@ -142,8 +142,22 @@ export default function (props: PageProps<HandlerResult, State>) {
       <main>
         <WelcomeStrip sessionUser={props.state.sessionUser} />
 
-        <Playlists />
-        <Events items={props.data.payload.events.items} />
+        <div class="content-area flex gap-4">
+          <div>
+            <Playlists />
+            <Events items={props.data.payload.events.items} />
+          </div>
+          <div class="hidden md:block">
+            <iframe
+              src="https://discord.com/widget?id=1139067412105396304"
+              width="350"
+              height="500"
+              allowTransparency={true}
+              frameborder="0"
+              sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
+            ></iframe>
+          </div>
+        </div>
       </main>
     </>
   );
