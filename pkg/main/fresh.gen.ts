@@ -12,7 +12,7 @@ import * as $dash_index from "./routes/dash/index.tsx";
 import * as $dash_stats from "./routes/dash/stats.tsx";
 import * as $dash_users_id_ from "./routes/dash/users/[id].tsx";
 import * as $dash_users_index from "./routes/dash/users/index.tsx";
-import * as $events_index from "./routes/events/index.ts";
+import * as $events_index from "./routes/events/index.tsx";
 import * as $events_upcoming from "./routes/events/upcoming.ts";
 import * as $index from "./routes/index.tsx";
 import * as $projects_index from "./routes/projects/index.tsx";
@@ -35,6 +35,7 @@ import * as $_common_islands_infinite_scroller_list from "./routes/(common)/(_is
 import * as $_common_islands_share from "./routes/(common)/(_islands)/share.tsx";
 import * as $_common_islands_shortcuts from "./routes/(common)/(_islands)/shortcuts.tsx";
 import * as $dash_islands_chart from "./routes/dash/(_islands)/chart.tsx";
+import * as $events_islands_list from "./routes/events/(_islands)/list.tsx";
 import * as $projects_islands_list from "./routes/projects/(_islands)/list.tsx";
 import * as $qa_islands_list from "./routes/qa/(_islands)/list.tsx";
 import * as $qa_islands_listitem_hide from "./routes/qa/(_islands)/listitem-hide.tsx";
@@ -55,7 +56,7 @@ const manifest = {
     "./routes/dash/stats.tsx": $dash_stats,
     "./routes/dash/users/[id].tsx": $dash_users_id_,
     "./routes/dash/users/index.tsx": $dash_users_index,
-    "./routes/events/index.ts": $events_index,
+    "./routes/events/index.tsx": $events_index,
     "./routes/events/upcoming.ts": $events_upcoming,
     "./routes/index.tsx": $index,
     "./routes/projects/index.tsx": $projects_index,
@@ -80,6 +81,7 @@ const manifest = {
     "./routes/(common)/(_islands)/share.tsx": $_common_islands_share,
     "./routes/(common)/(_islands)/shortcuts.tsx": $_common_islands_shortcuts,
     "./routes/dash/(_islands)/chart.tsx": $dash_islands_chart,
+    "./routes/events/(_islands)/list.tsx": $events_islands_list,
     "./routes/projects/(_islands)/list.tsx": $projects_islands_list,
     "./routes/qa/(_islands)/list.tsx": $qa_islands_list,
     "./routes/qa/(_islands)/listitem-hide.tsx": $qa_islands_listitem_hide,

@@ -155,7 +155,8 @@ export default function (props: PageProps<HandlerResult, State>) {
               allowTransparency={true}
               frameborder="0"
               sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
-            ></iframe>
+            >
+            </iframe>
           </div>
         </div>
       </main>

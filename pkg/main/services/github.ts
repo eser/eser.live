@@ -18,6 +18,10 @@ export type GitHubProject = {
   description: string | null;
   html_url: string;
   topics: string[] | undefined;
+  language: string | null;
+  forks_count: number;
+  stargazers_count: number;
+  updated_at: string;
 };
 
 /**
