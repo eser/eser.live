@@ -148,7 +148,7 @@ export const Header = (props: HeaderProps) => {
             </div>
           </div> */
           }
-          <a href="https://www.youtube.com/@eserlive/live" class="btn btn-error" target="_blank" rel="noreferrer">
+          <a href="https://www.youtube.com/@eserlive/live" class="btn btn-sm md:btn-md btn-error" target="_blank" rel="noreferrer">
             <IconBrandYouTube class="h-6 w-6" />
             <span class="inline md:hidden">Canlı</span>
             <span class="hidden md:inline">Canlı Yayın</span>
@@ -181,7 +181,7 @@ export const Header = (props: HeaderProps) => {
               </div>
             )
             : (
-              <a href="/auth/login" tabIndex={0} role="button" class="btn btn-neutral">
+              <a href="/auth/login" tabIndex={0} role="button" class="btn btn-sm md:btn-md btn-neutral">
                 <span class="inline md:hidden">Giriş</span>
                 <span class="hidden md:inline">GitHub ile Giriş</span>
               </a>
