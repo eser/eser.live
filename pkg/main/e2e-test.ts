@@ -168,9 +168,9 @@
 //   });
 // });
 
-// Deno.test("[e2e] GET /stories", async () => {
+// Deno.test("[e2e] GET /articles", async () => {
 //   const resp = await handler(
-//     new Request("http://localhost/stories"),
+//     new Request("http://localhost/articles"),
 //   );
 
 //   assert.assertEquals(resp.status, STATUS_CODE.OK);
@@ -329,9 +329,9 @@
 //   assertHtml(resp);
 // });
 
-// Deno.test("[e2e] GET /stories/feed", async () => {
+// Deno.test("[e2e] GET /articles/feed", async () => {
 //   const resp = await handler(
-//     new Request("http://localhost/stories/feed"),
+//     new Request("http://localhost/articles/feed"),
 //   );
 
 //   assert.assertEquals(resp.status, STATUS_CODE.OK);
