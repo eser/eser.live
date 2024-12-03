@@ -1,6 +1,6 @@
 {
   "lock": false,
-  "nodeModulesDir": true,
+  "nodeModulesDir": "auto",
   "unstable": [
     "cron",
     "temporal"
@@ -9,8 +9,8 @@
     "db:studio": "deno run --allow-env --allow-sys --allow-read --allow-write --allow-run --allow-net npm:drizzle-kit studio",
     "db:generate": "deno run --allow-env --allow-sys --allow-read --allow-write --allow-run npm:drizzle-kit generate",
     "db:migrate": "deno run --allow-env --allow-read --allow-net ./pkg/tasks/db-migrate.ts",
-    "start": "DENO_FUTURE=1 deno run --allow-all --watch=./pkg/main/static/,./pkg/main/routes/ ./pkg/main/dev.ts",
-    "test": "GITHUB_CLIENT_ID=xxx GITHUB_CLIENT_SECRET=xxx YOUTUBE_API_KEY=xxx deno test --allow-all --parallel --coverage=./test/coverage/",
+    "start": "deno run --allow-all --watch=./pkg/main/static/,./pkg/main/routes/ ./pkg/main/dev.ts",
+    "test": "GITHUB_CLIENT_ID=xxx GITHUB_CLIENT_SECRET=xxx YOUTUBE_API_KEY=xxx DENO_JOBS=4 deno test --allow-all --trace-leaks --parallel --coverage=./test/coverage/",
     "check": "deno fmt --check && deno lint && deno check **/*.ts && deno check **/*.tsx",
     "cli": "echo \"import '\\$fresh/src/dev/cli.ts'\" | deno run --allow-all -",
     "manifest": "deno task cli manifest $(pwd)/pkg/main/",
@@ -20,8 +20,8 @@
     "cov:clean": "rm -rf ./test/coverage/ ./test/html_cov/ ./test/cov_profile.lcov && mkdir ./test/coverage/ && touch ./test/coverage/.gitkeep",
     "cov:gen": "deno coverage ./test/coverage/ --lcov --exclude='.tsx' --output=./test/cov_profile.lcov",
     "cov:view": "genhtml -o ./test/html_cov/ ./test/cov_profile.lcov && open ./test/html_cov/index.html",
-    "build": "DENO_FUTURE=1 deno run --allow-all ./pkg/main/dev.ts build",
-    "preview": "DENO_FUTURE=1 deno run --allow-all ./pkg/main/main.ts",
+    "build": "deno run --allow-all ./pkg/main/dev.ts build",
+    "preview": "deno run --allow-all ./pkg/main/main.ts",
     "update": "deno run --allow-all --reload https://fresh.deno.dev/update .",
     "deploy": "deno task build && deployctl deploy"
   },
@@ -51,7 +51,7 @@
     "@std/testing": "jsr:@std/testing@^1.0.2",
     "@std/ulid": "jsr:@std/ulid@^1.0.0",
     "@tailwindcss/typography": "npm:@tailwindcss/typography@0.5.15",
-    "daisyui": "npm:daisyui@4.12.10",
+    "daisyui": "npm:daisyui@^4.12.10",
     "drizzle-kit": "npm:drizzle-kit@0.24.2",
     "drizzle-orm": "npm:drizzle-orm@0.33.0",
     "feed": "npm:/feed@4.2.2",

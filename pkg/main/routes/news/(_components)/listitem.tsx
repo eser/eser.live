@@ -31,7 +31,7 @@ export type StoryListItemProps = {
 export function StoryListItem(props: StoryListItemProps) {
   return (
     <a
-      href={`/stories/${props.story.slug}`}
+      href={`/news/${props.story.slug}`}
       class="no-underline flex items-center border-0 border-b border-neutral border-solid gap-2"
     >
       <div class="w-1/5 text-primary-content text-center md:text-left">

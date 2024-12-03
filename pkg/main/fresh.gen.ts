@@ -6,6 +6,9 @@ import * as $_404 from "./routes/_404.tsx";
 import * as $_500 from "./routes/_500.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $_layout from "./routes/_layout.tsx";
+import * as $articles_slug_ from "./routes/articles/[slug].tsx";
+import * as $articles_feed from "./routes/articles/feed.ts";
+import * as $articles_index from "./routes/articles/index.tsx";
 import * as $community_index from "./routes/community/index.tsx";
 import * as $cookbook_index from "./routes/cookbook/index.tsx";
 import * as $dash_index from "./routes/dash/index.tsx";
@@ -15,6 +18,11 @@ import * as $dash_users_index from "./routes/dash/users/index.tsx";
 import * as $events_index from "./routes/events/index.tsx";
 import * as $events_upcoming from "./routes/events/upcoming.ts";
 import * as $index from "./routes/index.tsx";
+import * as $news_slug_ from "./routes/news/[slug].tsx";
+import * as $news_feed from "./routes/news/feed.ts";
+import * as $news_index from "./routes/news/index.tsx";
+import * as $news_post from "./routes/news/post.tsx";
+import * as $profiles_index from "./routes/profiles/index.tsx";
 import * as $projects_index from "./routes/projects/index.tsx";
 import * as $qa_id_hide from "./routes/qa/[id]/hide.ts";
 import * as $qa_id_index from "./routes/qa/[id]/index.ts";
@@ -23,9 +31,6 @@ import * as $qa_ask from "./routes/qa/ask.tsx";
 import * as $qa_index from "./routes/qa/index.tsx";
 import * as $qa_user_votes from "./routes/qa/user-votes.ts";
 import * as $setup_index from "./routes/setup/index.tsx";
-import * as $stories_slug_ from "./routes/stories/[slug].tsx";
-import * as $stories_feed from "./routes/stories/feed.ts";
-import * as $stories_index from "./routes/stories/index.tsx";
 import * as $users_id_index from "./routes/users/[id]/index.ts";
 import * as $users_id_questions from "./routes/users/[id]/questions.ts";
 import * as $users_index from "./routes/users/index.ts";
@@ -34,13 +39,15 @@ import * as $videos_index from "./routes/videos/index.tsx";
 import * as $_common_islands_infinite_scroller_list from "./routes/(common)/(_islands)/infinite-scroller-list.tsx";
 import * as $_common_islands_share from "./routes/(common)/(_islands)/share.tsx";
 import * as $_common_islands_shortcuts from "./routes/(common)/(_islands)/shortcuts.tsx";
+import * as $articles_islands_list from "./routes/articles/(_islands)/list.tsx";
 import * as $dash_islands_chart from "./routes/dash/(_islands)/chart.tsx";
 import * as $events_islands_list from "./routes/events/(_islands)/list.tsx";
+import * as $news_islands_list from "./routes/news/(_islands)/list.tsx";
+import * as $profiles_islands_list from "./routes/profiles/(_islands)/list.tsx";
 import * as $projects_islands_list from "./routes/projects/(_islands)/list.tsx";
 import * as $qa_islands_list from "./routes/qa/(_islands)/list.tsx";
 import * as $qa_islands_listitem_hide from "./routes/qa/(_islands)/listitem-hide.tsx";
 import * as $qa_islands_listitem_vote from "./routes/qa/(_islands)/listitem-vote.tsx";
-import * as $stories_islands_list from "./routes/stories/(_islands)/list.tsx";
 import * as $videos_islands_list from "./routes/videos/(_islands)/list.tsx";
 import type { Manifest } from "$fresh/server.ts";
 
@@ -50,6 +57,9 @@ const manifest = {
     "./routes/_500.tsx": $_500,
     "./routes/_app.tsx": $_app,
     "./routes/_layout.tsx": $_layout,
+    "./routes/articles/[slug].tsx": $articles_slug_,
+    "./routes/articles/feed.ts": $articles_feed,
+    "./routes/articles/index.tsx": $articles_index,
     "./routes/community/index.tsx": $community_index,
     "./routes/cookbook/index.tsx": $cookbook_index,
     "./routes/dash/index.tsx": $dash_index,
@@ -59,6 +69,11 @@ const manifest = {
     "./routes/events/index.tsx": $events_index,
     "./routes/events/upcoming.ts": $events_upcoming,
     "./routes/index.tsx": $index,
+    "./routes/news/[slug].tsx": $news_slug_,
+    "./routes/news/feed.ts": $news_feed,
+    "./routes/news/index.tsx": $news_index,
+    "./routes/news/post.tsx": $news_post,
+    "./routes/profiles/index.tsx": $profiles_index,
     "./routes/projects/index.tsx": $projects_index,
     "./routes/qa/[id]/hide.ts": $qa_id_hide,
     "./routes/qa/[id]/index.ts": $qa_id_index,
@@ -67,9 +82,6 @@ const manifest = {
     "./routes/qa/index.tsx": $qa_index,
     "./routes/qa/user-votes.ts": $qa_user_votes,
     "./routes/setup/index.tsx": $setup_index,
-    "./routes/stories/[slug].tsx": $stories_slug_,
-    "./routes/stories/feed.ts": $stories_feed,
-    "./routes/stories/index.tsx": $stories_index,
     "./routes/users/[id]/index.ts": $users_id_index,
     "./routes/users/[id]/questions.ts": $users_id_questions,
     "./routes/users/index.ts": $users_index,
@@ -80,13 +92,15 @@ const manifest = {
     "./routes/(common)/(_islands)/infinite-scroller-list.tsx": $_common_islands_infinite_scroller_list,
     "./routes/(common)/(_islands)/share.tsx": $_common_islands_share,
     "./routes/(common)/(_islands)/shortcuts.tsx": $_common_islands_shortcuts,
+    "./routes/articles/(_islands)/list.tsx": $articles_islands_list,
     "./routes/dash/(_islands)/chart.tsx": $dash_islands_chart,
     "./routes/events/(_islands)/list.tsx": $events_islands_list,
+    "./routes/news/(_islands)/list.tsx": $news_islands_list,
+    "./routes/profiles/(_islands)/list.tsx": $profiles_islands_list,
     "./routes/projects/(_islands)/list.tsx": $projects_islands_list,
     "./routes/qa/(_islands)/list.tsx": $qa_islands_list,
     "./routes/qa/(_islands)/listitem-hide.tsx": $qa_islands_listitem_hide,
     "./routes/qa/(_islands)/listitem-vote.tsx": $qa_islands_listitem_vote,
-    "./routes/stories/(_islands)/list.tsx": $stories_islands_list,
     "./routes/videos/(_islands)/list.tsx": $videos_islands_list,
   },
   baseUrl: import.meta.url,

@@ -14,26 +14,26 @@ export default defineRoute<State>(async (req, ctx) => {
   const feed = new Feed({
     title: SITE_NAME,
     description: SITE_DESCRIPTION,
-    id: `${origin}/stories`,
-    link: `${origin}/stories`,
+    id: `${origin}/news`,
+    link: `${origin}/news`,
     language: SITE_LANG,
     favicon: `${origin}/favicon.ico`,
     copyright,
     generator: "cool",
     feedLinks: {
-      atom: `${origin}/stories/feed`,
+      atom: `${origin}/news/feed`,
     },
   });
 
   const cursor = getCursor(req.url, 10);
-  const result = await storyRepository.findAllByKindAndStatus("article", "published", cursor);
+  const result = await storyRepository.findAllByKindAndStatus("news", "published", cursor);
   for (const story of result.items) {
     feed.addItem({
-      id: `${origin}/stories/${story.slug}`,
+      id: `${origin}/news/${story.slug}`,
       title: story.title,
       description: story.description,
       date: story.publishedAt ?? new Date(),
-      link: `${origin}/stories/${story.slug}`,
+      link: `${origin}/news/${story.slug}`,
       // author: [{ name: "The Deno Authors" }],
       // copyright,
       published: story.publishedAt !== null ? new Date(story.publishedAt) : undefined,

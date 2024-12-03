@@ -17,7 +17,7 @@ export const handler: Handlers<HandlerResult, State> = {
     const mediaTypes = ensureMediaTypes(req, ["application/json", "text/html"]);
 
     const cursor = getCursor(req.url, PAGE_SIZE);
-    const stories = await storyRepository.findAllByKindAndStatusWithDetails("article", "published", cursor);
+    const stories = await storyRepository.findAllByKindAndStatusWithDetails("news", "published", cursor);
 
     const result: HandlerResult = {
       payload: stories,
@@ -34,10 +34,11 @@ export const handler: Handlers<HandlerResult, State> = {
 export default function (props: PageProps<HandlerResult, State>) {
   return (
     <>
-      <Head title="Yazılar" href={props.url.href} />
+      <Head title="Haberler" href={props.url.href} />
       <main>
         <div class="content-area">
-          <h1>Yazılar</h1>
+          <h1>Haberler</h1>
+          <a href="/news/post/" class="btn btn-primary mb-4" disabled={true}>Yeni Haber Ekle</a>
           <StoryList
             initialItems={props.data.payload.items}
             initialNextCursor={props.data.payload.nextCursor}

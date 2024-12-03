@@ -52,6 +52,7 @@ export class UserRepository {
     if (result === undefined) {
       return null;
     }
+
     return result;
   }
 
