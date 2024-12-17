@@ -1,23 +1,28 @@
 // Copyright 2023-present Eser Ozvataf and other contributors. All rights reserved. Apache-2.0 license.
-// import { Logo } from "@/pkg/main/routes/(common)/(_components)/logo.tsx";
-// import {
-//   SITE_NAME,
-// } from "@/pkg/main/constants.ts";
 import type { User } from "@/pkg/main/data/user/types.ts";
-// import IconSearch from "tabler_icons_tsx/search.tsx";
 import IconBrandYouTube from "tabler_icons_tsx/brand-youtube-filled.tsx";
-// import IconMenu from "tabler_icons_tsx/menu-2.tsx";
-// import IconX from "tabler_icons_tsx/x.tsx";
 
 const MenuItems = () => {
   return (
     <>
-      <li>
+      {
+        /* <li>
         <a href="/">~/</a>
+      </li> */
+      }
+      {/* <li>
+        <a href="/profiles" class="include-ancestors">
+          Profiller
+        </a>
+      </li> */}
+      <li>
+        <a href="/news" class="include-ancestors">
+          Haberler
+        </a>
       </li>
       <li>
-        <a href="/stories" class="include-ancestors">
-          Yazılar
+        <a href="/articles" class="include-ancestors">
+          Makaleler
         </a>
       </li>
       <li>
@@ -56,17 +61,6 @@ const MenuItems = () => {
           Topluluk
         </a>
       </li> */
-      }
-      {
-        /* <li>
-              <details>
-                <summary>Parent</summary>
-                <ul class="p-2">
-                  <li><a>Submenu 1</a></li>
-                  <li><a>Submenu 2</a></li>
-                </ul>
-              </details>
-            </li> */
       }
     </>
   );
@@ -148,7 +142,7 @@ export const Header = (props: HeaderProps) => {
             </div>
           </div> */
           }
-          <a href="https://www.youtube.com/@eserlive/live" class="btn btn-error" target="_blank" rel="noreferrer">
+          <a href="https://www.youtube.com/@eserlive/live" class="btn btn-sm md:btn-md btn-error" target="_blank" rel="noreferrer">
             <IconBrandYouTube class="h-6 w-6" />
             <span class="inline md:hidden">Canlı</span>
             <span class="hidden md:inline">Canlı Yayın</span>
@@ -181,70 +175,13 @@ export const Header = (props: HeaderProps) => {
               </div>
             )
             : (
-              <a href="/auth/login" tabIndex={0} role="button" class="btn btn-neutral">
+              <a href="/auth/login" tabIndex={0} role="button" class="btn btn-sm md:btn-md btn-neutral">
                 <span class="inline md:hidden">Giriş</span>
                 <span class="hidden md:inline">GitHub ile Giriş</span>
               </a>
             )}
         </div>
       </div>
-
-      {
-        /* <div>
-        <input
-          type="checkbox"
-          id="nav-toggle"
-          class="hidden [:checked&+*>:last-child>*>:first-child]:hidden [:checked&+*>:last-child>*>:last-child]:block checked:siblings:last-child:flex"
-        />
-
-        <div class="flex justify-between items-center">
-          <a href="/" class="shrink-0">
-            <Logo height={49} width={200} title={SITE_NAME + " logo"} />
-          </a>
-          <div class="flex gap-4 items-center">
-            <label
-              tabIndex={0}
-              class="md:hidden"
-              id="nav-toggle-label"
-              htmlFor="nav-toggle"
-            >
-              <IconMenu class="w-6 h-6" />
-              <IconX class="hidden w-6 h-6" />
-            </label>
-          </div>
-        </div>
-        <script>
-          {`
-            const navToggleLabel = document.getElementById('nav-toggle-label');
-            navToggleLabel.addEventListener('keydown', () => {
-              if (event.code === 'Space' || event.code === 'Enter') {
-                navToggleLabel.click();
-                event.preventDefault();
-              }
-            });
-          `}
-        </script>
-        <nav
-          class={"hidden flex-col gap-x-4 divide-y divide-solid md:flex md:items-center md:flex-row md:divide-y-0"}
-        >
-          <a
-            href="/qa"
-          >
-            Soru / Yanıt
-          </a>
-          <div class="rounded-lg bg-gradient-to-tr from-secondary to-primary p-px">
-            <a
-              href="https://www.youtube.com/@eserlive/live"
-              class="flex flex-row gap-2 text-center text-white rounded-[7px] transition duration-300 px-4 py-2 hover:bg-white hover:text-slate-900 hover:dark:bg-gray-900 hover:dark:!text-slate-100"
-            >
-              <IconBrandYouTube class="h-6 w-6" />
-              <span class="lg:hidden">Yayın</span>
-              <span class="hidden lg:inline">YouTube Yayını</span>
-            </a>
-          </div>
-        </nav>
-      </div> */
-      }
     </header>
   );
 };

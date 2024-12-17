@@ -78,7 +78,7 @@ jobs:
 
       - name: Upload coverage
         # if: matrix.os == 'ubuntu-latest'
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
@@ -94,7 +94,7 @@ jobs:
 
     permissions:
       id-token: write # Needed for auth with Deno Deploy
-      contents: read  # Needed to clone the repository
+      contents: read # Needed to clone the repository
 
     steps:
       - name: Checkout repository
@@ -102,10 +102,10 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: Setup Deno 1.x
+      - name: Setup Deno 2.x
         uses: denoland/setup-deno@v2
         with:
-          deno-version: v1.x
+          deno-version-file: .tool-versions
 
       - name: Ahead-of-time Build
         run: "deno task build"
