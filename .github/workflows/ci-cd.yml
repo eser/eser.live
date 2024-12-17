@@ -57,7 +57,7 @@ jobs:
           fetch-depth: 2
 
       - name: Setup Deno
-        uses: denoland/setup-deno@v1
+        uses: denoland/setup-deno@v2
         with:
           deno-version: ${{ matrix.deno-version }}
 
@@ -78,7 +78,7 @@ jobs:
 
       - name: Upload coverage
         # if: matrix.os == 'ubuntu-latest'
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
@@ -102,10 +102,10 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: Setup Deno 1.x
-        uses: denoland/setup-deno@v1
+      - name: Setup Deno 2.x
+        uses: denoland/setup-deno@v2
         with:
-          deno-version: v1.x
+          deno-version-file: .tool-versions
 
       - name: Ahead-of-time Build
         run: "deno task build"
