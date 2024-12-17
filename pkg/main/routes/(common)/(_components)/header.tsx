@@ -10,11 +10,13 @@ const MenuItems = () => {
         <a href="/">~/</a>
       </li> */
       }
-      {/* <li>
+      {
+        /* <li>
         <a href="/profiles" class="include-ancestors">
           Profiller
         </a>
-      </li> */}
+      </li> */
+      }
       <li>
         <a href="/news" class="include-ancestors">
           Haberler
